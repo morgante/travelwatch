@@ -12,6 +12,9 @@ RUN 		apt-get install -y libatlas-dev libatlas3-base
 # Scikit-learn
 RUN 		pip install -U scikit-learn
 
+# Pips
+RUN 		cd /src; pip install flask
+
 # Add source
 ADD 		. /src
 
@@ -24,4 +27,4 @@ EXPOSE 		5000
 # Run it
 WORKDIR		/src
 
-ENTRYPOINT ["/usr/bin"]
+ENTRYPOINT ["python", "server.py"]
