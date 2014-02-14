@@ -21,7 +21,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project name</a>
+          <a class="navbar-brand" href="#">TravelWatch</a>
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
@@ -37,14 +37,15 @@
 
       <div class="main-template">
         <h1>Bootstrap starter template</h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+        <div class="map">
+        </div>
       </div>
 
     </div><!-- /.container -->
 
  	<div id="footer">
       <div class="container">
-        <p class="text-muted">Place sticky footer content here.</p>
+        <p class="text-muted">Made with &#10084; at the 2014 NYUAD Hackathon.</p>
       </div>
     </div>
 
@@ -52,8 +53,7 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
+    <script data-main="{{ url_for('static', filename='app/js/app.js') }}" src="{{ url_for('static', filename='components/requirejs/require.js') }}"></script>
 
 	</body>
 </html>
