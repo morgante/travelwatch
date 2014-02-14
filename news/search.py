@@ -14,7 +14,7 @@ def search(
 	facet_filter=False
 	):
 		
-		return []; # Actually return stories here
+		return [{"web_url": "http://google.com", "headline": "Man bites dog", "keywords": ["man", "dog"]}]; # Actually return stories here
 
 
 if __name__ == "__main__":
