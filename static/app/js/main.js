@@ -10,7 +10,11 @@ define([
 	map.world($map, {
 		"USA": 1,
 		"JPN": 3
-	}, {}, function(worldMap, error) {
+	}, {
+		clicked: function(country, evt) {
+			console.log('This county was clicked', country);
+		}
+	}, function(worldMap, error) {
 		console.log('this is the map callback', worldMap, error);
 	});
 
