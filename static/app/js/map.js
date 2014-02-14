@@ -13,14 +13,17 @@ define([
 	 *                    .clicked Callback for when a country is clicked, clicked(country, evt)
 	 * @param  {Function} callback A function to be called when the mapping is done, callback(this, error);
 	 */
-	function Map($el, data, opts, callback) {
+	function Map($el, opts, callback) {
 		console.log('I will make a map');
-		console.log($el, data, callback);
+		console.log($el, opts, callback);
 
-		this.map = 'I AM A MAP';
 		var error = null;
 
-		callback(this, error);
+		if (callback !== undefined) {
+			callback(this, error);
+		}
+
+		return this;
 	}
 
 	/**
@@ -34,7 +37,9 @@ define([
 
 		console.log('I am coloring by country', data);
 
-		callback(error);
+		if (callback !== undefined) {
+			callback(error);
+		}
 	};
 
 	/**
@@ -52,7 +57,9 @@ define([
 
 		console.log('I am coloring by the graph', data);
 
-		callback(error);
+		if (callback !== undefined) {
+			callback(error);
+		}
 	};
 
 	/**
@@ -67,7 +74,9 @@ define([
 
 		console.log('I am zooming', country, bounds, callback);
 
-		callback(error);
+		if (callback !== undefined) {
+			callback(error);
+		}
 	};
 
 
