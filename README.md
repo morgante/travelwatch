@@ -7,7 +7,7 @@ The entire development environment is contained in a Docker container. To get up
 1. Install [Docker](https://www.docker.io/gettingstarted/#h_installation).
 2.  Clone this repo: ```git clone https://github.com/morgante/travelwatch.git```
 3. Go into the travelwatch dir: ```cd travelwatch```
-4. Download the Docker image: ```docker pull morgante/travelwatch .```
+4. Download the Docker image: ```docker pull morgante/travelwatch```
 5. Run the Docker container: ```docker run -v /var/code/travelwatch/nyuad:/src -d -t -p 49200:5000 -e ENVIRONMENT='dev' --name travelwatch morgante/travelwatch```
 6. Open the app: http://localhost:49200/
 7. Make changes to ```server.py``` and they will be reflected live.
