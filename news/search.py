@@ -14,7 +14,8 @@ def search(
 	facet_filter=False
 	):
 		
-		return [{"web_url": "http://google.com", "headline": "Man bites dog", "keywords": ["man", "dog"]}]; # Actually return stories here
+		# ALWAYS return id
+		return [{"id":"4fd3a2548eb7c8105d8ea27e", "web_url": "http://google.com", "headline": "Man bites dog", "keywords": ["man", "dog"]}]; # Actually return stories here
 
 
 if __name__ == "__main__":
