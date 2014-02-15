@@ -21,8 +21,32 @@ def mock_scores():
 		{"code": "USA", "name": "United States of America", "score": 19}, # Danger scores are 1-100
 		{"code": "FRA", "name": "France", "score": 23},
 		{"code": "VEN", "name": "Venezuela", "score": 3},
-		{"code": "COL", "name": "Columbia", "score": 33}
+		{"code": "COL", "name": "Columbia", "score": 60}
 	]
+
+	return json.dumps(data)
+
+# This route is for returning detailed country data
+@app.route('/mock/country/<code>')
+def mock_country(code):
+	points = [
+		{
+			"position": {"latitude": 24.4667, "longitude": 54.3667},
+			"score": 20, # 1-100
+			"force": 10  # 1-100, how much to expand outward
+		}
+	]
+
+	data =  {
+		"code": "USA",
+		"name": "United States of America",
+		"score": 19,
+		"risks": {
+			"kidnapping": 5, # 0-100
+			"bombing": 2
+		},
+		"points": points
+	}
 
 	return json.dumps(data)
 
