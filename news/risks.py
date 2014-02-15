@@ -46,6 +46,7 @@ def get_risks_for_article(article):
         for phrase in v:
             hcount += str.lower(article['headline'].encode('ascii', 'ignore')).count(phrase)
             tcount += str.lower(article['text'].encode('ascii','ignore')).count(phrase)
+        print hcount, tcount
         risk_freqs[k] = ((hcount * 2.0) / head_len) + ((tcount * 1.0) / text_len) 
 
     print risk_freqs
@@ -55,7 +56,6 @@ def process_articles_from_db():
     articles = db.find('articles',{})
 
     locs = {}
-    maxa = 5
     count = 0
     for article in articles:
         print article
@@ -72,9 +72,14 @@ def process_articles_from_db():
             except:
                 pass
         count += 1
-        if count >= maxa:
-            break
     print locs
+
+    loc_list = [locs[key] for key in locs]
+    loc_list.sort(sorter)
+    print loc_list
+
+def sorter(a,b):
+    return cmp(a['murder'], b['murder'])
 
 def main():
     fake_data = {
