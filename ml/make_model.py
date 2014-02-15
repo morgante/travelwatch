@@ -1,6 +1,5 @@
 import data as db
 import word_frequency as wfr
-import train
 
 def score_from_crimes(crimes): {
 	return 11 #1-100
@@ -54,7 +53,4 @@ def model_from_all():
         #have to append a cNum to each city
 	cities[city][c_Num]=get_crime_by_city(city)
     return cities 
-
-def main():
-    return train.make_model(model_from_all())
 			
