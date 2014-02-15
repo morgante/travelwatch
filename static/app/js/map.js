@@ -5,33 +5,6 @@ define([
 	'topojson',
 ], function ($, _, d3, topojson) {
 
-	function dangerLevelToColor(dangerLevel) {
-		var hue = Math.floor(30 - dangerLevel * (30 / 100)) / 100;
-		return hsl2rgb(hue, 0.8, 0.4);
-	}
-
-	function hsl2rgb(hue, saturation, lightness) {
-		var hue2rgb = function(p, q, t) {
-			if(t < 0) t += 1;
-			if(t > 1) t -= 1;
-			if(t < 1/6) return p + (q - p) * 6 * t;
-			if(t < 1/2) return q;
-			if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-			return p;
-		};
-		var q;
-		if (lightness < 0.5) {
-			q = lightness * (1 + saturation);
-		} else {
-			q = lightness + saturation - lightness * saturation;
-		}
-		var p = 2 * lightness - q;
-		var r = Math.floor(255 * hue2rgb(p, q, hue + 1/3));
-		var g = Math.floor(255 * hue2rgb(p, q, hue));
-		var b = Math.floor(255 * hue2rgb(p, q, hue - 1/3));
-		return ['rgb(', r, ', ', g, ', ', b, ')'].join('');
-	};
-
 	/**
 	 * Makes a world map from given data
 	 *
@@ -94,7 +67,7 @@ define([
 
 		d3.selectAll('.datamaps-subunit').style('fill', function(d) {
 			if (data.hasOwnProperty(d.id)) {
-				return dangerLevelToColor(data[d.id]);
+				return d3.interpolateRgb('green', 'red')(data[d.id] / 100);
 			}
 			return '#BBBBBB';
         });
