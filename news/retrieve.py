@@ -123,17 +123,17 @@ More here: http://developer.nytimes.com/docs/read/article_search_api_v2#facets
 
 ## The search / scrape function (Default values search all articles in 2008 and returns IDs, URLs, Headlines & Keywords)
 def search(
-	query=None,
-	filters=None, # Input here is a list of dictionaries EVEN FOR ONE ELEMENT: ["web_url"], etc.
-	begin="20080101",
-	end="20081231",
-	page=None,
-	pages=10,
-	sort=None,
-	fields=["_id", "web_url", "headline", "keywords"],
-	highlight=False,
-	facet_field=["source"], # Input here is a list of strings EVEN FOR ONE ELEMENT
-	facet_filter=False
+            query=None,
+            filters={"news_desk": ["U.S.", "World"], "document_type":["article"]}, # Input here is a list of dictionaries EVEN FOR ONE ELEMENT: ["web_url"], etc.
+            begin="20080101",
+            end="20090101",
+            page=None,
+            pages=1,
+            sort=None,
+            fields=["_id","web_url","lead_paragraph","abstract","headline","keywords","pub_date","word_count","source","document_type","news_desk"],
+            highlight=False,
+            facet_field=None, # Input here is a list of strings EVEN FOR ONE ELEMENT
+            facet_filter=False
 	):
 
     ## Result storage
@@ -145,8 +145,6 @@ def search(
         for i in range (len(parameters)):
             if parameters[i] == None or parameters[i] == False:
                 parameters[i] = ""
-                
-        PageLimit = pages
 
         ## Filter fields follow special Lucene syntax: http://lucene.apache.org/core/2_9_4/queryparsersyntax.html
         ## Editing parameters[1] - the filter fields - to reflect this
@@ -224,15 +222,14 @@ def search(
         APIRequest = urlopen(QUERY)
         JSONData = json.load(APIRequest)
 
-        ## Finding the total number of pages = (Number of articles / 10) + 1
-        TotalPages = (JSONData[u'response'][u'facets'][u'source'][u'total'] / 10) + 1
-        QueryFields["facet_field"] = ""
+        # QueryFields["facet_field"] = ""
 
         ## Appending results page by page to a list
-        for i in range(1,TotalPages):
+        for i in range(0,pages):
             QueryFields["page"] = str(i)
             QUERY_STRING = Generate_QString(source);
             QUERY = QueryStrings[source] + QUERY_STRING
+            #print QUERY_STRING
             APIRequest = urlopen(QUERY)
             JSONData = json.load(APIRequest)
             result.append(handleJSON(JSONData))
@@ -251,19 +248,8 @@ def search(
 ## Main function
 def main():
     print "Processing query...\n"
-    x = search(
-            query=None,
-            filters=None, # Input here is a list of dictionaries EVEN FOR ONE ELEMENT: ["web_url"], etc.
-            begin="20080101",
-            end="20081231",
-            page=None,
-            pages=10,
-            sort=None,
-            fields=["_id", "web_url", "headline", "keywords"],
-            highlight=False,
-            facet_field=["source"], # Input here is a list of strings EVEN FOR ONE ELEMENT
-            facet_filter=False
-            )
+    x = search()
+    #print x
     print "Query complete! Results are stored in x.\n"
 
 
@@ -278,10 +264,14 @@ def getValFromDict(d,k):
 ## JSON Handler (Thanks Bonnie!)
 def handleJSON(raw_json):
     docs = raw_json["response"]["docs"]
+    articles = []
     for d in docs:
         headline = getValFromDict(d, "headline")
-        if len(headline) > 0:
-            headline = headline["main"]
+        try:
+            if len(headline) > 0:
+                headline = headline["main"]
+        except:
+            pass
         snippet = getValFromDict(d, "snippet")
         uniq_id = getValFromDict(d, "_id")
         url = getValFromDict(d, "web_url")
@@ -290,7 +280,8 @@ def handleJSON(raw_json):
         obj = {"headline":headline, "snippet":snippet,
                "lead_paragraph":lead, "_id":uniq_id,
                "url":url, "date":date}
-        return obj
+        articles.append(obj)
+    return articles
 
 if __name__ == "__main__":
     main()

@@ -10,7 +10,7 @@ define([
 	 *
 	 * @param  element    $el      jquery reference for container; replace this container's contents with the map
 	 * @param  {Object}   options  Object containing options, none currently defined
-	 *                    .clicked Callback for when a country is clicked, clicked(country, evt)
+	 *                    .clicked Callback for when a country is clicked, clicked(map, country, evt)
 	 * @param  {Function} callback A function to be called when the mapping is done, callback(this, error);
 	 */
 	function Map($el, opts, callback) {
@@ -46,7 +46,7 @@ define([
 				.style('fill', '#BBBBBB')
 				.style('stroke-width', 1)
 				.style('stroke', '#FDFDFD')
-				.on('click', function(d) { opts.clicked(d.id, d3.event) });
+				.on('click', function(d) { opts.clicked(that, d.id, d3.event) });
 
 			if (callback !== undefined) {
 				callback(that, error);
@@ -80,11 +80,11 @@ define([
 	/**
 	 * Colorize the map by a graph of danger points (for the zoomed-in country view); (wipes all previous colors)
 	 * @param  {Array}   data      the map data, with each entry containing:
-	 *                             {
+	 *                             [{
 	 *                             	position: {latitude: 24.4667, longitude: 54.3667},
 	 *                             	score: 9, // 1-100
 	 *                             	force: 10 // 1-100, how much the color should bleed out from this lat/long
-	 *                             }
+	 *                             }]
 	 * @param  {Function} callback A function(err) to be called on completion of colorization
 	 */
 	Map.prototype.colorPoints = function(data, callback) {
@@ -105,23 +105,36 @@ define([
 	Map.prototype.zoom = function(country, bounds, callback) {
 		var error = null;
 
-		// TODO(zjn): respect bounds
 		var g = this.svg.select('g');
 		var centroid = this.path.centroid(d3.select('.' + country).data()[0]);
-		var x = centroid[0];
-		var y = centroid[1];
-		var k = 4;
+		var countryBox = this.path.bounds(d3.select('.' + country).data()[0]);
+		var x = centroid[0],
+			y = centroid[1],
+			countryWidth = countryBox[1][0] - countryBox[0][0],
+			countryHeight = countryBox[1][1] - countryBox[0][1];
+		var k = Math.min(bounds.length / countryWidth, bounds.height / countryHeight);
+		x += ((this.width - bounds.length) / 2 - bounds.x)/ k;
 
 		g.selectAll("path").classed("active", true);
 
 		g.transition()
-			.duration(750)
+			.duration(1000)
 			.attr("transform", "translate(" + this.width / 2 + "," + this.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
-			.style("stroke-width", 1.5 / k + "px");
+			.style("stroke-width", 1.5 / k + "px")
+			.each("end", function() {
+				if (callback !== undefined) {
+					callback(error);
+				}
+			});
+		d3.selectAll('.datamaps-subunit')
+			.transition()
+			.duration(1000)
+			.style("opacity", "0.25");
+		d3.selectAll('.' + country)
+			.transition()
+			.duration(1000)
+			.style("opacity", "1");
 
-		if (callback !== undefined) {
-			callback(error);
-		}
 	};
 
 	/**
@@ -139,13 +152,18 @@ define([
 		g.selectAll("path").classed("active", false);
 
 		g.transition()
-			.duration(750)
+			.duration(1000)
 			.attr("transform", "translate(" + this.width / 2 + "," + this.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
-			.style("stroke-width", 1.5 / k + "px");
-
-		if (callback !== undefined) {
-			callback(error);
-		}
+			.style("stroke-width", 1.5 / k + "px")
+			.each("end", function() {
+				if (callback !== undefined) {
+					callback(error);
+				}
+			});
+		d3.selectAll('.datamaps-subunit')
+			.transition()
+			.duration(1000)
+			.style("opacity", "1");
 	};
 
 	return {

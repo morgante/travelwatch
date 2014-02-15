@@ -58,7 +58,30 @@ def make_articles():
 	for _ in range(10):
 		make_article()
 
+def make_alert():
+	positions = []
+
+	for _ in range(random.randint(1,4)):
+		positions.append({
+			"longitude": float(fake.longitude()),
+			"latitude": float(fake.latitude())
+		})
+
+	data = {
+		"provider": "USA",
+		"positions": positions,
+		"level": random.randint(1,4),
+		"text": fake.paragraph(nb_sentences=7, variable_nb_sentences=True),
+		"date": fake.date_time()
+	}
+
+	db.insert_alert(data)
+
+def make_alerts():	
+	for _ in range(10):
+		make_alert()
 
 if __name__ == "__main__":
-	make_countries()
-	make_articles()
+	make_alerts()
+	# make_countries()
+	# make_articles()

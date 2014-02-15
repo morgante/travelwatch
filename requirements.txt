@@ -6,3 +6,4 @@ pymongo
 pyyaml
 nltk
 fake-factory
+countrycode

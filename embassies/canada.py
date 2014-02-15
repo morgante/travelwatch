@@ -3,9 +3,12 @@ from bs4 import BeautifulSoup as BS
 import urllib2
 import time, datetime
 from datetime import datetime
-import geocode
 
-def get_alerts():
+import sys
+sys.path.append("..")
+import geo.names as geonames
+
+def get_alerts(limit=None, DEBUG=False):
 
     """
     Rankings for safety: 1 is safest; 4 is most dangerous
@@ -28,7 +31,7 @@ def get_alerts():
         if len(cells) < 1:
             continue
         link = cells[1].find('a')
-        country_name = link.contents
+        country_name = link.contents[0]
         country_url = stem_url + link['href']
 
         advisory_rating = -1
@@ -39,15 +42,21 @@ def get_alerts():
 
         date = time.strptime(cells[3].text, "%Y-%m-%d %H:%M:%SZ")
         date = datetime.fromtimestamp(time.mktime(date))
-        country_dict = {"country":country_name,
+        country_dict = {
+                        "provider": "CAN",
+                        "country": geonames.get_code_from_name(country_name),
                         "rating":advisory_rating,
                         "date":date}
         c_page = urllib2.urlopen(country_url)
         c_soup = BS(c_page.read())
-        adv_text = c_soup.find("div", {"class":"AdvisoryContainer"})
+        adv_text = c_soup.find("div", {"class":"AdvisoryContainer"}).text
         country_dict['advisory'] = adv_text
         print country_dict
         gathered_alerts.append(country_dict)
+
+        if (limit is not None and len(gathered_alerts) >= limit):
+            break;
+
     return gathered_alerts
 
 def main():

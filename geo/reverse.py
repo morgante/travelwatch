@@ -1,11 +1,14 @@
-from geopy.geocoders import GoogleV3
+from geopy.geocoders import GoogleV3, Nominatim
 
 
 
 def get_city(point):
-   g = GoogleV3()
+   g = Nominatim()
    (new_place, new_point) = g.reverse(point, exactly_one=True)
    #new_place = "76 Surawong Road, Si Phraya, Bang Rak, Bangkok 10500, Thailand"
+   if new_place == None or new_point == None:
+       return None
+
    splitted = new_place.split(',')
    # address it's different for the states
    if splitted[-1] == "USA":
@@ -18,7 +21,7 @@ def get_city(point):
 
 
 def get_state(point):
-   g = GoogleV3()
+   g = Nominatim()
    (new_place, new_point) = g.reverse(point, exactly_one=True)
    splited = new_place.split(',')
    # address it's different for the states
@@ -31,7 +34,7 @@ def get_state(point):
 
 
 def get_country(point):
-   g = GoogleV3()
+   g = Nominatim()
    (new_place, new_point) = g.reverse(point, exactly_one=True)
    splited = new_place.split(',')
   

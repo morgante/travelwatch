@@ -55,9 +55,16 @@ define([
 
 			console.log('I am magic mike');
 
+			var zoomed;
 			this.map = new Map.world(this.$map, {
-				clicked: function(country, evt) {
-					console.log('This county was clicked', country);
+				clicked: function(map, country, evt) {
+					if (!zoomed || zoomed != country) {
+						map.zoom(country,
+							{x: 50, y: 50, length: 400, height: 400});
+						zoomed = country;
+					} else {
+						map.unzoom();
+					}
 				}
 			}, function(map, error) {
 				view.map = map;
@@ -78,9 +85,7 @@ define([
 					}, 1000);
 				});
 
-				map.zoom('USA', {x: 10, y: 10, length: 100, height: 200});
-				setTimeout(function(){ map.unzoom(); },1000);
-			});
+				});
 		},
 
 		// setMatch: function (profile) {			
