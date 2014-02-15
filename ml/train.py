@@ -7,12 +7,13 @@ def train(data,mode=1):
 
     if mode==1:
         from sklearn import linear_model
-	print "linear regression"
+	name="lin_regression"
         model = linear_model.LinearRegression()
     elif mode==2:
         from sklearn import svm
-	print "svm"
+	name="svm"
 	model = svm.SVC()
+    print name
 
     train_ft = features[:-5]
     train_out = outputs[:-5]
@@ -21,17 +22,10 @@ def train(data,mode=1):
     
     model.fit(train_ft, train_out)
     
-    print('Variance score: %.2f' % model.score(test_ft, test_out))
+
 
     # make prediction on test data
-    print('Prediction:')
-    print(model.predict(test_ft))
-
-    print('Actual:')
-    print test_out
-
-    # Save to disk
-    filename = 'model/store.pkl'
+    filename = 'model/'+name+'.pkl'
     joblib.dump(model, filename)
 
     print('Saved model to ' + filename)
