@@ -1,7 +1,7 @@
 import sys
 sys.path.append('..')
 
-#import data as db
+import data as db
 import word_frequency as wfr
 import geo.reverse as gr
 import train
@@ -30,29 +30,26 @@ def score_from_crimes(crimes):
     return normalized
 
 
-def get_crimes_by_city(city):
+def get_crimes_by_city():
 
-    #cursor = db.get_crimes()
+    cursor = db.get_crimes()
 	
-    cities = {}
+    cNUM = {}
     
     for entry in cursor:
-        latitude = entry['position']['latitude']
-        longitude = entry['position']['longitude']
-        city = get_cityname_from_coords(latitude,longitude)
-	cities[city] = {
-            "city": city,
-            "crimes": entry["crimes"],
-            "score": score_from_crimes(entry["crimes"])
-	}
-    return cities;
+        lat = entry['position']['latitude']
+        lon = entry['position']['longitude']
+        city = gr.get_city((lon,lat))
+	cNUM[city] = score_from_crimes(entry["crimes"])
+	
+    return cNUM
 
 
 def model_from_all():
     cities ={}
 
     # Get every single article
-    #articles = db.get_articles()
+    articles = db.get_articles()
 
     for article in articles:
 	##unsure of the exact notation for this part
