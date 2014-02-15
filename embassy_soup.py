@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup as BS
 import urllib2
+import geocode
 
 stem_url = "http://travel.state.gov"
 warnings_url = "http://travel.state.gov/content/passports/english/alertswarnings.html"
@@ -27,6 +28,13 @@ for alert in gathered_alerts:
     page = urllib2.urlopen(url)
     soup = BS(page.read())
     text = soup.find("div", {'class' : 'content_par'})
-    print text
+    paras = text.findAll("p")
+    # Trim last 3 paragraphs b/c they contain extraneous info
+    paras = paras[:len(paras) - 3]
+    for para in paras:
+        locs = geocode.get_geocodes_from_html(para)
+        for loc in locs:
+            if not str(loc[0]) == u'United States':
+                print loc
     print '=========================='
 
