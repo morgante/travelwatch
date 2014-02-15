@@ -28,3 +28,16 @@ If you've changed requirements, you can rebuild locally:
 	docker rm travelwatch
 	docker build -t morgante/travelwatch .
 	docker run -v /var/code/travelwatch/nyuad:/src -d -t -p 49200:5000 -e ENVIRONMENT='dev' --name travelwatch morgante/travelwatch
+
+
+## Geocodes
+
+geocode.py is your friend:
+
+```
+import geocode
+geocode.get_geocodes_from_html('Some <b>HTML</b> goes here, hopefully inlcuding a place like the USA, Egypt, or Boston, MA.')
+geocode.get_geocodes_from_url('http://nytimes.com')
+geocoe.get_geocodes_from_text('There's no HTML here, but there is a place name! We are in Abu Dhabi, UAE, and I'm from Maryland, USA.')
+```
+   
