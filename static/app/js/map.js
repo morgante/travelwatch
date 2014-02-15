@@ -18,6 +18,36 @@ define([
 	 * @param  {Function} callback A function to be called when the mapping is done, callback(this, error);
 	 */
 	function Map($el, opts, callback) {
+		// TODO(zjn): move this somewhere reasonable
+		var hsl2rgb = function(hue, saturation, lightness) {
+			var hue2rgb = function(p, q, t) {
+				if(t < 0) t += 1;
+				if(t > 1) t -= 1;
+				if(t < 1/6) return p + (q - p) * 6 * t;
+				if(t < 1/2) return q;
+				if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+				return p;
+			};
+			var q;
+			if (lightness < 0.5) {
+				q = lightness * (1 + saturation);
+			} else {
+				q = lightness + saturation - lightness * saturation;
+			}
+			var p = 2 * lightness - q;
+			var r = Math.floor(255 * hue2rgb(p, q, hue + 1/3));
+			var g = Math.floor(255 * hue2rgb(p, q, hue));
+			var b = Math.floor(255 * hue2rgb(p, q, hue - 1/3));
+			return ['rgb(', r, ', ', g, ', ', b, ')'].join('');
+		};
+		var fillColors = { defaultFill: 'purple' };
+		_.each(_.range(1, 101), function(dangerLevel) {
+			var hue = Math.floor(30 - dangerLevel * (30 / 100)) / 100;
+			fillColors[dangerLevel] = hsl2rgb(hue, 0.8, 0.4);
+		});
+		console.log(fillColors);
+		fillColors['defaultFill'] = '#BBB';
+
 		this.map = new Datamap({
 			element: $el.get(0),
 			done: function(datamap) {
@@ -26,7 +56,7 @@ define([
 						opts.clicked(country, d3.event);
 					});
 			},
-			fills: { 'defaultFill': 'purple', BLUE: 'blue' },
+			fills: fillColors,
 		});
 
 		var error = null;
@@ -49,7 +79,7 @@ define([
 
 		// TODO(zjn): wipe previous colors
 		var fillData = _.object(_.map(data, function(score, country) {
-			return [country, 'rgb(150, 0, ' + score * 2 + ')'];
+			return [country, { fillKey: score }];
 		}));
 		this.map.updateChoropleth(fillData);
 
