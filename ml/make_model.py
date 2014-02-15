@@ -1,4 +1,10 @@
-import dat:a as db
+import data as db
+
+def get_crimes_by_city():
+	return [{
+		"city": "Abu Dhabi, UAE",
+		"score": 32
+	}]
 
 def get_keywords_by_city():
     cities = {}
