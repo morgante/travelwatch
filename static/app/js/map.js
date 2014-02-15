@@ -3,8 +3,13 @@ define([
 	'underscore',
 	'd3',
 	'topojson',
-	'datamaps'
 ], function ($, _, d3, topojson, Datamap) {
+
+	function dangerLevelToColor(dangerLevel) {
+		var hue = Math.floor(30 - dangerLevel * (30 / 100)) / 100;
+		console.log( hsl2rgb(hue, 0.8, 0.4));
+		return hsl2rgb(hue, 0.8, 0.4);
+	}
 
 	function hsl2rgb(hue, saturation, lightness) {
 		var hue2rgb = function(p, q, t) {
@@ -31,37 +36,49 @@ define([
 	/**
 	 * Makes a world map from given data
 	 *
-	 *   Maybe see: http://datamaps.github.io/
-	 * 
 	 * @param  element    $el      jquery reference for container; replace this container's contents with the map
 	 * @param  {Object}   options  Object containing options, none currently defined
 	 *                    .clicked Callback for when a country is clicked, clicked(country, evt)
 	 * @param  {Function} callback A function to be called when the mapping is done, callback(this, error);
 	 */
 	function Map($el, opts, callback) {
-		var fillColors = { defaultFill: 'purple' };
-		_.each(_.range(1, 101), function(dangerLevel) {
-			var hue = Math.floor(30 - dangerLevel * (30 / 100)) / 100;
-			fillColors[dangerLevel] = hsl2rgb(hue, 0.8, 0.4);
-		});
-		fillColors['defaultFill'] = '#BBB';
-
-		this.map = new Datamap({
-			element: $el.get(0),
-			done: function(datamap) {
-				datamap.svg.selectAll('.datamaps-subunit')
-					.on('click', function(country) {
-						opts.clicked(country.id, d3.event);
-					});
-			},
-			fills: fillColors,
-		});
-
+		var that = this;
 		var error = null;
 
-		if (callback !== undefined) {
-			callback(this, error);
-		}
+		var width = $el.width(),
+			height = 500; // TODO(zjn) not hardcode
+		this.svg = d3.select($el.get(0)).append("svg")
+			.attr("width", width)
+			.attr("height", height);
+		var projection = d3.geo.equirectangular()
+			.scale((width + 1) / 2 / Math.PI)
+			.translate([width / 2, height / 1.8]);
+		var path = d3.geo.path()
+			.projection(projection);
+
+		d3.json("/static/app/world.topo.json", function(error, data) {
+			var subunits = that.svg.insert('g', ':first-child')
+				.attr('class', 'datamaps-subunits');
+			var geoData = topojson.feature(data, data.objects.world).features
+				.filter(function(feature) {
+					return feature.id !== "ATA"; // get rid of Antarctica
+				});
+			subunits.selectAll('path.datamaps-subunit')
+				.data(geoData)
+				.enter()
+				.append('path')
+				.attr('d', path)
+				.attr('class', function(d) {
+					return 'datamaps-subunit ' + d.id;
+				})
+				.style('fill', '#BBBBBB')
+				.style('stroke-width', 1)
+				.style('stroke', '#FDFDFD');
+
+			if (callback !== undefined) {
+				callback(that, error);
+			}
+		});
 
 		return this;
 	}
@@ -75,11 +92,12 @@ define([
 	Map.prototype.colorCountries = function(data, callback) {
 		var error = null;
 
-		// TODO(zjn): wipe previous colors
-		var fillData = _.object(_.map(data, function(score, country) {
-			return [country, { fillKey: score }];
-		}));
-		this.map.updateChoropleth(fillData);
+		d3.selectAll('.datamaps-subunit').style('fill', function(d) {
+			if (data.hasOwnProperty(d.id)) {
+				return dangerLevelToColor(data[d.id]);
+			}
+			return '#BBBBBB';
+        });
 
 		if (callback !== undefined) {
 			callback(error);
@@ -98,16 +116,6 @@ define([
 	 */
 	Map.prototype.colorPoints = function(data, callback) {
 		var error = null;
-
-		this.map.bubbles(_.map(data, function(obj) {
-			return {
-				name: "",
-				radius: obj.force,
-				latitude: obj.position.latitude,
-				longitude: obj.position.longitude,
-				fillKey: obj.score
-			};
-		}));
 
 		if (callback !== undefined) {
 			callback(error);
