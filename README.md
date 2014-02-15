@@ -20,7 +20,7 @@ You can connect to the database remotely:
 This database is actually containerized in Docker, so you can run it locally if you want.
 
 	docker pull morgante/tmongo
-	docker run -d -p 49155:27017 morgante/tmongo /usr/bin/mongod --smallfiles
+	docker run --name tmongo -d -p 49155:27017 morgante/tmongo /usr/bin/mongod --smallfiles
 
 ### Bonus Hints
 If you want to tail the logs for the app, including Python logging output:
