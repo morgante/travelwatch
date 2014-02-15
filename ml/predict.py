@@ -9,9 +9,9 @@ def load(modelName):
 
 def get_alert_data_for_country(country):
 	return {
-		"level": level
+		"level": level,
 		"keywords": {
-			"murder": 10,
+			"murder": 10
 		}
 	}
 

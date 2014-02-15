@@ -1,9 +1,14 @@
+import sys
+sys.path.append('..')
+
 import data as db
 import word_frequency as wfr
 
-def score_from_crimes(crimes): {
-	return 11 #1-100
-}
+def score_from_crimes(crimes): 
+	return 11
+
+def score_from_crimes(crimes):
+	return 11; #1-100
 
 def get_crimes_by_city(city):
 
@@ -11,13 +16,13 @@ def get_crimes_by_city(city):
 	
 	cities = {}
 
-	{
-		"CITYNAME": {
-			"city": "CITYNAME",
-			"crimes": {},
-			"score": 12
-		}
-	}
+	#{
+	#	"CITYNAME": {
+	#		"city": "CITYNAME",
+	#		"crimes": {},
+	#		"score": 12
+	#	}
+	#}
 
 	return 10;
 
@@ -27,7 +32,7 @@ def model_from_all():
     # Get every single article
     articles = db.get_articles()
 
-    for article in articles():
+    for article in articles:
 	##unsure of the exact notation for this part
 	#############################
 	hl=article["headline"]
