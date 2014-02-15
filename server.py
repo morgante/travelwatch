@@ -2,6 +2,8 @@ from flask import Flask
 from flask import render_template
 import os
 import json
+import data as db
+import bson
 
 app = Flask(__name__)
 
@@ -12,7 +14,8 @@ def home():
 # This route is for returning country score data, it should eventually mirror the format of /mock/scores
 @app.route('/api/scores')
 def scores():
-	return 'not implemented'
+	countries = db.get_countries()
+	return bson.dumps(countries)
 
 # This route is for returning country score data, it should eventually mirror the format of /mock/scores
 @app.route('/mock/scores')
