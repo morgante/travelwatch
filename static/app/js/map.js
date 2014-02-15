@@ -117,11 +117,13 @@ define([
 		g.transition()
 			.duration(750)
 			.attr("transform", "translate(" + this.width / 2 + "," + this.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
-			.style("stroke-width", 1.5 / k + "px");
+			.style("stroke-width", 1.5 / k + "px")
+			.each("end", function() {
+				if (callback !== undefined) {
+					callback(error);
+				}
+			});
 
-		if (callback !== undefined) {
-			callback(error);
-		}
 	};
 
 	/**
@@ -141,11 +143,12 @@ define([
 		g.transition()
 			.duration(750)
 			.attr("transform", "translate(" + this.width / 2 + "," + this.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
-			.style("stroke-width", 1.5 / k + "px");
-
-		if (callback !== undefined) {
-			callback(error);
-		}
+			.style("stroke-width", 1.5 / k + "px")
+			.each("end", function() {
+				if (callback !== undefined) {
+					callback(error);
+				}
+			});
 	};
 
 	return {
