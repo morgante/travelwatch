@@ -71,7 +71,7 @@ geocoe.get_geocodes_from_text('There is no HTML here, but there is a place name!
 It's preloaded to grab 2ish days of tweets from Al Jazeera English. Time limits are a bit fuzzy, but I think that's low-priority to fix.
 
 ```
-import twitter
+from twitter-fetch import *
 t = get_tweets()
 print t
 ``` 
