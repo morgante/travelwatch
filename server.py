@@ -19,7 +19,7 @@ def scores():
 def mock_scores():
 	data = [
 		{"code": "USA", "name": "United States of America", "score": 19}, # Danger scores are 1-100
-		{"code": "UAE", "name": "United Arab Emirates", "score": 23} # Violence scores are 1-100
+		{"code": "ARE", "name": "United Arab Emirates", "score": 23} # Violence scores are 1-100
 	]
 
 	return json.dumps(data)
