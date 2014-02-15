@@ -9,7 +9,7 @@ else:
 if ('DB_PORT_27017_TCP_PORT' in os.environ):
 	port = int(os.environ['DB_PORT_27017_TCP_PORT'])
 else:
-	port = 49155
+	port = 49210
 
 if (os.environ['ENVIRONMENT'] == 'prod'):
 	db_name = 'production'

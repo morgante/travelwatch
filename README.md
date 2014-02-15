@@ -15,12 +15,12 @@ The entire development environment is contained in a Docker container. To get up
 ## MongoDB
 You can connect to the database remotely:
 
-	mongo 128.199.242.243:49155
+	mongo 128.199.242.243:49210
 
 This database is actually containerized in Docker, so you can run it locally if you want.
 
 	docker pull morgante/tmongo
-	docker run --name tmongo -d -p 49155:27017 morgante/tmongo /usr/bin/mongod --smallfiles
+	docker run --name tmongo -d -p 49210:27017 morgante/tmongo /usr/bin/mongod --smallfiles
 
 ### Bonus Hints
 If you want to tail the logs for the app, including Python logging output:
