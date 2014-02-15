@@ -3,9 +3,7 @@ import urllib2
 import time
 from datetime import datetime
 
-DEBUG=True
-
-def get_embassy_alerts():
+def get_alerts(limit=None, DEBUG=False):
     stem_url = "http://travel.state.gov"
     warnings_url = "http://travel.state.gov/content/passports/english/alertswarnings.html"
     page = urllib2.urlopen(warnings_url)
@@ -36,7 +34,9 @@ def get_embassy_alerts():
 
         adv_url = stem_url + link['href']
 
-        print "Opening URL: ", adv_url
+        if(DEBUG):
+            print "Opening URL: ", adv_url
+
         page = urllib2.urlopen(adv_url)
         soup = BS(page.read())
         text = soup.find("div", {'class' : 'content_par'})
@@ -51,6 +51,9 @@ def get_embassy_alerts():
             except:
                 pass
 
+        if (limit is not None and len(alert_dicts) >= limit):
+            break;
+
     if DEBUG:
         try:
             print alert_dicts
@@ -60,7 +63,7 @@ def get_embassy_alerts():
     return alert_dicts
 
 def main():
-    get_embassy_alerts()
+    get_alerts()
 
 if __name__ == "__main__":
     main()

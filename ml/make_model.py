@@ -4,9 +4,14 @@ sys.path.append('..')
 import data as db
 import word_frequency as wfr
 
+<<<<<<< HEAD
 def score_from_crimes(crimes): 
 	return 11
 
+=======
+def score_from_crimes(crimes):
+	return 11; #1-100
+>>>>>>> cc6453354a023b3ac90017bc6d44781851b1a751
 
 def get_crimes_by_city(city):
 
