@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup as BS
 import urllib2
 import time
 from datetime import datetime
-import geocode
 
 DEBUG=True
 
@@ -12,7 +11,7 @@ def get_embassy_alerts():
     page = urllib2.urlopen(warnings_url)
     soup = BS(page.read())
 
-    gathered_alerts = []
+    alert_dicts = []
 
     rows = soup.find("table").find("tbody").find_all("tr")        
     for row in rows:
@@ -27,52 +26,38 @@ def get_embassy_alerts():
 
         link = cells[2].find('a')
         country = link.contents[0].split(' ')
-        gathered_alerts.append((country, notice_type, alert_time, stem_url + link['href']))
-
-    alerts_dicts = []
-
-    for alert in gathered_alerts:
-        country, kind, alert_time, url = alert
+        country = ' '.join(country[:len(country)-2])
+        country = country.strip()
+        
         rating = 4
-        if kind == 'alert':
+        if notice_type == 'alert':
             rating = 2
         alert_dict = {"country": country, "rating": rating,  "date":alert_time}
 
-        if DEBUG:
-            print "Opening URL: ", url
-        page = urllib2.urlopen(url)
+        adv_url = stem_url + link['href']
+
+        print "Opening URL: ", adv_url
+        page = urllib2.urlopen(adv_url)
         soup = BS(page.read())
         text = soup.find("div", {'class' : 'content_par'})
         paras = text.findAll("p")
         # Trim last 3 paragraphs b/c they contain extraneous info
-        paras = paras[:len(paras) - 3]
-        
+        paras = paras[:len(paras) - 3]        
         alert_dict['advisory'] = ''.join([p.text for p in paras])
-        geocodes = []
-
-        for para in paras:
-            locs = geocode.get_geocodes_from_html(para)
-            for loc in locs:
-                if loc == None or len(loc) < 1:
-                    continue
-                if not str(loc[0]) == u'United States':
-                    geocodes.append(loc)
-
-        alert_dict['geocodes'] = geocodes
+        alert_dicts.append(alert_dict)
         if DEBUG:
             try:
                 print alert_dict
             except:
                 pass
-        alerts_dicts.append(alert_dict)
 
     if DEBUG:
         try:
-            print alerts_dicts
+            print alert_dicts
         except:
             pass
 
-    return alerts_dicts
+    return alert_dicts
 
 def main():
     get_embassy_alerts()
