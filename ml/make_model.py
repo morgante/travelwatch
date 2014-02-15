@@ -38,25 +38,30 @@ def model_from_all():
 	hl=article["headline"]
 	txt=article["text"]
 	kw=article["keywords"]
+        if len(article["positions"]) < 1:
+            continue
+
         point = (article["positions"]["latitude"], article["positions"]["longitude"])
         city=gr.get_city(point)
+        if city == None:
+            continue
    	##############################
 
 	##currently using equal weighting
 	wf1=wfr.normalize(wfr.get_frequency(hl))
-	wf2=wfr.normalize(wfr.get_frequency(h2))
-	wf3=wfr.normalize(wfr.get_frequency(h3))
-	wf=wfr.normalize(wfr.add(wfr.add(wf1,wf2),w3))
+	wf2=wfr.normalize(wfr.get_frequency(txt))
+	wf3=wfr.normalize(wfr.get_frequency(kw))
+	wf=wfr.normalize(wfr.add(wfr.add(wf1,wf2),wf3))
 
 	if city in cities.keys():
-	    cities[city]=wfr.add(cities[city][0],wf)
+	    cities[city]=wfr.add(cities[city],wf)
 	else:
-	    cities[city]=wfr
+	    cities[city]=wf
     
     for city in cities:
 	##normalize after all articles have been updated
 	cities[city]=wfr.normalize(cities[city])
         #have to append a cNum to each city
-	cities[city][c_Num]=get_crime_by_city(city)
+	cities[city]["c_Num"]=get_crimes_by_city(city)
     return cities 
 			

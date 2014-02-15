@@ -6,6 +6,9 @@ def get_city(point):
    g = Nominatim()
    (new_place, new_point) = g.reverse(point, exactly_one=True)
    #new_place = "76 Surawong Road, Si Phraya, Bang Rak, Bangkok 10500, Thailand"
+   if new_place == None or new_point == None:
+       return None
+
    splitted = new_place.split(',')
    # address it's different for the states
    if splitted[-1] == "USA":
