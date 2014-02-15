@@ -59,7 +59,7 @@ def find_geocode(text_loc):
 
     cached = db.find_one(LAT_LONG_DB, {"placename":text_loc})
     if cached != None:
-        print 'got cached! ', cached
+        print '~~~~~~got cached: ', cached
         return cached
 
     try:
