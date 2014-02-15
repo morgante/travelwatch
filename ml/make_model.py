@@ -63,5 +63,6 @@ def model_from_all():
 	cities[city]=wfr.normalize(cities[city])
         #have to append a cNum to each city
 	cities[city]["c_Num"]=get_crimes_by_city(city)
+        print cities[city]
     return cities 
 			

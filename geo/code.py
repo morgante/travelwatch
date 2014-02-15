@@ -1,12 +1,14 @@
 from geopy.geocoders import GoogleV3, OpenMapQuest
-import nltk_ner
 from bs4 import BeautifulSoup as BS
+import requests
 
 import sys
 sys.path.append("..")
 import geo.names as geonames
 import data as db
 from alchemyapi import AlchemyAPI
+import nltk_ner
+import foursquare
 
 DEBUG=True
 LAT_LONG_DB='lat-long-db'
@@ -37,6 +39,7 @@ def get_geocodes(src_type, src, api_type='n'):
 
     return geocodes
 
+
 def get_locs_from_nltk(txt):
     clean = BS(txt).text
     return nltk_ner.extract_entities(clean)
@@ -60,26 +63,8 @@ def get_locs_from_alchemy(src_type, src):
     return locs
 
 def find_geocode(text_loc):
-
-    cached = db.find_one(LAT_LONG_DB, {"query":text_loc})
-    print cached
-    if cached != None:
-        print 'Got cached geoloc.'
-        return cached
-
-    try:
-        #geolocator = GoogleV3(secret_key='D0SLwabec9DkZtLLwmNwDeU3',
-        #                      client_id='924851581047.apps.googleusercontent.com')
-        geolocator = OpenMapQuest()
-        address, (latitude, longitude) = geolocator.geocode(text_loc)
-        mydict = {"query": text_loc, "placename": address, "longitude": longitude, "latitude": latitude}
-        #print mydict
-        db.insert(LAT_LONG_DB, mydict)
-        return mydict
-
-    except Exception, err:
-        #print Exception, err
-        return None
+    mydict = foursquare.get_geocode(text_loc)
+    return mydict
 
 def main():
     #alchemyapi = AlchemyAPI()
