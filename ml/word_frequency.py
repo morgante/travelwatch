@@ -1,4 +1,15 @@
 #given a string, returns a list of word frequencies
+#call as: wf=get_frequency(string)
+#and normalize as: wf=normalize(wf)
+
+def normalize(wf):
+    total=0.
+    for key in wf.keys():
+	total+=wf[key]
+    for key in wf.keys():
+	wf[key]=wf[key]/total
+    return wf
+
 
 def get_frequency(input_string):
     from collections import Counter
