@@ -7,6 +7,13 @@ from sklearn.externals import joblib
 def load(modelName):
     return joblib.load("model/%s"%modelName) 
 
+def get_alert_data_for_country(country):
+	return {
+		"level": level
+		"keywords": {
+			"murder": 10,
+		}
+	}
 
 def analyze(lm,newData):
    
