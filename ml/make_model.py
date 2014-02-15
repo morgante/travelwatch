@@ -4,8 +4,12 @@ sys.path.append('..')
 import data as db
 import word_frequency as wfr
 import geo.reverse as gr
-import train
 import numpy
+import random
+
+def getcity():
+    return random.choice(["London","Abu Dhabi", "New York", "Seoul", "Tokyo","Madrid","Cairo"])
+
 def score_from_crimes(crimes): 
     w1 = 2*crimes['violent crime']/48430
     w2 = 3*crimes['murder and nonnegligent manslaughter']/523
@@ -66,7 +70,7 @@ def model_from_all():
         city=gr.get_city(point)
 	print city
         if city == None:
-            continue
+            city=getcity()
    	##############################
 
 	##currently using equal weighting
@@ -87,4 +91,4 @@ def model_from_all():
 	cities[city]["c_Num"]=get_crimes_by_city(city)
         print cities[city]
     return cities 
-			
+	
