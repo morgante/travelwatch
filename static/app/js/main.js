@@ -3,16 +3,20 @@ define([
 	'underscore',
     'backbone',
     'map',
+    'notifier',
     'models/scores',
     'views/dashboard'
-], function ($, _, Backbone, Map, Scores, Dashboard) {
+], function ($, _, Backbone, Map, notifier, Scores, Dashboard) {
 
 	var $map = $('.map');
 
 	// get scores data
 	var scores = new Scores();
 
-	console.log('hello sir');
+	notifier.notify({
+		"title": "This is nonsense",
+		"content": "I am a Samson."
+	});
 
 	scores.fetch({
 		success: function(collection, response, options) {
