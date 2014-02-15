@@ -4,6 +4,7 @@ import os
 import json
 import data as db
 import bson
+from bson.json_util import dumps
 
 app = Flask(__name__)
 

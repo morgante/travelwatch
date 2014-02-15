@@ -8,7 +8,7 @@ The entire development environment is contained in a Docker container. To get up
 2.  Clone this repo: ```git clone https://github.com/morgante/travelwatch.git```
 3. Go into the travelwatch dir: ```cd travelwatch```
 4. Download the Docker image: ```docker pull morgante/travelwatch```
-5. Run the Docker container: ```docker run -v /var/code/travelwatch/nyuad:/src -d -t -p 49200:5000 -e ENVIRONMENT='dev' --name travelwatch morgante/travelwatch```
+5. Run the Docker container: ```docker run -v <path to src here>:/src -d -t -p 49200:5000 -e ENVIRONMENT='dev' --name travelwatch morgante/travelwatch```
 6. Open the app: http://localhost:49200/
 7. Make changes to ```server.py``` and they will be reflected live.
 
@@ -29,7 +29,7 @@ If you want to tail the logs for the app, including Python logging output:
 
 If you want to open an interactive shell of the Docker image (for example, to play with other Python commands):
 
-	docker run -v /var/code/travelwatch/nyuad:/src -t -e ENVIRONMENT='dev' -i --entrypoint="/bin/bash" morgante/travelwatch
+	docker run -v <path to src here>:/src -t -e ENVIRONMENT='dev' -i --entrypoint="/bin/bash" morgante/travelwatch
 
 
 If you've changed requirements, you can rebuild locally:
@@ -37,9 +37,9 @@ If you've changed requirements, you can rebuild locally:
 	docker kill travelwatch
 	docker rm travelwatch
 	docker build -t morgante/travelwatch .
-	docker run -v /var/code/travelwatch/nyuad:/src -d -t -p 49200:5000 -e ENVIRONMENT='dev' --name travelwatch morgante/travelwatch
+	docker run -v <path to src here>:/src -d -t -p 49200:5000 -e ENVIRONMENT='dev' --name travelwatch morgante/travelwatch
 
-Production experimentation:
+Production experimentation, from the Digital Ocean server:
 
 	docker run -link tmongo:db -v /root/travelwatch:/src -t -e ENVIRONMENT='dev' -i --entrypoint="/bin/bash" morgante/travelwatch
 
