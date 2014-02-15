@@ -1,5 +1,7 @@
 from bs4 import BeautifulSoup as BS
 import urllib2
+import time
+from datetime import datetime
 import geocode
 
 DEBUG=True
@@ -18,14 +20,19 @@ def get_embassy_alerts():
         if len(cells) < 1:
             continue
         notice_type = cells[0].get('class')[0]
+
+        # Grab time, save it as a datetime obj
+        time_thingy = time.strptime(cells[1].text, "%B %d, %Y")
+        alert_time = datetime.fromtimestamp(time.mktime(time_thingy))
+
         link = cells[2].find('a')
-        gathered_alerts.append((notice_type, stem_url + link['href']))
+        gathered_alerts.append((notice_type, alert_time, stem_url + link['href']))
 
     alerts_dicts = []
 
     for alert in gathered_alerts:
-        kind, url = alert
-        alert_dict = {"kind": kind, "url":url}
+        kind, alert_time, url = alert
+        alert_dict = {"kind": kind, "url":url, "date":alert_time}
 
         if DEBUG:
             print "Opening URL: ", url
