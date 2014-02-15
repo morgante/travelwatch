@@ -42,7 +42,9 @@ def get_alerts(limit=None, DEBUG=False):
 
         date = time.strptime(cells[3].text, "%Y-%m-%d %H:%M:%SZ")
         date = datetime.fromtimestamp(time.mktime(date))
-        country_dict = {"country": geonames.get_code_from_name(country_name),
+        country_dict = {
+                        "provider": "CAN",
+                        "country": geonames.get_code_from_name(country_name),
                         "rating":advisory_rating,
                         "date":date}
         c_page = urllib2.urlopen(country_url)
