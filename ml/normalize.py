@@ -1,3 +1,7 @@
+def alert(alert):
+    return alert
+
+
 #given a string, returns a list of word frequencies
 #call as: wf=get_frequency(string)
 #and normalize as: wf=normalize(wf)
