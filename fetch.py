@@ -1,13 +1,20 @@
-def main():
-	start = '20081019'
-	end = '20091010'
+import data as db
 
-	articles = nyt.search(start=start, end=end)
 
-	db.save_articles(articles)
+db.insert('lol', {'hello': 'sir'})
 
-	twitter = twitter.search(start=start, end=end)
+print db.find_one('lol')
 
-	db.save_twitter(twitter)
+# def main():
+# 	start = '20081019'
+# 	end = '20091010'
 
-main()
+# 	articles = nyt.search(start=start, end=end)
+
+# 	db.save_articles(articles)
+
+# 	twitter = twitter.search(start=start, end=end)
+
+# 	db.save_twitter(twitter)
+
+# main()
