@@ -5,7 +5,28 @@ define([
 	'topojson',
 	'datamaps'
 ], function ($, _, d3, topojson, Datamap) {
-	// TODO(zjn): make colors better
+
+	function hsl2rgb(hue, saturation, lightness) {
+		var hue2rgb = function(p, q, t) {
+			if(t < 0) t += 1;
+			if(t > 1) t -= 1;
+			if(t < 1/6) return p + (q - p) * 6 * t;
+			if(t < 1/2) return q;
+			if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+			return p;
+		};
+		var q;
+		if (lightness < 0.5) {
+			q = lightness * (1 + saturation);
+		} else {
+			q = lightness + saturation - lightness * saturation;
+		}
+		var p = 2 * lightness - q;
+		var r = Math.floor(255 * hue2rgb(p, q, hue + 1/3));
+		var g = Math.floor(255 * hue2rgb(p, q, hue));
+		var b = Math.floor(255 * hue2rgb(p, q, hue - 1/3));
+		return ['rgb(', r, ', ', g, ', ', b, ')'].join('');
+	};
 
 	/**
 	 * Makes a world map from given data
@@ -18,34 +39,11 @@ define([
 	 * @param  {Function} callback A function to be called when the mapping is done, callback(this, error);
 	 */
 	function Map($el, opts, callback) {
-		// TODO(zjn): move this somewhere reasonable
-		var hsl2rgb = function(hue, saturation, lightness) {
-			var hue2rgb = function(p, q, t) {
-				if(t < 0) t += 1;
-				if(t > 1) t -= 1;
-				if(t < 1/6) return p + (q - p) * 6 * t;
-				if(t < 1/2) return q;
-				if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-				return p;
-			};
-			var q;
-			if (lightness < 0.5) {
-				q = lightness * (1 + saturation);
-			} else {
-				q = lightness + saturation - lightness * saturation;
-			}
-			var p = 2 * lightness - q;
-			var r = Math.floor(255 * hue2rgb(p, q, hue + 1/3));
-			var g = Math.floor(255 * hue2rgb(p, q, hue));
-			var b = Math.floor(255 * hue2rgb(p, q, hue - 1/3));
-			return ['rgb(', r, ', ', g, ', ', b, ')'].join('');
-		};
 		var fillColors = { defaultFill: 'purple' };
 		_.each(_.range(1, 101), function(dangerLevel) {
 			var hue = Math.floor(30 - dangerLevel * (30 / 100)) / 100;
 			fillColors[dangerLevel] = hsl2rgb(hue, 0.8, 0.4);
 		});
-		console.log(fillColors);
 		fillColors['defaultFill'] = '#BBB';
 
 		this.map = new Datamap({
@@ -53,7 +51,7 @@ define([
 			done: function(datamap) {
 				datamap.svg.selectAll('.datamaps-subunit')
 					.on('click', function(country) {
-						opts.clicked(country, d3.event);
+						opts.clicked(country.id, d3.event);
 					});
 			},
 			fills: fillColors,
@@ -102,11 +100,12 @@ define([
 		var error = null;
 
 		this.map.bubbles(_.map(data, function(obj) {
-			// TODO(zjn): add color to bubbles
 			return {
+				name: "",
 				radius: obj.force,
 				latitude: obj.position.latitude,
-				longitude: obj.position.longitude
+				longitude: obj.position.longitude,
+				fillKey: obj.score
 			};
 		}));
 
