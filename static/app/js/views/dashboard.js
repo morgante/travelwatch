@@ -58,10 +58,9 @@ define([
 			var zoomed;
 			this.map = new Map.world(this.$map, {
 				clicked: function(map, country, evt) {
-					console.log("clicked");
 					if (!zoomed || zoomed != country) {
 						map.zoom(country,
-							{x: 10, y: 10, length: 100, height: 200});
+							{x: 50, y: 50, length: 400, height: 400});
 						zoomed = country;
 					} else {
 						map.unzoom();

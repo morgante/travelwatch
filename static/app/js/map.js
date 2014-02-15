@@ -105,17 +105,20 @@ define([
 	Map.prototype.zoom = function(country, bounds, callback) {
 		var error = null;
 
-		// TODO(zjn): respect bounds
 		var g = this.svg.select('g');
 		var centroid = this.path.centroid(d3.select('.' + country).data()[0]);
-		var x = centroid[0];
-		var y = centroid[1];
-		var k = 4;
+		var countryBox = this.path.bounds(d3.select('.' + country).data()[0]);
+		var x = centroid[0],
+			y = centroid[1],
+			countryWidth = countryBox[1][0] - countryBox[0][0],
+			countryHeight = countryBox[1][1] - countryBox[0][1];
+		var k = Math.min(bounds.length / countryWidth, bounds.height / countryHeight);
+		x += ((this.width - bounds.length) / 2 - bounds.x)/ k;
 
 		g.selectAll("path").classed("active", true);
 
 		g.transition()
-			.duration(750)
+			.duration(1000)
 			.attr("transform", "translate(" + this.width / 2 + "," + this.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
 			.style("stroke-width", 1.5 / k + "px")
 			.each("end", function() {
@@ -123,6 +126,14 @@ define([
 					callback(error);
 				}
 			});
+		d3.selectAll('.datamaps-subunit')
+			.transition()
+			.duration(1000)
+			.style("opacity", "0.25");
+		d3.selectAll('.' + country)
+			.transition()
+			.duration(1000)
+			.style("opacity", "1");
 
 	};
 
@@ -141,7 +152,7 @@ define([
 		g.selectAll("path").classed("active", false);
 
 		g.transition()
-			.duration(750)
+			.duration(1000)
 			.attr("transform", "translate(" + this.width / 2 + "," + this.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
 			.style("stroke-width", 1.5 / k + "px")
 			.each("end", function() {
@@ -149,6 +160,10 @@ define([
 					callback(error);
 				}
 			});
+		d3.selectAll('.datamaps-subunit')
+			.transition()
+			.duration(1000)
+			.style("opacity", "1");
 	};
 
 	return {
