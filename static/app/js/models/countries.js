@@ -16,7 +16,7 @@ define([
 		// Reference to this collection's model.
 		model: Country,
 
-		url: '/mock/countries',
+		url: '/api/countries',
 
 		getOne: function(code, callback) {
 			// get country

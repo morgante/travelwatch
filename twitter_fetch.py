@@ -14,7 +14,7 @@ names = ['AJEnglish', 'BBCBreaking', 'WSJMidEast', 'AJELive', 'ReutersGulf', 'Al
          'BreakingNews', 'cnnbrk', 'SkyNewsBreak', 'ABCNewsLive', 'AP']
 test_names=['AJEnglish']
 
-DEBUG=True
+DEBUG=False
 
 def get_datetime_for_status(s):
     delta = time.time() - s.created_at_in_seconds
@@ -26,13 +26,14 @@ def find_id_for_date(goal_date, username):
     #print goal_date, username
     oldest_id = None
     oldest_time = None
-    step=50
+    step=200
     while oldest_time == None or oldest_time > goal_date:
         if oldest_id == None:
             statuses = api.GetUserTimeline(screen_name=username, count=step)
         else:
             statuses = api.GetUserTimeline(screen_name=username, count=step, max_id=oldest_id)
-            
+        time.sleep(6)
+    
         s = statuses[len(statuses) - 1]
         delta = time.time() - s.created_at_in_seconds
         post_date = datetime.datetime.now() - datetime.timedelta(0, delta)
@@ -68,12 +69,14 @@ def get_tweets(screen_names=test_names, start_date=datetime.datetime.now(),
         
         working_id = end_id
         while working_id < start_id:
-            q = api.GetUserTimeline(screen_name=name, count=100, since_id=working_id)
+            q = api.GetUserTimeline(screen_name=name, count=200, since_id=working_id)
             statuses = statuses + q
+            time.sleep(6)
             working_id = q[0].id
 
         for s in statuses:
-            tweets.append({"status":s.text, "time": get_datetime_for_status(s), "user":name})
+            tweets.append({"status":s.text, "time": get_datetime_for_status(s), 
+                           "user":name, "id":s.id})
             if DEBUG:
                 try:
                     print str(s.text), get_datetime_for_status(s)
