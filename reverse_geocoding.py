@@ -1,8 +1,42 @@
 from geopy.geocoders import GoogleV3
 
-g = GoogleV3()
-#point has to be a string
-point = "13.7278956, 100.5241235"
-(new_place, new_point) = g.reverse(point, exactly_one=True)
 
-print new_place
+
+def get_city(point):
+   g = GoogleV3()
+   (new_place, new_point) = g.reverse(point, exactly_one=True)
+   #new_place = "76 Surawong Road, Si Phraya, Bang Rak, Bangkok 10500, Thailand"
+   splitted = new_place.split(',')
+   # address it's different for the states
+   if splitted[-1] == "USA":
+	return splitted[-3]
+   else:
+	# address needs to be stripped
+	# addresses recevied are inconsistent
+	remove_address = splitted[-2].lstrip() 
+	return remove_address.split(" ")[0]
+
+
+def get_state(point):
+   g = GoogleV3()
+   (new_place, new_point) = g.reverse(point, exactly_one=True)
+   splited = new_place.split(',')
+   # address it's different for the states
+   if splited[-1] == "USA":
+	remove_address = splited[-2].split(" ")
+	return remove_address[0]	
+   else:
+	# no state
+	return ""
+
+
+def get_country(point):
+   g = GoogleV3()
+   (new_place, new_point) = g.reverse(point, exactly_one=True)
+   splited = new_place.split(',')
+  
+   return splited[-1]
+   
+
+point = "5.152149, 46.199616"
+print get_city(point)
