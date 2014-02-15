@@ -51,5 +51,11 @@ def insert_article(data):
 def get_articles(query={}):
 	return find('articles', query)
 
+def insert_alert(data):
+	insert("alerts", data)
+
+def get_alerts(query={}):
+	return find('alerts', query)
+
 def test():
 	return 'lols'
