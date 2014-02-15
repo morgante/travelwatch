@@ -229,7 +229,7 @@ def search(
             QueryFields["page"] = str(i)
             QUERY_STRING = Generate_QString(source);
             QUERY = QueryStrings[source] + QUERY_STRING
-            print QUERY_STRING
+            #print QUERY_STRING
             APIRequest = urlopen(QUERY)
             JSONData = json.load(APIRequest)
             result.append(handleJSON(JSONData))
@@ -249,7 +249,7 @@ def search(
 def main():
     print "Processing query...\n"
     x = search()
-    print x
+    #print x
     print "Query complete! Results are stored in x.\n"
 
 
