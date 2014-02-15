@@ -16,12 +16,14 @@ test_names=['AJEnglish']
 
 DEBUG=True
 
+def get_datetime_for_status(s):
+    delta = time.time() - s.created_at_in_seconds
+    post_date = datetime.datetime.now() - datetime.timedelta(0, delta)
+    return post_date
+
 # Gives a very rough id for a date. Granularity tuning using step var.
 def find_id_for_date(goal_date, username):
-    print goal_date, username
-    #statuses = api.GetUserTimeline(screen_name=username, count=100)
-    # since_id is the oldest tweet that should be returned
-    # using max_id only gives you tweets older than that tweet
+    #print goal_date, username
     oldest_id = None
     oldest_time = None
     step=50
@@ -40,16 +42,19 @@ def find_id_for_date(goal_date, username):
             oldest_id = s.id
 
         if post_date > goal_date:
-            print post_date
+            #print post_date
             continue
 
-    print oldest_id, oldest_time
+    if DEBUG:
+        print oldest_id, oldest_time
     return oldest_id
 
 def get_tweets(screen_names=test_names, start_date=datetime.datetime.now(), 
-               end_date=datetime.datetime.now() - datetime.timedelta(5)):
+               end_date=datetime.datetime.now() - datetime.timedelta(2)):
 
     tweets = []
+
+    print 'Start date, end date: ', start_date, end_date
 
     for name in screen_names:
         if DEBUG:
@@ -63,26 +68,20 @@ def get_tweets(screen_names=test_names, start_date=datetime.datetime.now(),
         
         working_id = end_id
         while working_id < start_id:
-            q = api.GetUserTimeline(screen_name=name, count=200, since_id=working_id)
+            q = api.GetUserTimeline(screen_name=name, count=100, since_id=working_id)
             statuses = statuses + q
             working_id = q[0].id
 
         for s in statuses:
-            tweets.append(s.text)
+            tweets.append({"status":s.text, "time": get_datetime_for_status(s), "user":name})
             if DEBUG:
                 try:
-                    print str(s.text)
+                    print str(s.text), get_datetime_for_status(s)
                 except:
                     pass
-
     return tweets
 
-def get_geocoded_tweets():
-    tweets = get_tweets()
-    for t in tweets:
-        locs = geocode.get_geocodes_from_text(t)
-        if DEBUG:
-            print locs
 
 if __name__ == "__main__":
-    get_tweets()
+    tweets = get_tweets()
+    print tweets
