@@ -1,8 +1,12 @@
-from alchemyapi import AlchemyAPI
 from geopy.geocoders import GoogleV3, OpenMapQuest
 import nltk_ner
 from bs4 import BeautifulSoup as BS
+
+import sys
+sys.path.append("..")
+import geo.names as geonames
 import data as db
+from alchemyapi import AlchemyAPI
 
 DEBUG=True
 LAT_LONG_DB='lat-long-db'
