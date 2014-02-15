@@ -1,9 +1,6 @@
 import numpy as np
 from sklearn.externals import joblib
-
-def listofWords():
-   lst = ["crime", "abuse", "forgery", "kidnapping", "murder", "prostitution", "theft", "trespass", "danger", "federal", "kill", "warning", "death", "attack", "arrest"]
-   return lst
+import listofWords
 
 def train(data,mode=1):
     features = data[:,:-1]
@@ -37,7 +34,7 @@ def train(data,mode=1):
 
 def make_model(cities,mode=1):
     data = []
-    words = listofWords()
+    words = listofWords.listofWords()
     
     
     #generating articles data array 
