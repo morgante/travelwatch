@@ -9,4 +9,4 @@ def extract_entities(text):
                 loc_name = ' '.join(c[0] for c in chunk.leaves())
                 print loc_name
                 locs.append(loc_name)
-
+    return locs
