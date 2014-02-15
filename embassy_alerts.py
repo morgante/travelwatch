@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup as BS
 import urllib2
 import geocode
 
-DEBUG=False
+DEBUG=True
 
 def get_embassy_alerts():
     stem_url = "http://travel.state.gov"
@@ -48,9 +48,19 @@ def get_embassy_alerts():
                     geocodes.append(loc)
 
         alert_dict['geocodes'] = geocodes
+        if DEBUG:
+            try:
+                print alert_dict
+            except:
+                pass
         alerts_dicts.append(alert_dict)
 
-    print alerts_dicts
+    if DEBUG:
+        try:
+            print alerts_dicts
+        except:
+            pass
+
     return alerts_dicts
 
 def main():
