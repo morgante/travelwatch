@@ -110,19 +110,29 @@ def main():
         JSONData = json.load(APIRequest)
         json.dump(JSONData, open(DumpFile,'a'))
 
-        handleJSON(json)
+        handleJSON(JSONData)
 
         ## BREAK AFTER A FEW PAGES: BE CAREFUL!
         ## MAKE SURE YOUR QUERY ISN'T RETURNING MILLIONS OF RESULTS
         if i == PageLimit:
-        break
+            break
 
-def handleJSON(json):
-    docs = json["response"]["docs"]
+def handleJSON(raw_json):
+    docs = raw_json["response"]["docs"]
     for d in docs:
-        headline = d["headline"]["main"]
+        headline = d["headline"]
+        if len(headline) > 0:
+            headline = headline["main"]
         snippet = d["snippet"]
-        
+        uniq_id = d["_id"]
+        url = d["web_url"]
+        date = d["pub_date"]
+        lead = d["lead_paragraph"]
+        obj = {"headline":headline, "snippet":snippet,
+               "lead_paragraph":lead, "_id":uniq_id,
+               "url":url, "date":date}
+        return obj
+
 if __name__ == "__main__":
     main()
 
