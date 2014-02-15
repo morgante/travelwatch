@@ -42,6 +42,7 @@ def make_model(cities,mode=1):
     
     #generating articles data array 
     for city in cities.keys():
+        print city
         #datum:=[w1,w2,w3,...,cNum] 
 	datum = []
         for word in words:

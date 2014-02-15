@@ -1,36 +1,58 @@
 import sys
 sys.path.append('..')
 
-import data as db
+#import data as db
 import word_frequency as wfr
 import geo.reverse as gr
+import train
+import numpy
 def score_from_crimes(crimes): 
-	return 11
+    w1 = 2*crimes['violent crime']/48430
+    w2 = 3*crimes['murder and nonnegligent manslaughter']/523
+    w3 = 2.5*crimes['forcible rape']/1038
+    w4 = 2*crimes['robbery']/22186
+    w5 = 1.5*crimes['aggravated assault']/24831
+    w6 = crimes['property crime']/149989
+    w7 = crimes['burglary']/26947
+    w8 = crimes['larceny/theft']/117682
+    w9 = crimes['motor vehicle theft']/22623
+    weightedSum = w1 + w2 + w3 + w4 + w5 + w6 + w7 + w8 + w9
+    if weightedSum == 0:
+        return 0
+    # My justification: (so i can make fun of myself for this later)
+    # Looks hacky, but fleshed this out in excel and it works
+    # Data looks somewhat exponential=>log the weighted data
+    # weights based on Importance*#occurances/MAXoccurances
+    # The -5 and /(-10) put it in a reasonable decimal scale
+    # The 1- Inverted the percentage to represent risk instead of "safety"
+    # /0.8 to level out the percentages across the 1.0 range
+    normalized = (1 - ((numpy.log10(weightedSum)-5)/(-10)))/0.8
+    return normalized
 
-def score_from_crimes(crimes):
-	return 11; #1-100
 
 def get_crimes_by_city(city):
 
-	# db.get_crimes()
+    #cursor = db.get_crimes()
 	
-	cities = {}
+    cities = {}
+    
+    for entry in cursor:
+        latitude = entry['position']['latitude']
+        longitude = entry['position']['longitude']
+        city = get_cityname_from_coords(latitude,longitude)
+	cities[city] = {
+            "city": city,
+            "crimes": entry["crimes"],
+            "score": score_from_crimes(entry["crimes"])
+	}
+    return cities;
 
-	#{
-	#	"CITYNAME": {
-	#		"city": "CITYNAME",
-	#		"crimes": {},
-	#		"score": 12
-	#	}
-	#}
-
-	return 10;
 
 def model_from_all():
     cities ={}
 
     # Get every single article
-    articles = db.get_articles()
+    #articles = db.get_articles()
 
     for article in articles:
 	##unsure of the exact notation for this part
