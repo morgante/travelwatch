@@ -71,7 +71,14 @@ define([
 	Map.prototype.colorPoints = function(data, callback) {
 		var error = null;
 
-		console.log('I am coloring by the graph', data);
+		this.map.bubbles(_.map(data, function(obj) {
+			// TODO(zjn): add color to bubbles
+			return {
+				radius: obj.force,
+				latitude: obj.position.latitude,
+				longitude: obj.position.longitude
+			};
+		}));
 
 		if (callback !== undefined) {
 			callback(error);
