@@ -41,4 +41,8 @@ def get_keywords_by_city():
     return cities 
 
 
-			
+def train():
+	crimes = get_crimes_by_city()
+	keywords = get_keywords_by_city()
+
+	# TRAIN THE MODEL YAY
