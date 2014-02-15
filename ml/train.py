@@ -6,8 +6,8 @@ def listofWords():
    return lst
 
 def train(data,mode=1):
-    features = data[:, 1:-1]
-    outputs = data[:, -1].astype(np.int)
+    features = data["attributes"]
+    outputs = data["class"].astype(np.int)
 
     if mode==1:
         from sklearn import linear_model
@@ -42,15 +42,15 @@ def make_model():
 
     for article in articles:
         datum = {
-            "features": [],
-            "output": 3
+            "attributes": [],
+            "class": 3
         }
 
         for word in words:
             if (word in article['keywords']):
-                datum['features'].append(article['keywords'][word])
+                datum['attributes'].append(article['keywords'][word])
             else:
-                datum['features'].append(0)
+                datum['attributes'].append(0)
 
         data.append(datum)
 
@@ -62,7 +62,7 @@ def make_model():
 if __name__ == "__main__":
     make_model()
 
-    data = np.loadtxt(open("train.csv","rb"),delimiter=",",skiprows=0)
-    train(data,1)
-    train(data,2)
+    #data = np.loadtxt(open("train.csv","rb"),delimiter=",",skiprows=0)
+    #train(data,1)
+    #train(data,2)
 

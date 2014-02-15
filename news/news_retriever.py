@@ -117,17 +117,23 @@ def main():
         if i == PageLimit:
             break
 
+def getValFromDict(d,k):
+    if k in d:
+        return d[k]
+    else:
+        return None
+
 def handleJSON(raw_json):
     docs = raw_json["response"]["docs"]
     for d in docs:
         headline = d["headline"]
         if len(headline) > 0:
             headline = headline["main"]
-        snippet = d["snippet"]
+        snippet = getValFromDict(d, "snippet")
         uniq_id = d["_id"]
         url = d["web_url"]
         date = d["pub_date"]
-        lead = d["lead_paragraph"]
+        lead = getValFromDict(d, "lead_paragraph")
         obj = {"headline":headline, "snippet":snippet,
                "lead_paragraph":lead, "_id":uniq_id,
                "url":url, "date":date}
