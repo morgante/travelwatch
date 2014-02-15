@@ -3,3 +3,4 @@ geopy
 beautifulsoup4
 python-twitter
 pymongo
+fake-factory

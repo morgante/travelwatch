@@ -42,6 +42,9 @@ def insert_countries(countries):
 	for country in countries:
 		insert_country(country)
 
+def insert_article(data):
+	insert("articles", data)
+
 def get_articles(query={}):
 	return find('articles', query)
 

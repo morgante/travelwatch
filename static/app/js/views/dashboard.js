@@ -79,6 +79,7 @@ define([
 				});
 
 				map.zoom('USA', {x: 10, y: 10, length: 100, height: 200});
+				setTimeout(function(){ map.unzoom(); },1000);
 			});
 		},
 
