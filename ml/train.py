@@ -6,7 +6,7 @@ import listWords as listofWords
 def train(data,mode=1):
     print 'TRAIN'
     print data.shape
-    if data.shape[0]=0:
+    if data.shape[0]==0:
 	return None
 
     features = data[:,:-1]
