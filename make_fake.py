@@ -16,7 +16,7 @@ def make_score():
 			"score": random.randint(1,100)
 		})
 
-	
+	print points
 
 def make_scores():
 	points = [
