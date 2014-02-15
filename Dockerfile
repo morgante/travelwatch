@@ -5,6 +5,8 @@ FROM		shykes/pybuilder
 RUN 		apt-get install -y python-dev
 RUN 		apt-get install -y build-essential
 
+RUN 		apt-get install -y vim
+
 # Scikit-learn dependencies
 RUN 		apt-get install -y python-numpy python-setuptools python-scipy
 RUN 		apt-get install -y libatlas-dev libatlas3-base
@@ -12,6 +14,10 @@ RUN 		apt-get install -y libatlas-dev libatlas3-base
 # Scikit-learn
 RUN 		pip install -U scikit-learn
 
+# NLTK
+RUN			cd /src; pip install pyyaml nltk
+ADD 		./nltk_downloads.py /nltk_downloads.py
+RUN 		python /nltk_downloads.py
 
 # Pips
 RUN 		cd /src; pip install flask
