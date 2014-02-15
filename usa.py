@@ -26,13 +26,17 @@ def get_embassy_alerts():
         alert_time = datetime.fromtimestamp(time.mktime(time_thingy))
 
         link = cells[2].find('a')
-        gathered_alerts.append((notice_type, alert_time, stem_url + link['href']))
+        country = link.contents[0].split(' ')
+        gathered_alerts.append((country, notice_type, alert_time, stem_url + link['href']))
 
     alerts_dicts = []
 
     for alert in gathered_alerts:
-        kind, alert_time, url = alert
-        alert_dict = {"kind": kind, "url":url, "date":alert_time}
+        country, kind, alert_time, url = alert
+        rating = 4
+        if kind == 'alert':
+            rating = 2
+        alert_dict = {"country": country, "rating": rating,  "date":alert_time}
 
         if DEBUG:
             print "Opening URL: ", url
@@ -43,7 +47,7 @@ def get_embassy_alerts():
         # Trim last 3 paragraphs b/c they contain extraneous info
         paras = paras[:len(paras) - 3]
         
-        alert_dict['alert_text'] = ''.join([p.text for p in paras])
+        alert_dict['advisory'] = ''.join([p.text for p in paras])
         geocodes = []
 
         for para in paras:
