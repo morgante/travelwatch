@@ -25,12 +25,28 @@ def insert(collection, data):
 def find_one(collection, query={}):
 	return db[collection].find_one(query)
 
+def find(collection, query={}):
+	return db[collection].find(query)
+
 def insert_crime(position, crime):
 	insert("crime", {"position": position, "crime": crime});
 
 def insert_crimes(crimes):
 	for place in crimes:
 		insert_crime(place.position, crime);
+
+def insert_country(country):
+	insert("countries", country)
+
+def insert_countries(countries):
+	for country in countries:
+		insert_country(country)
+
+def insert_article(data):
+	insert("articles", data)
+
+def get_articles(query={}):
+	return find('articles', query)
 
 def test():
 	return 'lols'
