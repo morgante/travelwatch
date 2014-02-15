@@ -1,10 +1,28 @@
 import data as db
 import word_frequency as wfr
 import train
-def get_crimes_by_city(city):
-	return 10
 
-def get_keywords_by_city():
+def score_from_crimes(crimes): {
+	return 11 #1-100
+}
+
+def get_crimes_by_city(city):
+
+	# db.get_crimes()
+	
+	cities = {}
+
+	{
+		"CITYNAME": {
+			"city": "CITYNAME",
+			"crimes": {},
+			"score": 12
+		}
+	}
+
+	return 10;
+
+def model_from_all():
     cities ={}
 
     # Get every single article
@@ -38,5 +56,5 @@ def get_keywords_by_city():
     return cities 
 
 def main():
-    return train.make_model(get_keyword_by_city())
+    return train.make_model(model_from_all())
 			

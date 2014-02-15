@@ -1,5 +1,8 @@
 import data as db
+import embassy_alerts as emAlerts
+from collection import Counter
 
+word_list = ["protests", "government"]
 
 db.insert('lol', {'hello': 'sir'})
 
@@ -18,3 +21,12 @@ print db.find_one('lol')
 # 	db.save_twitter(twitter)
 
 # main()
+
+em_alerts = emAlerts.get_embassy_alerts()
+frequencies = []
+for i in range(len(em_alerts)):
+   alert_text = em_alerts[i]["alert_text"]
+   alert_text = alert_text.split(" ",)  
+	   
+  
+

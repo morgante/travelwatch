@@ -12,7 +12,7 @@ from pprint import *
 import json
 
 ## Do not change this unless you know what you're doing (page request limit & dump location)
-PageLimit = 10
+PageLimit = 1
 
 ## Dictionary of API keys
 APIKeys = {
@@ -128,7 +128,7 @@ def search(
 	begin="20080101",
 	end="20081231",
 	page=None,
-	pages=10,
+	pages=1,
 	sort=None,
 	fields=["_id", "web_url", "headline", "keywords"],
 	highlight=False,
@@ -257,7 +257,7 @@ def main():
             begin="20080101",
             end="20081231",
             page=None,
-            pages=10,
+            pages=1,
             sort=None,
             fields=["_id", "web_url", "headline", "keywords"],
             highlight=False,

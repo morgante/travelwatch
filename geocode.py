@@ -2,8 +2,10 @@ from alchemyapi import AlchemyAPI
 from geopy.geocoders import GoogleV3, OpenMapQuest
 import nltk_ner
 from bs4 import BeautifulSoup as BS
+import data as db
 
 DEBUG=True
+LAT_LONG_DB='lat-long-db'
 
 def get_geocodes_from_text(text):
     return get_geocodes('text', text)
@@ -54,12 +56,22 @@ def get_locs_from_alchemy(src_type, src):
     return locs
 
 def find_geocode(text_loc):
+
+    cached = db.find_one(LAT_LONG_DB, {"placename":text_loc})
+    if cached != None:
+        print '~~~~~~got cached: ', cached
+        return cached
+
     try:
         #geolocator = GoogleV3(secret_key='D0SLwabec9DkZtLLwmNwDeU3',
         #                      client_id='924851581047.apps.googleusercontent.com')
         geolocator = OpenMapQuest()
         address, (latitude, longitude) = geolocator.geocode(text_loc)
-        return (address, latitude, longitude)
+        mydict = {"placename": address, "longitude": longitude, "latitude": latitude}
+        print mydict
+        db.insert(LAT_LONG_DB, mydict)
+        return mydict
+
     except Exception, err:
         print Exception, err
         return None

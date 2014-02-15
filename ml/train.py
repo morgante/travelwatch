@@ -6,8 +6,8 @@ def listofWords():
    return lst
 
 def train(data,mode=1):
-    features = data[:,1:]
-    outputs = data[:,0]
+    features = data[:,:-1]
+    outputs = data[:,-1]
 	
     if mode==1:
         from sklearn import linear_model
@@ -35,14 +35,14 @@ def train(data,mode=1):
     print('Saved model to ' + filename)
     return name
 
-def make_model(cities):
+def make_model(cities,mode=1):
     data = []
     words = listofWords()
     
     
     #generating articles data array 
     for city in cities.keys():
-        #datum:=[city,w1,w2,w3,...] 
+        #datum:=[w1,w2,w3,...,cNum] 
 	datum = []
         for word in words:
             if (word in city.keys()):
@@ -54,15 +54,6 @@ def make_model(cities):
 
     data=np.array(data)
     # training the data and generating the model
-    return train(data, 1)
-
-
-if __name__ == "__main__":
-    articles = [{"keywords": {"murder": 10, "kidnapping": 2}},{"keywords":{"kill": 5, "federal": 2}}, {"keywords": {"murder": 10, "kidnapping": 2}},{"keywords": {"murder": 10, "kidnapping": 2}},{"keywords": {"murder": 10, "kidnapping": 2}},{"keywords": {"murder": 10, "kidnapping": 2}},{"keywords": {"murder": 10, "kidnapping": 2}},{"keywords": {"murder": 10, "kidnapping": 2}},{"keywords": {"murder": 10, "kidnapping": 2}},{"keywords": {"murder": 10, "kidnapping": 2}}]
-
-    #corresponding crime rates
-    cRate = [3, 7, 3,3,3,3,3,3,3,3]
-
-    make_model(articles, cRate)
+    return train(data, mode)
 
 
