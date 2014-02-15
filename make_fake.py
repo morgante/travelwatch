@@ -1,4 +1,8 @@
 import data as db
+import random
+from faker import Factory as FakeFactory
+
+fake = FakeFactory.create()
 
 def make_scores():
 	points = [
@@ -21,3 +25,34 @@ def make_scores():
 	}
 
 	db.insert_countries([data])
+
+def make_article():
+	data = {
+		"positions": [],
+		"headline": fake.sentence(nb_words=6, variable_nb_words=True),
+		"text": fake.paragraph(nb_sentences=7, variable_nb_sentences=True),
+		"keywords": [],
+		"date": fake.date_time()
+	}
+
+	for _ in range(random.randint(3,7)):
+		word = fake.word()
+
+		if (not word in data["keywords"]):
+			data["keywords"].append(word)
+
+	for _ in range(random.randint(1,4)):
+		data["positions"].append({
+				"longitude": float(fake.longitude()),
+				"latitude": float(fake.latitude())
+			})
+
+	db.insert_article(data)
+
+def make_articles():	
+	for _ in range(10):
+		make_article()
+
+
+if __name__ == "__main__":
+	make_articles()

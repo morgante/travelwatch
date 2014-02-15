@@ -3,35 +3,7 @@ define([
 	'underscore',
 	'd3',
 	'topojson',
-], function ($, _, d3, topojson, Datamap) {
-
-	function dangerLevelToColor(dangerLevel) {
-		var hue = Math.floor(30 - dangerLevel * (30 / 100)) / 100;
-		console.log( hsl2rgb(hue, 0.8, 0.4));
-		return hsl2rgb(hue, 0.8, 0.4);
-	}
-
-	function hsl2rgb(hue, saturation, lightness) {
-		var hue2rgb = function(p, q, t) {
-			if(t < 0) t += 1;
-			if(t > 1) t -= 1;
-			if(t < 1/6) return p + (q - p) * 6 * t;
-			if(t < 1/2) return q;
-			if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-			return p;
-		};
-		var q;
-		if (lightness < 0.5) {
-			q = lightness * (1 + saturation);
-		} else {
-			q = lightness + saturation - lightness * saturation;
-		}
-		var p = 2 * lightness - q;
-		var r = Math.floor(255 * hue2rgb(p, q, hue + 1/3));
-		var g = Math.floor(255 * hue2rgb(p, q, hue));
-		var b = Math.floor(255 * hue2rgb(p, q, hue - 1/3));
-		return ['rgb(', r, ', ', g, ', ', b, ')'].join('');
-	};
+], function ($, _, d3, topojson) {
 
 	/**
 	 * Makes a world map from given data
@@ -45,15 +17,15 @@ define([
 		var that = this;
 		var error = null;
 
-		var width = $el.width(),
-			height = 500; // TODO(zjn) not hardcode
+		this.width = $el.width(),
+		this.height = 500; // TODO(zjn) not hardcode
 		this.svg = d3.select($el.get(0)).append("svg")
-			.attr("width", width)
-			.attr("height", height);
+			.attr("width", this.width)
+			.attr("height", this.height);
 		var projection = d3.geo.equirectangular()
-			.scale((width + 1) / 2 / Math.PI)
-			.translate([width / 2, height / 1.8]);
-		var path = d3.geo.path()
+			.scale((this.width + 1) / 2 / Math.PI)
+			.translate([this.width / 2, this.height / 1.8]);
+		this.path = d3.geo.path()
 			.projection(projection);
 
 		d3.json("/static/app/world.topo.json", function(error, data) {
@@ -67,13 +39,14 @@ define([
 				.data(geoData)
 				.enter()
 				.append('path')
-				.attr('d', path)
+				.attr('d', that.path)
 				.attr('class', function(d) {
 					return 'datamaps-subunit ' + d.id;
 				})
 				.style('fill', '#BBBBBB')
 				.style('stroke-width', 1)
-				.style('stroke', '#FDFDFD');
+				.style('stroke', '#FDFDFD')
+				.on('click', function(d) { opts.clicked(d.id, d3.event) });
 
 			if (callback !== undefined) {
 				callback(that, error);
@@ -94,7 +67,7 @@ define([
 
 		d3.selectAll('.datamaps-subunit').style('fill', function(d) {
 			if (data.hasOwnProperty(d.id)) {
-				return dangerLevelToColor(data[d.id]);
+				return d3.interpolateRgb('green', 'red')(data[d.id] / 100);
 			}
 			return '#BBBBBB';
         });
@@ -132,14 +105,48 @@ define([
 	Map.prototype.zoom = function(country, bounds, callback) {
 		var error = null;
 
-		console.log('I am zooming', country, bounds, callback);
+		// TODO(zjn): respect bounds
+		var g = this.svg.select('g');
+		var centroid = this.path.centroid(d3.select('.' + country).data()[0]);
+		var x = centroid[0];
+		var y = centroid[1];
+		var k = 4;
+
+		g.selectAll("path").classed("active", true);
+
+		g.transition()
+			.duration(750)
+			.attr("transform", "translate(" + this.width / 2 + "," + this.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+			.style("stroke-width", 1.5 / k + "px");
 
 		if (callback !== undefined) {
 			callback(error);
 		}
 	};
 
+	/**
+	 * Zoom this map out to the whole world.
+	 * @param  {Function} callback A callback to fire once the zooming is complete, callback(err)
+	 */
+	Map.prototype.unzoom = function(callback) {
+		var error = null;
 
+		var g = this.svg.select('g');
+		var x = this.width / 2;
+		var y = this.height / 2;
+		var k = 1;
+
+		g.selectAll("path").classed("active", false);
+
+		g.transition()
+			.duration(750)
+			.attr("transform", "translate(" + this.width / 2 + "," + this.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+			.style("stroke-width", 1.5 / k + "px");
+
+		if (callback !== undefined) {
+			callback(error);
+		}
+	};
 
 	return {
 		world: Map

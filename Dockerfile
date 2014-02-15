@@ -22,6 +22,7 @@ RUN 		cd /src; pip install beautifulsoup4
 RUN 		cd /src; pip install python-twitter
 RUN 		cd /src; pip install pymongo
 RUN		cd /src; pip install pyyaml nltk
+RUN 		cd /src; pip install fake-factory
 
 # Add source
 ADD 		. /src
