@@ -59,6 +59,7 @@ def model_from_all():
 	kw=article["keywords"]
         if len(article["positions"]) < 1:
             continue
+	print article["position"]
 
         point = (article["positions"]["latitude"], article["positions"]["longitude"])
         city=gr.get_city(point)
