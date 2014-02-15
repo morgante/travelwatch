@@ -7,7 +7,7 @@ import geo.reverse as gr
 import numpy
 
 import hack_locales
-lst=hack_locales.get_town_list
+lst=hack_locales.get_town_list()
 II=0
 def getcity():
     global II,lst
