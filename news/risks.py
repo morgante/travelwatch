@@ -8,10 +8,10 @@ import data as db
 
 def get_risk_types():
     terrorism=['terrorist','bombing','terrorism','militants']
-    murder=['murder','killed','kill','shot','shoot','knife','death','killer','murderer']
+    murder=['murder','killed','kill','shot','shoot','knife','death','killer','murderer','homicide']
     rape=['rape','gang rape','rapist','sexual assault']
-    weather=['earthquake','cyclone','tsunami','natural disaster', 'hurricane']
-    war=['war','conflict','sectarian','violence']
+    weather=['earthquake','cyclone','tsunami','natural disaster', 'hurricane','fire']
+    war=['war','conflict','sectarian','violence','chemical weapon','nuclear','ethnic v']
 
     d = {'terrorism':terrorism,
          'murder':murder,
