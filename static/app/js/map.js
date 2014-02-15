@@ -1,9 +1,10 @@
 define([
 	'jquery',
 	'underscore',
-    'd3',
-    'topojson'
-], function ($, _, d3, topojson) {
+	'd3',
+	'topojson',
+	'datamaps'
+], function ($, _, d3, topojson, Datamap) {
 
 	/**
 	 * Makes a world map from given data
@@ -16,7 +17,6 @@ define([
 	 * @param  {Function} callback A function to be called when the mapping is done, callback(this, error);
 	 */
 	function Map($el, opts, callback) {
-        console.log(topojson);
 		console.log('I will make a map');
 		console.log($el, opts, callback);
 
