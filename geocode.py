@@ -14,7 +14,12 @@ def get_geocodes_from_html(html):
 def get_geocodes(src_type, src):
     alchemyapi = AlchemyAPI()
     good_types = ['StateOrCounty', 'City', 'Country']
-    response = alchemyapi.entities(src_type, src)
+
+    try:
+        response = alchemyapi.entities(src_type, src)
+    except:
+        return None
+
     geocodes = []
     for e in response['entities']:
         if e['type'] in good_types:
@@ -24,13 +29,16 @@ def get_geocodes(src_type, src):
     return geocodes
 
 def find_geocode(text_loc):
-    geolocator = GoogleV3()
-    address, (latitude, longitude) = geolocator.geocode(text_loc)
-    return (address, latitude, longitude)
+    try:
+        geolocator = GoogleV3()
+        address, (latitude, longitude) = geolocator.geocode(text_loc)
+        return (address, latitude, longitude)
+    except:
+        return None
 
 def main():
     #alchemyapi = AlchemyAPI()
-    text = "I'm wondering if it will find a city name, like Abu Dhabi, but I hope so!"
+    text = "It's great to be at NYU Abu Dhabi! Going home to Princeton NJ on Monday though..."
     nytimes = "http://www.nytimes.com/"
     nytimes2 = 'http://www.nytimes.com/2014/02/14/world/asia/on-indian-tea-plantations-low-wages-and-crumbling-homes.html?ref=world'
     html = "My name is <b>Bonnie</b> and I am from <h2>Ocean City MD</h2>"
