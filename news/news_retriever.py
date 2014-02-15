@@ -6,13 +6,13 @@ http://api.nytimes.com/svc/search/v2/articlesearch.response-format?[q=search ter
 """
 
 ## Module dependencies
+from time import sleep
 from urllib import *
 from pprint import *
 import json
 
 ## Do not change this unless you know what you're doing (page request limit & dump location)
 PageLimit = 10
-DumpFile = "dump.txt"
 
 ## Dictionary of API keys
 APIKeys = {
@@ -121,7 +121,7 @@ day_of_week
 More here: http://developer.nytimes.com/docs/read/article_search_api_v2#facets
 """
 
-## The search / scrape function
+## The search / scrape function (Default values search all articles in 2008 and returns IDs, URLs, Headlines & Keywords)
 def search(
 	query=None,
 	filters=None, # Input here is a list of dictionaries EVEN FOR ONE ELEMENT: ["web_url"], etc.
@@ -130,7 +130,7 @@ def search(
 	page=None,
 	pages=10,
 	sort=None,
-	fields=["web_url", "headline", "keywords"],
+	fields=["_id", "web_url", "headline", "keywords"],
 	highlight=False,
 	facet_field=["source"], # Input here is a list of strings EVEN FOR ONE ELEMENT
 	facet_filter=False
@@ -218,7 +218,7 @@ def search(
         ## Appending API Key information & generating full request
         QUERY = QueryStrings[source] + QUERY_STRING
 
-        print "Query to API generated: " + QUERY + "\n"
+        # print "Query to API generated: " + QUERY + "\n"
 
         ## Requesting data from news source
         APIRequest = urlopen(QUERY)
@@ -236,6 +236,9 @@ def search(
             APIRequest = urlopen(QUERY)
             JSONData = json.load(APIRequest)
             result.append(handleJSON(JSONData))
+
+            # Sleeping for 0.1s to avoid overloading the NYT API
+            sleep(0.1)
 
             ## BREAK AFTER A FEW PAGES: BE CAREFUL!
             ## MAKE SURE YOUR QUERY ISN'T RETURNING MILLIONS OF RESULTS
@@ -256,14 +259,12 @@ def main():
             page=None,
             pages=10,
             sort=None,
-            fields=["web_url", "headline", "keywords"],
+            fields=["_id", "web_url", "headline", "keywords"],
             highlight=False,
             facet_field=["source"], # Input here is a list of strings EVEN FOR ONE ELEMENT
             facet_filter=False
             )
-
-    print x[0]
-    print x[1]
+    print "Query complete! Results are stored in x.\n"
 
 
 ## Handler for egregiously silly cases
