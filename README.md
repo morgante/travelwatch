@@ -53,7 +53,7 @@ This is the pipeline for how all our machine learning data will be generated.
 3. Pull in the model
 
 	import ml
-	violence = ml.analyze(data)
+	violence = ml.analyze("name of model", data)
 
 ## Geocodes
 

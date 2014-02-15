@@ -72,50 +72,50 @@ day_of_week
 More here: http://developer.nytimes.com/docs/read/article_search_api_v2#facets
 """
 
+def main():
 
-## Generating the query string to append to the base address
-QUERY_STRING = ""
-
-## Function that generates a query string based on the values in QueryFields
-def Generate_QString():
+    ## Generating the query string to append to the base address
     QUERY_STRING = ""
-    for key in QueryFields.keys():
-        if QueryFields[key] != "" and QueryFields[key] != False:
-            QUERY_STRING = QUERY_STRING + key + "=" + QueryFields[key] + "&"
-        else:
-            pass
-    QUERY_STRING = QUERY_STRING + "api-key=" + APIKeys["NY Times"]
-    return QUERY_STRING
 
-QUERY_STRING = Generate_QString();
+    ## Function that generates a query string based on the values in QueryFields
+    def Generate_QString():
+        QUERY_STRING = ""
+        for key in QueryFields.keys():
+            if QueryFields[key] != "" and QueryFields[key] != False:
+                QUERY_STRING = QUERY_STRING + key + "=" + QueryFields[key] + "&"
+            else:
+                pass
+        QUERY_STRING = QUERY_STRING + "api-key=" + APIKeys["NY Times"]
+        return QUERY_STRING
 
-## Appending API Key information & generating full request
-QUERY = QueryStrings["NY Times"] + QUERY_STRING
-
-## Requesting data from news source
-APIRequest = urlopen(QUERY)
-JSONData = json.load(APIRequest)
-
-## Finding the total number of pages = (Number of articles / 10) + 1
-TotalPages = (JSONData[u'response'][u'facets'][u'source'][u'total'] / 10) + 1
-QueryFields["facet_field"] = ""
-
-## Appending results page by page to a .TXT file
-for i in range(1,TotalPages):
-    QueryFields["page"] = str(i)
     QUERY_STRING = Generate_QString();
+
+    ## Appending API Key information & generating full request
     QUERY = QueryStrings["NY Times"] + QUERY_STRING
+
+    ## Requesting data from news source
     APIRequest = urlopen(QUERY)
     JSONData = json.load(APIRequest)
-    json.dump(JSONData, open(DumpFile,'a'))
 
-    ## BREAK AFTER A FEW PAGES: BE CAREFUL!
-    ## MAKE SURE YOUR QUERY ISN'T RETURNING MILLIONS OF RESULTS
-    if i == PageLimit:
+    ## Finding the total number of pages = (Number of articles / 10) + 1
+    TotalPages = (JSONData[u'response'][u'facets'][u'source'][u'total'] / 10) + 1
+    QueryFields["facet_field"] = ""
+
+    ## Appending results page by page to a .TXT file
+    for i in range(1,TotalPages):
+        QueryFields["page"] = str(i)
+        QUERY_STRING = Generate_QString();
+        QUERY = QueryStrings["NY Times"] + QUERY_STRING
+        APIRequest = urlopen(QUERY)
+        JSONData = json.load(APIRequest)
+        json.dump(JSONData, open(DumpFile,'a'))
+
+        handleJSON(json)
+
+        ## BREAK AFTER A FEW PAGES: BE CAREFUL!
+        ## MAKE SURE YOUR QUERY ISN'T RETURNING MILLIONS OF RESULTS
+        if i == PageLimit:
         break
-
-    # start bonnie stuff
-    handleJSON(JSONData)
 
 def handleJSON(json):
     docs = json["response"]["docs"]
@@ -123,4 +123,6 @@ def handleJSON(json):
         headline = d["headline"]["main"]
         snippet = d["snippet"]
         
+if __name__ == "__main__":
+    main()
 
