@@ -62,7 +62,7 @@ def model_from_all():
 	pos=article["positions"]
 	if type(pos)==list:
 	    pos=pos[0]
-
+	print pos
         point = (pos["longitude"], pos["latitude"])
         city=gr.get_city(point)
         if city == None:
