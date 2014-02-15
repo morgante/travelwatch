@@ -1,9 +1,8 @@
 import data as db
 import word_frequency as wfr
 
-def score_from_crimes(crimes): {
-	return 11 #1-100
-}
+def score_from_crimes(crimes):
+	return 11; #1-100
 
 def get_crimes_by_city(city):
 

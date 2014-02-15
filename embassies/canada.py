@@ -4,9 +4,7 @@ import urllib2
 import time, datetime
 from datetime import datetime
 
-DEBUG=True
-
-def get_alerts():
+def get_alerts(limit=None, DEBUG=False):
 
     """
     Rankings for safety: 1 is safest; 4 is most dangerous
@@ -49,6 +47,9 @@ def get_alerts():
         country_dict['advisory'] = adv_text
         print country_dict
         gathered_alerts.append(country_dict)
+
+        if (limit is not None and len(gathered_alerts) >= limit):
+            break;
 
     return gathered_alerts
 

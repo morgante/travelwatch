@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.externals import joblib
-import listofWords
+import listWords as listofWords
 
 def train(data,mode=1):
     features = data[:,:-1]

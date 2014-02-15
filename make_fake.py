@@ -68,6 +68,7 @@ def make_alert():
 		})
 
 	data = {
+		"provider": "USA",
 		"positions": positions,
 		"level": random.randint(1,4),
 		"text": fake.paragraph(nb_sentences=7, variable_nb_sentences=True),
