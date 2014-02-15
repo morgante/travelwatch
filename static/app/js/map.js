@@ -118,7 +118,7 @@ define([
 		g.selectAll("path").classed("active", true);
 
 		g.transition()
-			.duration(750)
+			.duration(1000)
 			.attr("transform", "translate(" + this.width / 2 + "," + this.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
 			.style("stroke-width", 1.5 / k + "px")
 			.each("end", function() {
@@ -126,6 +126,14 @@ define([
 					callback(error);
 				}
 			});
+		d3.selectAll('.datamaps-subunit')
+			.transition()
+			.duration(1000)
+			.style("opacity", "0.25");
+		d3.selectAll('.' + country)
+			.transition()
+			.duration(1000)
+			.style("opacity", "1");
 
 	};
 
@@ -144,7 +152,7 @@ define([
 		g.selectAll("path").classed("active", false);
 
 		g.transition()
-			.duration(750)
+			.duration(1000)
 			.attr("transform", "translate(" + this.width / 2 + "," + this.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
 			.style("stroke-width", 1.5 / k + "px")
 			.each("end", function() {
@@ -152,6 +160,10 @@ define([
 					callback(error);
 				}
 			});
+		d3.selectAll('.datamaps-subunit')
+			.transition()
+			.duration(1000)
+			.style("opacity", "1");
 	};
 
 	return {
