@@ -5,6 +5,7 @@ define([
 	'topojson',
 	'datamaps'
 ], function ($, _, d3, topojson, Datamap) {
+	// TODO(zjn): make colors better
 
 	/**
 	 * Makes a world map from given data
@@ -17,16 +18,15 @@ define([
 	 * @param  {Function} callback A function to be called when the mapping is done, callback(this, error);
 	 */
 	function Map($el, opts, callback) {
-		console.log($el, opts, callback);
-
-		var map = new Datamap({
+		this.map = new Datamap({
 			element: $el.get(0),
 			done: function(datamap) {
 				datamap.svg.selectAll('.datamaps-subunit')
 					.on('click', function(country) {
 						opts.clicked(country, d3.event);
 					});
-			}
+			},
+			fills: { 'defaultFill': 'purple', BLUE: 'blue' },
 		});
 
 		var error = null;
@@ -47,7 +47,11 @@ define([
 	Map.prototype.colorCountries = function(data, callback) {
 		var error = null;
 
-		console.log('I am coloring by country', data);
+		// TODO(zjn): wipe previous colors
+		var fillData = _.object(_.map(data, function(score, country) {
+			return [country, 'rgb(150, 0, ' + score * 2 + ')'];
+		}));
+		this.map.updateChoropleth(fillData);
 
 		if (callback !== undefined) {
 			callback(error);
