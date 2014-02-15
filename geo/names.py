@@ -1,17 +1,16 @@
-def get_name_from_code(code):
-	code = 'USA' # 3-letter country code
-	name = 'United States of America'
+from countrycode import countrycode
 
-	return name
+# Note: Returns name in ALL CAPS
+def get_name_from_code(code):
+	names = countrycode(codes=[code], origin='iso3c', target='country_name')
+        return names[0]
 
 def get_code_from_name(name):
-	name = 'United States of America'
-	code = 'USA'
-
-	return code
+	codes = countrycode(codes=[name], origin='country_name', target='iso3c')
+        return codes[0]
 
 if __name__ == "__main__":
-	code = 'UAE'
+	code = 'ARE'
 	if (get_code_from_name(get_name_from_code(code)) == code):
 		print 'It works'
 	else:

@@ -14,6 +14,11 @@ RUN 		apt-get install -y libatlas-dev libatlas3-base
 # Scikit-learn
 RUN 		pip install -U scikit-learn
 
+# NLTK
+RUN			cd /src; pip install pyyaml nltk
+ADD 		./nltk_downloads.py /nltk_downloads.py
+RUN 		python /nltk_downloads.py
+
 # Pips
 RUN 		cd /src; pip install flask
 RUN 		cd /src; pip install geopy
@@ -21,11 +26,6 @@ RUN 		cd /src; pip install beautifulsoup4
 RUN 		cd /src; pip install python-twitter
 RUN 		cd /src; pip install pymongo
 RUN 		cd /src; pip install fake-factory
-RUN			cd /src; pip install pyyaml nltk
-
-# NLTK
-ADD 		./nltk_downloads.py /nltk_downloads.py
-RUN 		python /nltk_downloads.py
 
 # Add source
 ADD 		. /src
