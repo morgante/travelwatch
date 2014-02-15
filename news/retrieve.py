@@ -124,7 +124,7 @@ More here: http://developer.nytimes.com/docs/read/article_search_api_v2#facets
 ## The search / scrape function (Default values search all articles in 2008 and returns IDs, URLs, Headlines & Keywords)
 def search(
             query=None,
-            filters={"news_desk": ["N.Y. / Region","World / Asia Pacific","U.S."], "document_type":["article"]}, # Input here is a list of dictionaries EVEN FOR ONE ELEMENT: ["web_url"], etc.
+            filters={"news_desk": ["U.S.", "World"], "document_type":["article"]}, # Input here is a list of dictionaries EVEN FOR ONE ELEMENT: ["web_url"], etc.
             begin="20080101",
             end="20090101",
             page=None,
@@ -249,6 +249,7 @@ def search(
 def main():
     print "Processing query...\n"
     x = search()
+    print x
     print "Query complete! Results are stored in x.\n"
 
 
