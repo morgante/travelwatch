@@ -51,7 +51,7 @@ define([
 			done: function(datamap) {
 				datamap.svg.selectAll('.datamaps-subunit')
 					.on('click', function(country) {
-						opts.clicked(country, d3.event);
+						opts.clicked(country.id, d3.event);
 					});
 			},
 			fills: fillColors,
