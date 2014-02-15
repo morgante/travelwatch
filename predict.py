@@ -3,7 +3,7 @@ import geo.names as geonames
 import embassies
 
 def main():
-	data = embassies.get_alerts()
+	data = embassies.get_new()
 
 	for alert in data:
 		print (alert["country"], alert["rating"])
