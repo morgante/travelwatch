@@ -20,7 +20,12 @@ def get_geocode(txt):
 
     payload['query'] = txt
     r = requests.get("http://api.foursquare.com/v2/geo/geocode", params=payload)
-    ans = r.json()['response']['geocode']['interpretations']['items'][0]
+    #print r.json()
+    try:
+       ans = r.json()['response']['geocode']['interpretations']['items'][0]
+    except:
+       return {}
+
     pos = ans['feature']['geometry']['center']
     lat = pos['lat']
     lng = pos['lng']
