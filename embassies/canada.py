@@ -3,7 +3,8 @@ from bs4 import BeautifulSoup as BS
 import urllib2
 import time, datetime
 from datetime import datetime
-import geocode
+
+DEBUG=True
 
 def get_alerts():
 
@@ -28,7 +29,7 @@ def get_alerts():
         if len(cells) < 1:
             continue
         link = cells[1].find('a')
-        country_name = link.contents
+        country_name = link.contents[0]
         country_url = stem_url + link['href']
 
         advisory_rating = -1
@@ -44,10 +45,11 @@ def get_alerts():
                         "date":date}
         c_page = urllib2.urlopen(country_url)
         c_soup = BS(c_page.read())
-        adv_text = c_soup.find("div", {"class":"AdvisoryContainer"})
+        adv_text = c_soup.find("div", {"class":"AdvisoryContainer"}).text
         country_dict['advisory'] = adv_text
         print country_dict
         gathered_alerts.append(country_dict)
+
     return gathered_alerts
 
 def main():
