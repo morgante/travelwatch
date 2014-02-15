@@ -4,7 +4,7 @@ from faker import Factory as FakeFactory
 
 fake = FakeFactory.create()
 
-def make_score():
+def make_country():
 	points = []
 
 	for _ in range(random.randint(10,100)):
@@ -16,7 +16,16 @@ def make_score():
 			"score": random.randint(1,100)
 		})
 
-	print points
+	score = reduce(lambda x, y: x+y, map(lambda x: x["score"], points))/len(points)
+	
+	country = {
+		"code": "USA",
+		"name": "United States of America",
+		"score": score,
+		"points": points
+	}
+
+	db.insert_country(country)
 
 def make_scores():
 	points = [
@@ -69,4 +78,4 @@ def make_articles():
 
 
 if __name__ == "__main__":
-	make_score()
+	make_country()
