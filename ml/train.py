@@ -34,23 +34,21 @@ def train(data,mode=1):
 
     print('Saved model to ' + filename)
 
-def make_model(articles,cRate):
+def make_model(cities):
     data = []
     words = listofWords()
     
     
     #generating articles data array 
-    for i in range(len(articles)):
+    for city in cities.keys():
         #datum:=[city,w1,w2,w3,...] 
 	datum = []
-	datum.append(cRate[i])
-
         for word in words:
-            if (word in articles[i]['keywords']):
-                datum.append(articles[i]['keywords'][word])
+            if (word in city.keys()):
+                datum.append(city[word])
             else:
                 datum.append(0)
-
+	datum.append(city["c_Num"])
         data.append(datum)
 
     data=np.array(data)
