@@ -15,6 +15,10 @@ RUN 		pip install -U scikit-learn
 
 # Pips
 RUN 		cd /src; pip install flask
+RUN 		cd /src; pip install geopy
+RUN 		cd /src; pip install beautifulsoup4
+RUN 		cd /src; pip install python-twitter
+RUN 		cd /src; pip install pymongo
 
 # Add source
 ADD 		. /src
