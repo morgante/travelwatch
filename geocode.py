@@ -57,9 +57,10 @@ def get_locs_from_alchemy(src_type, src):
 
 def find_geocode(text_loc):
 
-    cached = db.find_one(LAT_LONG_DB, {"placename":text_loc})
+    cached = db.find_one(LAT_LONG_DB, {"query":text_loc})
+    print cached
     if cached != None:
-        print '~~~~~~got cached: ', cached
+        print 'Got cached geoloc.'
         return cached
 
     try:
@@ -67,13 +68,13 @@ def find_geocode(text_loc):
         #                      client_id='924851581047.apps.googleusercontent.com')
         geolocator = OpenMapQuest()
         address, (latitude, longitude) = geolocator.geocode(text_loc)
-        mydict = {"placename": address, "longitude": longitude, "latitude": latitude}
-        print mydict
+        mydict = {"query": text_loc, "placename": address, "longitude": longitude, "latitude": latitude}
+        #print mydict
         db.insert(LAT_LONG_DB, mydict)
         return mydict
 
     except Exception, err:
-        print Exception, err
+        #print Exception, err
         return None
 
 def main():
