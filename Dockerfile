@@ -21,8 +21,11 @@ RUN 		cd /src; pip install geopy
 RUN 		cd /src; pip install beautifulsoup4
 RUN 		cd /src; pip install python-twitter
 RUN 		cd /src; pip install pymongo
-RUN		cd /src; pip install pyyaml nltk
 RUN 		cd /src; pip install fake-factory
+
+# NLTK
+RUN			cd /src; pip install pyyaml nltk
+RUN 		cd /src; python nltk_downloads.py
 
 # Add source
 ADD 		. /src
@@ -35,7 +38,5 @@ EXPOSE 		5000
 
 # Run it
 WORKDIR		/src
-
-RUN 		python nltk_downloads.py
 
 ENTRYPOINT ["python", "server.py"]

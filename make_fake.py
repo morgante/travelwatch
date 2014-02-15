@@ -4,6 +4,20 @@ from faker import Factory as FakeFactory
 
 fake = FakeFactory.create()
 
+def make_score():
+	points = []
+
+	for _ in range(random.randint(10,100)):
+		points.append({
+			"position": {
+				"longitude": float(fake.longitude()),
+				"latitude": float(fake.latitude())
+			},
+			"score": random.randint(1,100)
+		})
+
+	
+
 def make_scores():
 	points = [
 		{
@@ -55,4 +69,4 @@ def make_articles():
 
 
 if __name__ == "__main__":
-	make_articles()
+	make_score()
