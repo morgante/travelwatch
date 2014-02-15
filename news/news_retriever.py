@@ -114,3 +114,13 @@ for i in range(1,TotalPages):
     if i == PageLimit:
         break
 
+    # start bonnie stuff
+    handleJSON(JSONData)
+
+def handleJSON(json):
+    docs = json["response"]["docs"]
+    for d in docs:
+        headline = d["headline"]["main"]
+        snippet = d["snippet"]
+        
+
