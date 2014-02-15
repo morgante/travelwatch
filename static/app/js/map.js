@@ -1,7 +1,8 @@
 define([
 	'jquery',
-	'underscore'
-], function ($, _) {
+	'underscore',
+    'd3'
+], function ($, _, d3) {
 
 	/**
 	 * Makes a world map from given data
