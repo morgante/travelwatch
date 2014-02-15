@@ -6,7 +6,7 @@ from sklearn.externals import joblib
 # returns the prediction list, we probably want to take the hightest predicted word
 def analyze(modelName, toPredict):
 
-   loadedModel = joblib.load("model/%s.pkl"%modelName) 
+   loadedModel = joblib.load("model/%s"%modelName) 
    
    predicted = loadedModel.predict(toPredict)
  
