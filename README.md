@@ -28,3 +28,19 @@ If you've changed requirements, you can rebuild locally:
 	docker rm travelwatch
 	docker build -t morgante/travelwatch .
 	docker run -v /var/code/travelwatch/nyuad:/src -d -t -p 49200:5000 -e ENVIRONMENT='dev' --name travelwatch morgante/travelwatch
+
+## Machin Learning Pipeline
+This is the pipeline for how all our machine learning data will be generated.
+
+1. Fetch the news articles we're going to train on
+
+	python fetch.py
+
+2. Train the model from the data
+
+	python train.py
+
+3. Pull in the model
+
+	import ml
+	violence = ml.analyze(data)
