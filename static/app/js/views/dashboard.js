@@ -60,7 +60,22 @@ define([
 				clicked: function(map, country, evt) {
 					if (!zoomed || zoomed != country) {
 						map.zoom(country,
-							{x: 50, y: 50, length: 400, height: 400});
+							{x: 50, y: 50, length: 400, height: 400},
+							function() {
+								map.colorPoints([{
+									position: {latitude: 24.4667, longitude: 54.3667},
+									score: 20,
+									force: 10
+								}, {
+									position: {latitude: 23.4667, longitude: 55.3667},
+									score: 30,
+									force: 10
+								}, {
+									position: {latitude: 23.4667, longitude: 53.3667},
+									score: 40,
+									force: 50
+								}]);
+							});
 						zoomed = country;
 					} else {
 						map.unzoom();
@@ -75,13 +90,6 @@ define([
 					console.log('Countries have been colored');
 
 					setTimeout(function() {
-						map.colorPoints([{
-							position: {latitude: 24.4667, longitude: 54.3667},
-							score: 20,
-							force: 10
-						}], function(err) {
-							console.log('new coloring applied');
-						});
 					}, 1000);
 				});
 
