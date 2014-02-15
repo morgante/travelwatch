@@ -5,6 +5,7 @@ require.config({
 		"underscore": "../../components/underscore/underscore",
 		"backbone": "../../components/backbone/backbone",
 		"d3": "../../components/d3/d3.v3",
+		"topojson": "../../components/topojson/topojson",
 	},
 	shim: {
 		'jquery': {
@@ -16,6 +17,9 @@ require.config({
 		'backbone': {
 			deps: ['underscore', 'jquery'],
 			exports: 'Backbone'
+		},
+		'topojson': {
+			exports: 'topojson'
 		}
 	}
 });
