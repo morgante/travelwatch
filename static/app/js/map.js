@@ -17,8 +17,17 @@ define([
 	 * @param  {Function} callback A function to be called when the mapping is done, callback(this, error);
 	 */
 	function Map($el, opts, callback) {
-		console.log('I will make a map');
 		console.log($el, opts, callback);
+
+		var map = new Datamap({
+			element: $el.get(0),
+			done: function(datamap) {
+				datamap.svg.selectAll('.datamaps-subunit')
+					.on('click', function(country) {
+						opts.clicked(country, d3.event);
+					});
+			}
+		});
 
 		var error = null;
 
