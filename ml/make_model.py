@@ -1,11 +1,8 @@
 import data as db
 import word_frequency as wfr
-
-def get_crimes_by_city():
-	return [{
-		"city": "Abu Dhabi, UAE",
-		"score": 32
-	}]
+import train
+def get_crimes_by_city(city):
+	return 10
 
 def get_keywords_by_city():
     cities ={}
@@ -37,8 +34,9 @@ def get_keywords_by_city():
 	##normalize after all articles have been updated
 	cities[city]=wfr.normalize(cities[city])
         #have to append a cNum to each city
-
+	cities[city][c_Num]=get_crime_by_city(city)
     return cities 
 
-
+def main():
+    return train.make_model(get_keyword_by_city())
 			
