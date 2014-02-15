@@ -4,6 +4,10 @@ import urllib2
 import time, datetime
 from datetime import datetime
 
+import sys
+sys.path.append("..")
+import geo.names as geonames
+
 def get_alerts(limit=None, DEBUG=False):
 
     """
@@ -38,7 +42,7 @@ def get_alerts(limit=None, DEBUG=False):
 
         date = time.strptime(cells[3].text, "%Y-%m-%d %H:%M:%SZ")
         date = datetime.fromtimestamp(time.mktime(date))
-        country_dict = {"country":country_name,
+        country_dict = {"country": geonames.get_code_from_name(country_name),
                         "rating":advisory_rating,
                         "date":date}
         c_page = urllib2.urlopen(country_url)

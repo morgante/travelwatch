@@ -3,6 +3,10 @@ import urllib2
 import time
 from datetime import datetime
 
+import sys
+sys.path.append("..")
+import geo.names as geonames
+
 def get_alerts(limit=None, DEBUG=False):
     stem_url = "http://travel.state.gov"
     warnings_url = "http://travel.state.gov/content/passports/english/alertswarnings.html"
@@ -30,7 +34,7 @@ def get_alerts(limit=None, DEBUG=False):
         rating = 4
         if notice_type == 'alert':
             rating = 2
-        alert_dict = {"country": country, "rating": rating,  "date":alert_time}
+        alert_dict = {"country": geonames.get_code_from_name(country), "rating": rating,  "date":alert_time}
 
         adv_url = stem_url + link['href']
 
