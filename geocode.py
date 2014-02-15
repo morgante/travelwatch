@@ -1,5 +1,7 @@
 from alchemyapi import AlchemyAPI
 from geopy.geocoders import GoogleV3
+import nltk_ner
+from bs4 import BeautifulSoup as BS
 
 DEBUG=False
 
@@ -12,7 +14,17 @@ def get_geocodes_from_url(url):
 def get_geocodes_from_html(html):
     return get_geocodes('html', html)
 
-def get_geocodes(src_type, src):
+def get_geocodes(src_type, src, api_type='n'):
+    if api_type == 'a':
+        return get_geocodes_from_alchemy(src_type, src)
+    else:
+        return get_geocodes_from_nltk(src)
+
+def get_geocodes_from_nltk(txt):
+    clean = BS(txt).text
+    nltk_ner.extract_entities(clean)
+
+def get_geocodes_from_alchemy(src_type, src):
     alchemyapi = AlchemyAPI()
     good_types = ['StateOrCounty', 'City', 'Country']
 
