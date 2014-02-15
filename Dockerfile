@@ -5,6 +5,8 @@ FROM		shykes/pybuilder
 RUN 		apt-get install -y python-dev
 RUN 		apt-get install -y build-essential
 
+RUN 		apt-get install -y vim
+
 # Scikit-learn dependencies
 RUN 		apt-get install -y python-numpy python-setuptools python-scipy
 RUN 		apt-get install -y libatlas-dev libatlas3-base
@@ -19,6 +21,7 @@ RUN 		cd /src; pip install geopy
 RUN 		cd /src; pip install beautifulsoup4
 RUN 		cd /src; pip install python-twitter
 RUN 		cd /src; pip install pymongo
+RUN		cd /src; pip install pyyaml nltk
 
 # Add source
 ADD 		. /src
@@ -31,5 +34,7 @@ EXPOSE 		5000
 
 # Run it
 WORKDIR		/src
+
+RUN 		python nltk_downloads.py
 
 ENTRYPOINT ["python", "server.py"]
