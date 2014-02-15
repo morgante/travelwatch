@@ -59,9 +59,11 @@ def model_from_all():
 	kw=article["keywords"]
         if len(article["positions"]) < 1:
             continue
-	print article["position"]
+	pos=article["positions"]
+	if type(pos)==list:
+	    pos=pos[0]
 
-        point = (article["positions"]["latitude"], article["positions"]["longitude"])
+        point = (pos["longitude"], pos["latitude"])
         city=gr.get_city(point)
         if city == None:
             continue
