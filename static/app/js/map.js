@@ -105,12 +105,15 @@ define([
 	Map.prototype.zoom = function(country, bounds, callback) {
 		var error = null;
 
-		// TODO(zjn): respect bounds
 		var g = this.svg.select('g');
 		var centroid = this.path.centroid(d3.select('.' + country).data()[0]);
-		var x = centroid[0];
-		var y = centroid[1];
-		var k = 4;
+		var countryBox = this.path.bounds(d3.select('.' + country).data()[0]);
+		var x = centroid[0],
+			y = centroid[1],
+			countryWidth = countryBox[1][0] - countryBox[0][0],
+			countryHeight = countryBox[1][1] - countryBox[0][1];
+		var k = Math.min(bounds.length / countryWidth, bounds.height / countryHeight);
+		x += ((this.width - bounds.length) / 2 - bounds.x)/ k;
 
 		g.selectAll("path").classed("active", true);
 
