@@ -7,6 +7,9 @@ data = np.loadtxt(open("train.csv","rb"),delimiter=",",skiprows=0)
 features = data[:, 1:-1]
 outputs = data[:, -1].astype(np.int)
 
+print features
+print outputs
+
 # clf = ExtraTreesClassifier(n_estimators=100).fit(features[:1], outputs[:1])
 
 model = linear_model.LinearRegression()
