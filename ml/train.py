@@ -6,9 +6,9 @@ def listofWords():
    return lst
 
 def train(data,mode=1):
-    features = data["attributes"]
-    outputs = data["class"].astype(np.int)
-
+    features = data[:,1:]
+    outputs = data[:,0]
+	
     if mode==1:
         from sklearn import linear_model
 	name="lin_regression"
@@ -34,35 +34,36 @@ def train(data,mode=1):
 
     print('Saved model to ' + filename)
 
-def make_model():
+def make_model(articles,cRate):
     data = []
     words = listofWords()
-
-    articles = [{"keywords": {"murder": 10, "life": 2}}]
-
-    for article in articles:
-        datum = {
-            "attributes": [],
-            "class": 3
-        }
+    
+    
+    #generating articles data array 
+    for i in range(len(articles)):
+        #datum:=[city,w1,w2,w3,...] 
+	datum = []
+	datum.append(cRate[i])
 
         for word in words:
-            if (word in article['keywords']):
-                datum['attributes'].append(article['keywords'][word])
+            if (word in articles[i]['keywords']):
+                datum.append(articles[i]['keywords'][word])
             else:
-                datum['attributes'].append(0)
+                datum.append(0)
 
         data.append(datum)
 
-    print data
-
+    data=np.array(data)
+    # training the data and generating the model
     train(data, 1)
 
 
 if __name__ == "__main__":
-    make_model()
+    articles = [{"keywords": {"murder": 10, "kidnapping": 2}},{"keywords":{"kill": 5, "federal": 2}}, {"keywords": {"murder": 10, "kidnapping": 2}},{"keywords": {"murder": 10, "kidnapping": 2}},{"keywords": {"murder": 10, "kidnapping": 2}},{"keywords": {"murder": 10, "kidnapping": 2}},{"keywords": {"murder": 10, "kidnapping": 2}},{"keywords": {"murder": 10, "kidnapping": 2}},{"keywords": {"murder": 10, "kidnapping": 2}},{"keywords": {"murder": 10, "kidnapping": 2}}]
 
-    #data = np.loadtxt(open("train.csv","rb"),delimiter=",",skiprows=0)
-    #train(data,1)
-    #train(data,2)
+    #corresponding crime rates
+    cRate = [3, 7, 3,3,3,3,3,3,3,3]
+
+    make_model(articles, cRate)
+
 

@@ -25,5 +25,12 @@ def insert(collection, data):
 def find_one(collection, query={}):
 	return db[collection].find_one(query)
 
+def insert_crime(position, crime):
+	insert("crime", {"position": position, "crime": crime});
+
+def insert_crimes(crimes):
+	for place in crimes:
+		insert_crime(place.position, crime);
+
 def test():
 	return 'lols'
