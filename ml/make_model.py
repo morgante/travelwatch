@@ -10,7 +10,7 @@ import hack_locales
 lst=hack_locales.get_town_list
 II=0
 def getcity():
-    global II
+    global II,lst
     ret=lst[II]
     II+=1
     return ret
