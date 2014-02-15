@@ -5,10 +5,14 @@ import data as db
 import word_frequency as wfr
 import geo.reverse as gr
 import numpy
-import random
 
+import hack_locales
+lst=hack_locales.get_town_list
+II=0
 def getcity():
-    return random.choice(["London","Abu Dhabi", "New York", "Seoul", "Tokyo","Madrid","Cairo"])
+    ret=lst[II]
+    II+=1
+    return ret
 
 def score_from_crimes(crimes): 
     w1 = 2*crimes['violent crime']/48430
@@ -35,7 +39,7 @@ def score_from_crimes(crimes):
 
 
 def get_crimes_by_city():
-
+    II=0
     cursor = db.get_crimes()
 	
     cNUM = {}
@@ -44,6 +48,8 @@ def get_crimes_by_city():
         lat = entry['position']['latitude']
         lon = entry['position']['longitude']
         city = gr.get_city((lon,lat))
+	if city==None:
+	    city=getcity()
 	cNUM[city] = score_from_crimes(entry["crimes"])
 	
     return cNUM
@@ -83,12 +89,12 @@ def model_from_all():
 	    cities[city]=wfr.add(cities[city],wf)
 	else:
 	    cities[city]=wf
-    
+    cNUM=get_crimes_by_city()
     for city in cities:
 	##normalize after all articles have been updated
 	cities[city]=wfr.normalize(cities[city])
         #have to append a cNum to each city
-	cities[city]["c_Num"]=get_crimes_by_city(city)
-        print cities[city]
+	cities[city]["c_Num"]=cNUM[city]
+        
     return cities 
 	
