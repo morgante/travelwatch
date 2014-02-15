@@ -1,6 +1,7 @@
 from alchemyapi import AlchemyAPI
 from geopy.geocoders import GoogleV3
 
+DEBUG=False
 
 def get_geocodes_from_text(text):
     return get_geocodes('text', text)
@@ -23,9 +24,11 @@ def get_geocodes(src_type, src):
     geocodes = []
     for e in response['entities']:
         if e['type'] in good_types:
-            print e['text'], e['type']
+            if DEBUG:
+                print e['text'], e['type']
             geocodes.append(find_geocode(e['text']))
-    print geocodes
+    if DEBUG:
+        print geocodes
     return geocodes
 
 def find_geocode(text_loc):
