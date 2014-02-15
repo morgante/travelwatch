@@ -2,7 +2,7 @@ define([
 	'jquery',
 	'underscore',
     'backbone',
-    'Map'
+    'map'
 ], function ($, _, Backbone, Map) {
 	// The Dashboard View
 	// ---------------

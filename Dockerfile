@@ -12,14 +12,6 @@ RUN 		apt-get install -y libatlas-dev libatlas3-base
 # Scikit-learn
 RUN 		pip install -U scikit-learn
 
-# Geocode
-RUN 		pip install -U geopy
-#RUN 		cd geocoding
-#RUN 		python alchemyapi.py 22c297c6c8d199f88b09cedd9ca91e8f0c112fc2
-#RUN 		cd ..
-
-# Scraping
-RUN 		pip install beautifulsoup4
 
 # Pips
 RUN 		cd /src; pip install flask

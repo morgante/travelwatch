@@ -44,3 +44,15 @@ This is the pipeline for how all our machine learning data will be generated.
 
 	import ml
 	violence = ml.analyze(data)
+
+## Geocodes
+
+geocode.py is your friend:
+
+```
+import geocode
+geocode.get_geocodes_from_html('Some <b>HTML</b> goes here, hopefully inlcuding a place like the USA, Egypt, or Boston, MA.')
+geocode.get_geocodes_from_url('http://nytimes.com')
+geocoe.get_geocodes_from_text('There is no HTML here, but there is a place name! We are in Abu Dhabi, UAE, and I'm from Maryland, USA.')
+```
+   
