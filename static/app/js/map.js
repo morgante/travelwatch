@@ -5,7 +5,6 @@ define([
 	'topojson',
 	'datamaps'
 ], function ($, _, d3, topojson, Datamap) {
-	// TODO(zjn): make colors better
 
 	/**
 	 * Makes a world map from given data
@@ -45,7 +44,6 @@ define([
 			var hue = Math.floor(30 - dangerLevel * (30 / 100)) / 100;
 			fillColors[dangerLevel] = hsl2rgb(hue, 0.8, 0.4);
 		});
-		console.log(fillColors);
 		fillColors['defaultFill'] = '#BBB';
 
 		this.map = new Datamap({
@@ -102,11 +100,12 @@ define([
 		var error = null;
 
 		this.map.bubbles(_.map(data, function(obj) {
-			// TODO(zjn): add color to bubbles
 			return {
+				name: "",
 				radius: obj.force,
 				latitude: obj.position.latitude,
-				longitude: obj.position.longitude
+				longitude: obj.position.longitude,
+				fillKey: obj.score
 			};
 		}));
 
