@@ -5,6 +5,7 @@ import sys
 sys.path.append("..")
 from geo import code
 import data as db
+from geo import country_hack
 
 def get_risk_types():
     terrorism=['terrorist','bombing','terrorism','militants']
@@ -59,6 +60,8 @@ def process_articles_from_db():
     count = 0
     for article in articles:
         print article
+
+        print country_hack.article_to_country_codes(article)
         risk_freqs = get_risks_for_article(article)
 
         a_locs = code.get_geocodes_from_text(article['headline']) + code.get_geocodes_from_text(article['text'])
