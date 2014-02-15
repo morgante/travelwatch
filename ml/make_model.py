@@ -1,8 +1,26 @@
 import data as db
 import word_frequency as wfr
 import train
+
+def score_from_crimes(crimes): {
+	return 11; // 1-100
+}
+
 def get_crimes_by_city(city):
-	return 10
+
+	# db.get_crimes()
+	
+	cities = {}
+
+	{
+		"CITYNAME": {
+			"city": "CITYNAME",
+			"crimes": {},
+			"score": 12
+		}
+	}
+
+	return 10;
 
 def get_keywords_by_city():
     cities ={}
