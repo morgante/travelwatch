@@ -30,7 +30,7 @@ def model_from_all():
     # Get every single article
     articles = db.get_articles()
 
-    for article in articles():
+    for article in articles:
 	##unsure of the exact notation for this part
 	#############################
 	hl=article["headline"]
