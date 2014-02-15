@@ -3,7 +3,7 @@ sys.path.append('..')
 
 import data as db
 import word_frequency as wfr
-
+import geo.reverse as gr
 def score_from_crimes(crimes): 
 	return 11
 
@@ -38,7 +38,8 @@ def model_from_all():
 	hl=article["headline"]
 	txt=article["text"]
 	kw=article["keywords"]
-        city=get_city_from_position(article["position"])
+        point = (article["positions"]["latitude"], article["positions"]["longitude"])
+        city=gr.get_city(point)
    	##############################
 
 	##currently using equal weighting
