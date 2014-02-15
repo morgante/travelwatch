@@ -22,7 +22,7 @@ define([
 		// Reference to this collection's model.
 		model: Score,
 
-		url: '/mock/scores',
+		url: '/api/scores',
 
 		getObject: function() {
 			return _.object(this.pluck('code'), this.pluck('score'));
