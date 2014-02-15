@@ -12,6 +12,16 @@ The entire development environment is contained in a Docker container. To get up
 6. Open the app: http://localhost:49200/
 7. Make changes to ```server.py``` and they will be reflected live.
 
+## MongoDB
+You can connect to the database remotely:
+
+	mongo 128.199.242.243:49155
+
+This database is actually containerized in Docker, so you can run it locally if you want.
+
+	docker pull morgante/tmongo
+	docker run -d -p 49155:27017 morgante/tmongo /usr/bin/mongod --smallfiles
+
 ### Bonus Hints
 If you want to tail the logs for the app, including Python logging output:
 
@@ -29,6 +39,21 @@ If you've changed requirements, you can rebuild locally:
 	docker build -t morgante/travelwatch .
 	docker run -v /var/code/travelwatch/nyuad:/src -d -t -p 49200:5000 -e ENVIRONMENT='dev' --name travelwatch morgante/travelwatch
 
+## Machin Learning Pipeline
+This is the pipeline for how all our machine learning data will be generated.
+
+1. Fetch the news articles we're going to train on
+
+	python fetch.py
+
+2. Train the model from the data
+
+	python train.py
+
+3. Pull in the model
+
+	import ml
+	violence = ml.analyze(data)
 
 ## Geocodes
 
