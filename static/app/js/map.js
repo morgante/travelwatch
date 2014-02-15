@@ -1,7 +1,10 @@
 define([
 	'jquery',
-	'underscore'
-], function ($, _) {
+	'underscore',
+	'd3',
+	'topojson',
+	'datamaps'
+], function ($, _, d3, topojson, Datamap) {
 
 	/**
 	 * Makes a world map from given data
