@@ -1,6 +1,6 @@
 import data as db
 import word_frequency as wfr
-
+import train
 def get_crimes_by_city(city):
 	return 10
 
@@ -38,5 +38,5 @@ def get_keywords_by_city():
     return cities 
 
 def main():
-    make_model(get_keyword_by_city())
+    return train.make_model(get_keyword_by_city())
 			

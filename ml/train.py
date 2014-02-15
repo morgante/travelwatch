@@ -33,6 +33,7 @@ def train(data,mode=1):
     joblib.dump(model, filename)
 
     print('Saved model to ' + filename)
+    return name
 
 def make_model(cities):
     data = []
@@ -53,7 +54,7 @@ def make_model(cities):
 
     data=np.array(data)
     # training the data and generating the model
-    train(data, 1)
+    return train(data, 1)
 
 
 if __name__ == "__main__":
