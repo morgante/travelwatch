@@ -36,7 +36,7 @@ def model_from_all():
 	##unsure of the exact notation for this part
 	#############################
 	hl=article["headline"]
-	txt=article["txt"]
+	txt=article["text"]
 	kw=article["keywords"]
         city=get_city_from_position(article["position"])
    	##############################
