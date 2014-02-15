@@ -205,7 +205,7 @@ def search(
             QUERY_STRING = ""
             for key in QueryFields.keys():
                 if QueryFields[key] != "" and QueryFields[key] != False:
-                    QUERY_STRING = QUERY_STRING + key + "=" + QueryFields[key] + "&"
+                    QUERY_STRING = QUERY_STRING + key + "=" + str(QueryFields[key]) + "&"
                 else:
                     pass
             QUERY_STRING = QUERY_STRING + "api-key=" + APIKeys[API]
@@ -221,7 +221,7 @@ def search(
         ## Requesting data from news source
         APIRequest = urlopen(QUERY)
         JSONData = json.load(APIRequest)
-
+	print JSONData
         # QueryFields["facet_field"] = ""
 
         ## Appending results page by page to a list

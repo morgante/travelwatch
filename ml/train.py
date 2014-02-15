@@ -46,11 +46,11 @@ def make_model(cities,mode=1):
         #datum:=[w1,w2,w3,...,cNum] 
 	datum = []
         for word in words:
-            if (word in city.keys()):
-                datum.append(city[word])
+            if (word in cities[city].keys()):
+                datum.append(cities[city][word])
             else:
                 datum.append(0)
-	datum.append(city["c_Num"])
+	datum.append(cities[city]["c_Num"])
         data.append(datum)
 
     data=np.array(data)
