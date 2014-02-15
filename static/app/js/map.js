@@ -10,7 +10,7 @@ define([
 	 *
 	 * @param  element    $el      jquery reference for container; replace this container's contents with the map
 	 * @param  {Object}   options  Object containing options, none currently defined
-	 *                    .clicked Callback for when a country is clicked, clicked(country, evt)
+	 *                    .clicked Callback for when a country is clicked, clicked(map, country, evt)
 	 * @param  {Function} callback A function to be called when the mapping is done, callback(this, error);
 	 */
 	function Map($el, opts, callback) {
@@ -46,7 +46,7 @@ define([
 				.style('fill', '#BBBBBB')
 				.style('stroke-width', 1)
 				.style('stroke', '#FDFDFD')
-				.on('click', function(d) { opts.clicked(d.id, d3.event) });
+				.on('click', function(d) { opts.clicked(that, d.id, d3.event) });
 
 			if (callback !== undefined) {
 				callback(that, error);
