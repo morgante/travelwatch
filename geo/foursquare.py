@@ -64,3 +64,15 @@ def reverse(point, exactly_one=True):
     return (name, new_point)
 
 
+def get_state_from_point(lng, lat):
+    payload['query'] = ''
+    payload['ll'] = str(lat) + ',' + str(lng)
+    
+    r = requests.get("http://api.foursquare.com/v2/venues/search", params=payload)
+    
+    try:
+        loc = r.json()['response']['venues'][0]['location']
+        return loc['state']
+    except:
+        return None
+
