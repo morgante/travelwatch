@@ -10,6 +10,7 @@ import hack_locales
 lst=hack_locales.get_town_list
 II=0
 def getcity():
+    global II
     ret=lst[II]
     II+=1
     return ret
@@ -39,6 +40,7 @@ def score_from_crimes(crimes):
 
 
 def get_crimes_by_city():
+    global II
     II=0
     cursor = db.get_crimes()
 	
