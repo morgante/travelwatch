@@ -6,8 +6,9 @@ require.config({
 		"backbone": "../../components/backbone/backbone",
 		"d3": "../../components/d3/d3.v3",
 		"topojson": "../../components/topojson/topojson",
-		"datamaps": "../../components/datamaps/dist/datamaps.world"
-	},
+		"datamaps": "../../components/datamaps/dist/datamaps.world",
+		"pnotify": "../../components/pnotify/pnotify"
+},
 	shim: {
 		'jquery': {
              exports: '$'
@@ -26,6 +27,10 @@ require.config({
 		'datamaps': {
 			deps: ['d3', 'topojson'],
 			exports: 'Datamap'
+		},
+		'pnotify': {
+			deps: ['jquery'],
+			exports: 'pnotify'
 		}
 	}
 });
