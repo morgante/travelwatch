@@ -2,8 +2,10 @@ define([
 	'jquery',
 	'underscore',
     'backbone',
-    'map'
-], function ($, _, Backbone, Map) {
+    'map',
+    'models/countries',
+    'views/card'
+], function ($, _, Backbone, Map, Countries, Card) {
 	// The Dashboard View
 	// ---------------
 
@@ -15,6 +17,7 @@ define([
 			this.$map = $('.map', this.$el);
 
 			this.scores = this.collection;
+			this.countries = new Countries;
 
 			// render off the bat
 			this.render();
@@ -27,10 +30,24 @@ define([
 			// profiles.add({
 			// 	'name': 'Samantha Xu'
 			// });
-
-			// // console.log( Profiles );
 			// 
+			
+			this.openCard('USA');
 		
+		},
+
+		openCard: function(countryCode) {
+			var view = this;
+
+			this.countries.getOne(countryCode, function(err, country) {
+				console.log('I have a country', country);
+
+				view.card = new Card({
+					el: $('#card', view.$el),
+					model: country
+				});
+				
+			});
 		},
 
 		render: function () {
@@ -43,6 +60,8 @@ define([
 					console.log('This county was clicked', country);
 				}
 			}, function(map, error) {
+				view.map = map;
+
 				console.log('this is the map callback', map, error);
 
 				map.colorCountries(view.collection.getObject(), function(err) {
