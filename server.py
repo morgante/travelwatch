@@ -27,7 +27,7 @@ def mock_scores():
 	return json.dumps(data)
 
 # This route is for returning detailed country data
-@app.route('/mock/country/<code>')
+@app.route('/mock/countries/<code>')
 def mock_country(code):
 	points = [
 		{
