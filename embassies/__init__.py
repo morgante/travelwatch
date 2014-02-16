@@ -5,6 +5,34 @@ import data as db
 import canada
 import usa
 
+def get_by_country():
+	data = get_old()
+	countries = {}
+
+	if (data is None):
+		return countries
+
+	for alert in data:
+		if (alert["country"] in countries):
+			country = countries[alert["country"]]
+		else:
+			country = {
+				"code": alert["country"],
+				"alerts": []
+			}
+
+		country["alerts"].append(alert)
+
+		countries[alert["country"]] = country
+
+	for code, country in countries.iteritems():
+		ratings = map(lambda alert: alert["rating"], country["alerts"])
+	 	score = int(float(sum(ratings) / len(ratings)) / 4 * 100)
+
+	 	country["score"] = score
+
+	return countries
+
 def get_old():
 	return db.get_alerts()
 
