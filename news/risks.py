@@ -8,7 +8,7 @@ import data as db
 from geo import country_hack
 
 def get_risk_types():
-    terrorism=['terrorist','bombing','terrorism','militants']
+    terrorism=['terrorist','bombing','terrorism','militants',"explos","bomb"]
     murder=['murder','killed','kill','shot','shoot','knife','death','killer','murderer','homicide']
     rape=['rape','gang rape','rapist','sexual assault']
     weather=['earthquake','cyclone','tsunami','natural disaster', 'hurricane','fire']

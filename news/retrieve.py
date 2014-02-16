@@ -11,9 +11,6 @@ from urllib import *
 from pprint import *
 import json
 
-## Do not change this unless you know what you're doing (page request limit & dump location)
-PageLimit = 10
-
 ## Dictionary of API keys
 APIKeys = {
     "NY Times":"a23184e7a28923153d114039b3b92b8e:7:68825444"
@@ -221,7 +218,7 @@ def search(
         # print "Query to API generated: " + QUERY + "\n"
 
         print QUERY
-
+        
         ## Requesting data from news source
         APIRequest = urlopen(QUERY)
         JSONData = json.load(APIRequest)
@@ -243,8 +240,6 @@ def search(
 
             ## BREAK AFTER A FEW PAGES: BE CAREFUL!
             ## MAKE SURE YOUR QUERY ISN'T RETURNING MILLIONS OF RESULTS
-            if i == PageLimit:
-                break
 
     # Client scripts don't care what page data is on
     articles = []

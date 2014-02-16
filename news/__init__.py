@@ -26,7 +26,7 @@ def get_by_state():
 
 		for point in article["points"]:
 			try:
-				states.append(georeverse.get_state(point))
+				print states.append(georeverse.get_state(point))
 			except:
 				print 'problem with state lookup'
 
@@ -42,7 +42,7 @@ def get_by_state():
 
 	return aggregated
 
-def fetch(query="crime murder kill", pages=1, start=date(2006, 01, 10), end=date.today()):
+def fetch(query, pages=1, start=date(2006, 01, 10), end=date.today()):
 	data = retrieve.search(query, pages=pages, highlight=False, begin=convert_date(start), end=convert_date(end))
 
 	articles = []

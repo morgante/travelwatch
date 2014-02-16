@@ -23,6 +23,7 @@ def get_news():
 				keywords[word] += freq
 
 		fdata[code] = keywords
+                print 'Getting news.'
 
 	return fdata
 
@@ -33,8 +34,17 @@ def get_crimes():
     for entry in cursor:
         lat = entry['position']['latitude']
         lon = entry['position']['longitude']
-        city = fsq.get_city_from_point(lon, lat) #gr.get_city({"longitude":lon,"latitude":lat})
-        state = fsq.get_state_from_point(lon,lat)
+
+        if "city" in entry:
+            print 'got cached crime'
+            city = entry['city']
+            state = entry['state']
+
+        else:
+            city = fsq.get_city_from_point(lon, lat) #gr.get_city({"longitude":lon,"latitude":lat})
+            state = fsq.get_state_from_point(lon,lat)
+            db.db['crime'].update({"_id": entry["_id"]}, {"$set":{"city": city, "state": state}})
+
         crime = 0
         for i in entry['crime']:
             crime+= int(entry['crime'][i])
@@ -46,6 +56,7 @@ def main():
     rows = []
     outputs = []
     crimes = get_crimes()
+    print 'Got crimes!'
     for (code, ndata) in get_news().iteritems():
         row = normalize.row({
             "news": ndata
@@ -65,6 +76,7 @@ def main():
             
         rows.append(row)
         outputs.append(crime)
+        print 'Looping on news. # rows: ', len(rows)
 
     model = modeler.train(rows, outputs)
 
