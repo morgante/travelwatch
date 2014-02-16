@@ -3,12 +3,17 @@ define([
 	'underscore',
     'backbone',
     'map',
+    'api',
     'notifier',
     'models/scores',
     'views/dashboard'
-], function ($, _, Backbone, Map, notifier, Scores, Dashboard) {
+], function ($, _, Backbone, Map, api, notifier, Scores, Dashboard) {
 
 	var $map = $('.map');
+
+	api.get_advisory('UAE', function(data) {
+		console.log('ad', data);
+	});
 
 	// get scores data
 	var scores = new Scores();
