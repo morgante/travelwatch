@@ -129,7 +129,7 @@ def search(
             end="20090101",
             page=None,
             pages=1,
-            sort=None,
+            sort="oldest",
             fields=["_id","web_url","lead_paragraph","abstract","headline","keywords","pub_date","word_count","source","document_type","news_desk"],
             highlight=False,
             facet_field=None, # Input here is a list of strings EVEN FOR ONE ELEMENT
@@ -138,6 +138,8 @@ def search(
 
     ## Result storage
     page_data = []
+
+    # print begin
 
     for source in APIKeys.keys():
 
@@ -218,6 +220,8 @@ def search(
 
         # print "Query to API generated: " + QUERY + "\n"
 
+        print QUERY
+
         ## Requesting data from news source
         APIRequest = urlopen(QUERY)
         JSONData = json.load(APIRequest)
@@ -270,6 +274,8 @@ def getValFromDict(d,k):
 
 ## JSON Handler (Thanks Bonnie!)
 def handleJSON(raw_json):
+    print raw_json
+
     docs = raw_json["response"]["docs"]
     articles = []
     for d in docs:

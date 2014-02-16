@@ -1,12 +1,16 @@
 import sys
+from datetime import date
 
 sys.path.append("..")
 import geo.code as geocode
 
 import retrieve
 
-def fetch_old(query="crime murder kill", pages=1):
-	data = retrieve.search(query, pages=pages, highlight=False )
+def convert_date(date):
+	return date.strftime("%Y%m%d")
+
+def fetch(query="crime murder kill", pages=1, start=date(2006, 01, 10), end=date.today()):
+	data = retrieve.search(query, pages=pages, highlight=False, begin=convert_date(start), end=convert_date(end))
 
 	articles = []
 

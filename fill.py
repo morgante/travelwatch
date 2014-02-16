@@ -10,7 +10,7 @@ def fill_embassies(limit=None):
 	return True
 
 def fill_nyt_old(pages=None):
-	data = news.fetch_old()
+	data = news.fetch()
 
 	for article in data:
 		try:
