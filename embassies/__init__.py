@@ -11,14 +11,14 @@ def get_old():
 def get_new():
 	return sync()["new"]
 
-def sync():
+def sync(limit=2, DEBUG=False):
 	alerts = {
 		"old": [],
 		"new": []
 	}
 
-	us_alerts = usa.get_alerts(limit=2)
-	ca_alerts = canada.get_alerts(limit=2)
+	us_alerts = usa.get_alerts(limit)
+	ca_alerts = canada.get_alerts(limit)
 
 	all_alerts = us_alerts + ca_alerts
 

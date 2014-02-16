@@ -7,6 +7,7 @@ from datetime import datetime
 import sys
 sys.path.append("..")
 import geo.names as geonames
+import geo.code as geocode
 
 def get_alerts(limit=None, DEBUG=False):
 
@@ -53,6 +54,10 @@ def get_alerts(limit=None, DEBUG=False):
         country_dict['advisory'] = adv_text
         print country_dict
         gathered_alerts.append(country_dict)
+
+        country_dict["positions"] = geocode.get_geocodes_from_text(adv_text)
+
+        print geocode.get_geocodes_from_text(adv_text)
 
         if (limit is not None and len(gathered_alerts) >= limit):
             break;
