@@ -230,7 +230,7 @@ define([
 		var error = null;
 
 		d3.selectAll("g#pointsLayer").data([]).exit().remove();
-		var g = this.svg.select('.datamaps-subunits');
+		var g = this.svg.selectAll('.datamaps-subunits');
 		var x = this.width / 2;
 		var y = this.height / 2;
 		var k = 1;

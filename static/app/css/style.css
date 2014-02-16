@@ -12,7 +12,8 @@ body {
 	position: relative;
 }
 
-.card {
+#card {
+	display:none;
 	position: absolute;
 	right: 50px;
 	top: 50px;

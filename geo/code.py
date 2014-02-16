@@ -7,7 +7,7 @@ sys.path.append("..")
 import geo.names as geonames
 import data as db
 from alchemyapi import AlchemyAPI
-import nltk_ner
+#import nltk_ner
 import foursquare
 
 DEBUG=True
