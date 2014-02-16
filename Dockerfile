@@ -44,4 +44,4 @@ EXPOSE 		5000
 # Run it
 WORKDIR		/src
 
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["python", "server.py"]
