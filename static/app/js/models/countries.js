@@ -41,7 +41,7 @@ define([
 
 		getOne: function(code, callback) {
 			// get country
-			var country = this.add({"code": "USA"});
+			var country = this.add({"code": code});
 			country.fetch({
 				success: function(model) {
 					console.log('fetched', model.get('name'));
