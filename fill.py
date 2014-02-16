@@ -1,3 +1,5 @@
+from datetime import date
+
 import data as db
 import geo.names as geonames
 import embassies
@@ -9,8 +11,18 @@ def fill_embassies(limit=None):
 
 	return True
 
-def fill_nyt_old(pages=None):
-	data = news.fetch()
+def fill_nyt_old(pages=None, start=date(2008, 01, 01), end=date(2008, 12, 30)):
+	oldest = db.db["articles"].find_one(query={
+		"date": {"$gt": start, "$lt": end}
+		}, sort=[("date", -1)])
+
+	if (oldest is not None):
+		start = oldest['date']
+
+	print 'Loading articles since '
+	print start
+
+	data = news.fetch(start=start)
 
 	for article in data:
 		try:
