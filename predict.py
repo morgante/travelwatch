@@ -1,12 +1,23 @@
 import data as db
 import geo.names as geonames
 import embassies
+import random
 
 def by_embassies():
 	countries = []
 
 	for code, country in embassies.get_by_country().iteritems():
 		points = [];
+
+		for alert in country["alerts"]:
+			for point in alert["points"]:
+				points.append({
+					"position": {
+						"longitude": point["latitude"],
+						"latitude": point["longitude"]
+					},
+					"score": country["score"] + random.randint(-10, 10) # ha ha ha
+				})
 
 		doc = {
 			"code": code,
@@ -23,6 +34,8 @@ def by_embassies():
 	print "Inserted country data"
 
 def main():
+	db.db["countries"].drop()
+
 	by_embassies()
 
 if __name__ == "__main__":

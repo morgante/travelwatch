@@ -13,6 +13,7 @@ def get_by_country():
 		return countries
 
 	for alert in data:
+		alert = clean_alert(alert)
 		if (alert["country"] in countries):
 			country = countries[alert["country"]]
 		else:
@@ -38,6 +39,24 @@ def get_old():
 
 def get_new():
 	return sync()["new"]
+
+def clean_alert(alert):
+	points = []
+
+	for position in alert["positions"]:
+		if ("latitude" not in position):
+			continue
+		if (("placename" in position) and (alert["country"] is not "USA") and (position["placename"] is "United States")):
+			continue
+		else:
+			points.append({
+				"latitude": position["latitude"],
+				"longitude": position["longitude"]
+			})
+
+	alert["points"] = points
+
+	return alert
 
 def sync(limit=None, DEBUG=False):
 	alerts = {
