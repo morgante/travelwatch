@@ -39,6 +39,15 @@ define([
 		
 		},
 
+		closeCountry: function(code) {
+			var view = this;
+
+			view.map.unzoom();
+
+			view.card.$el.fadeOut();
+
+		},
+
 		openCountry: function(code) {
 			var view = this;
 
@@ -57,10 +66,11 @@ define([
 
 				view.card = new Card({
 					el: $('#card', view.$el),
-					model: country
+					model: country,
+					dashboard: view
 				});
 
-				view.$card.show();
+				view.$card.fadeIn();
 				
 			});
 		},

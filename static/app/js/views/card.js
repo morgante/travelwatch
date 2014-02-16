@@ -10,11 +10,18 @@ define([
 		// Cache the template function for a single item.
 		template: _.template($('#card-template').html()),
 
-		initialize: function () {
+		"events": {
+			'click [data-dismiss="card"]': "close"
+		},
 
-			// render off the bat
+		initialize: function(options) {
+			_.extend(this, _.pick(options, 'dashboard'));
+
 			this.render();
-		
+		},
+
+		close: function() {
+			this.dashboard.closeCountry();
 		},
 
 		render: function() {
