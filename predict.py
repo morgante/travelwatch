@@ -2,6 +2,13 @@ import data as db
 import geo.names as geonames
 import embassies
 import random
+import news
+
+import ml
+from ml import words
+from ml import normalize
+from ml import train as modeler
+import random
 
 def by_embassies():
 	countries = []
@@ -33,10 +40,38 @@ def by_embassies():
 
 	print "Inserted country data"
 
-def main():
-	db.db["countries"].drop()
+def get_news():
+	cdata = news.get_by_state()
+	fdata = {}
 
-	by_embassies()
+	for code, articles in cdata.iteritems():
+		keywords = words.frequencies()
+
+		for article in articles:
+			for word, freq in words.frequencies(article["snippet"]).iteritems():
+				keywords[word] += freq
+
+		fdata[code] = keywords
+
+	return fdata
+
+def by_news():
+
+    for (code, ndata) in get_news().iteritems():
+        row = normalize.row({
+            "news": ndata
+        })
+
+
+        print ml.predict(row)
+
+
+def main():
+	# db.db["countries"].drop()
+	
+	# by_embassies()
+	
+	by_news()
 
 if __name__ == "__main__":
     main()
