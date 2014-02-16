@@ -39,9 +39,13 @@ If you've changed requirements, you can rebuild locally:
 	docker build -t morgante/travelwatch .
 	docker run -v <path to src here>:/src -d -t -p 49200:5000 -e ENVIRONMENT='dev' --name travelwatch morgante/travelwatch
 
-Production experimentation, from the Digital Ocean server:
+DO experimentation, from the Digital Ocean server:
 
 	docker run -link tmongo:db -v /root/travelwatch:/src -t -e ENVIRONMENT='dev' -i --entrypoint="/bin/bash" morgante/travelwatch
+
+DO production:
+
+	docker run --name tprod -link tmongo:db -v /root/travelwatch:/src -t -e ENVIRONMENT='test' -d -p 80:5000 morgante/travelwatch
 
 ## Machin Learning Pipeline
 This is the pipeline for how all our machine learning data will be generated.
