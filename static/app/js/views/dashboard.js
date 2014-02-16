@@ -32,15 +32,21 @@ define([
 			// });
 			// 
 			
-			this.openCard('USA');
+			// this.openCountry('USA');
 		
 		},
 
-		openCard: function(countryCode) {
+		openCountry: function(code) {
 			var view = this;
 
-			this.countries.getOne(countryCode, function(err, country) {
-				console.log('I have a country', country);
+			view.map.zoom(code, {x: 50, y: 50, length: 400, height: 400}, function() {
+				console.log('I finished zooming')
+			});
+
+			this.countries.getOne(code, function(err, country) {
+				view.country = country;
+
+				view.map.colorPoints(country.get("points"));
 
 				view.card = new Card({
 					el: $('#card', view.$el),
@@ -53,18 +59,33 @@ define([
 		render: function () {
 			var view = this;
 
-			console.log('I am magic mike');
-
 			var zoomed;
 			this.map = new Map.world(this.$map, {
 				clicked: function(map, country, evt) {
-					if (!zoomed || zoomed != country) {
-						map.zoom(country,
-							{x: 50, y: 50, length: 400, height: 400});
-						zoomed = country;
-					} else {
-						map.unzoom();
-					}
+					view.openCountry(country);
+
+					// if (!zoomed || zoomed != country) {
+					// 	map.zoom(country,
+					// 		{x: 50, y: 50, length: 400, height: 400},
+					// 		function() {
+					// 			map.colorPoints([{
+					// 				position: {latitude: 24.4667, longitude: 54.3667},
+					// 				score: 20,
+					// 				force: 10
+					// 			}, {
+					// 				position: {latitude: 23.4667, longitude: 55.3667},
+					// 				score: 30,
+					// 				force: 10
+					// 			}, {
+					// 				position: {latitude: 23.4667, longitude: 53.3667},
+					// 				score: 40,
+					// 				force: 50
+					// 			}]);
+					// 		});
+					// 	zoomed = country;
+					// } else {
+					// 	map.unzoom();
+					// }
 				}
 			}, function(map, error) {
 				view.map = map;
@@ -75,13 +96,6 @@ define([
 					console.log('Countries have been colored');
 
 					setTimeout(function() {
-						map.colorPoints([{
-							position: {latitude: 24.4667, longitude: 54.3667},
-							score: 20,
-							force: 10
-						}], function(err) {
-							console.log('new coloring applied');
-						});
 					}, 1000);
 				});
 

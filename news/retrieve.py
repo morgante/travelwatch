@@ -129,7 +129,7 @@ def search(
             end="20090101",
             page=None,
             pages=1,
-            sort=None,
+            sort="oldest",
             fields=["_id","web_url","lead_paragraph","abstract","headline","keywords","pub_date","word_count","source","document_type","news_desk"],
             highlight=False,
             facet_field=None, # Input here is a list of strings EVEN FOR ONE ELEMENT
@@ -137,7 +137,9 @@ def search(
 	):
 
     ## Result storage
-    result = []
+    page_data = []
+
+    # print begin
 
     for source in APIKeys.keys():
 
@@ -218,6 +220,8 @@ def search(
 
         # print "Query to API generated: " + QUERY + "\n"
 
+        print QUERY
+
         ## Requesting data from news source
         APIRequest = urlopen(QUERY)
         JSONData = json.load(APIRequest)
@@ -232,7 +236,7 @@ def search(
             #print QUERY_STRING
             APIRequest = urlopen(QUERY)
             JSONData = json.load(APIRequest)
-            result.append(handleJSON(JSONData))
+            page_data.append(handleJSON(JSONData))
 
             # Sleeping for 0.1s to avoid overloading the NYT API
             sleep(0.1)
@@ -242,7 +246,14 @@ def search(
             if i == PageLimit:
                 break
 
-    return result
+    # Client scripts don't care what page data is on
+    articles = []
+
+    for page in page_data:
+        for article in page:
+            articles.append(article)
+
+    return articles
 
 
 ## Main function
@@ -263,8 +274,8 @@ def getValFromDict(d,k):
 
 ## JSON Handler (Thanks Bonnie!)
 def handleJSON(raw_json):
-    print ("RAW JSON")
     print raw_json
+
     docs = raw_json["response"]["docs"]
     articles = []
     for d in docs:

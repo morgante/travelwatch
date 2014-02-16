@@ -13,11 +13,15 @@ else:
 
 if (os.environ['ENVIRONMENT'] == 'prod'):
 	db_name = 'production'
+elif (os.environ['ENVIRONMENT'] == 'test'):
+	db_name = 'test'
 else:
 	db_name = 'development'
 
 client = MongoClient(ip, port)
 db = client[db_name]
+
+print db
 
 def insert(collection, data):
 	db[collection].insert(data)

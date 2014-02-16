@@ -15,7 +15,7 @@ def home():
 # This route is for returning country score data, it should eventually mirror the format of /mock/scores
 @app.route('/api/scores')
 def scores():
-	countries = db.get_countries(fields=["code"])
+	countries = db.get_countries(fields=["code","score"])
 	return bson_dump(countries)
 
 # This route is for returning detailed country data

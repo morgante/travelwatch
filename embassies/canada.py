@@ -7,6 +7,7 @@ from datetime import datetime
 import sys
 sys.path.append("..")
 import geo.names as geonames
+import geo.code as geocode
 
 def get_alerts(limit=None, DEBUG=False):
 
@@ -42,9 +43,15 @@ def get_alerts(limit=None, DEBUG=False):
 
         date = time.strptime(cells[3].text, "%Y-%m-%d %H:%M:%SZ")
         date = datetime.fromtimestamp(time.mktime(date))
+
+        try:
+            code = geonames.get_code_from_name(country_name)
+        except:
+            continue
+
         country_dict = {
                         "provider": "CAN",
-                        "country": geonames.get_code_from_name(country_name),
+                        "country": code,
                         "rating":advisory_rating,
                         "date":date}
         c_page = urllib2.urlopen(country_url)
@@ -53,6 +60,13 @@ def get_alerts(limit=None, DEBUG=False):
         country_dict['advisory'] = adv_text
         print country_dict
         gathered_alerts.append(country_dict)
+
+        try:
+            country_dict["positions"] = geocode.get_geocodes_from_text(adv_text)
+        except:
+            country_dict["positions"] = []
+
+        print geocode.get_geocodes_from_text(adv_text)
 
         if (limit is not None and len(gathered_alerts) >= limit):
             break;
