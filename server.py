@@ -6,12 +6,19 @@ import json
 import data as db
 from bson import Binary, Code
 from bson.json_util import dumps as bson_dump
+import embassies
 
 app = Flask(__name__)
 
 @app.route('/')
 def home():
     return render_template('app.html')
+
+@app.route('/api/alerts/<code>')
+def api_advisory(code):
+	data = db.get_alerts(query={"country": code.upper()})
+
+	return bson_dump(data)
 
 # This route is for returning country score data, it should eventually mirror the format of /mock/scores
 @app.route('/api/scores')
