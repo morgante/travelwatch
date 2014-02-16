@@ -9,24 +9,25 @@ body {
 }
 
 .map {
-	position: absolute;
-	top: 50px;
-	min-width: 500px;
-	min-height: 500px;
+	//position: absolute;
+	//top: 50px;
+	//min-width: 800px;
 }
 #dashboard {
 	position: relative;
+	min-height: 500px;
 }
 
 .righter {
 	position: absolute;
 	top: 13px;
-	left: 170px;
+	left: 160px;
 	color: #bbb;
 	font-size: 16px;
 }
 .logo {
 	position: absolute;
+	left: 20px;
 	//margin-left: -5%;
 }
 .main {
