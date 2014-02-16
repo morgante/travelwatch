@@ -170,7 +170,6 @@ def get_alerts():
             timestamp[1] = months[timestamp[1]]
             timestamp = " ".join(timestamp)
             timestamp = timestamp[:-4] + timestamp[-2:]
-            print timestamp
             
             date = time.strptime(timestamp, "%d %b %y")
             date = datetime.fromtimestamp(time.mktime(date))
