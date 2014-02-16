@@ -14,9 +14,9 @@ define([
 	// get scores data
 	var scores = new Scores();
 
-	api.get_nyt("hello sir", function(err, data) {
-		console.log("ny", data);
-	});
+	// api.get_nyt("hello sir", function(err, data) {
+		// console.log("ny", data);
+	// });
 
 	// notifier.notify({
 	// 	"title": "This is nonsense",

@@ -32,6 +32,7 @@ define([
 		},
 
 		setInfos: function() {
+			var self = this;
 			var entities = this.get('entities');
 			var infos = [];
 			var types = ["NaturalDisaster", "Region", "City"];
@@ -48,7 +49,14 @@ define([
 				}
 			});
 
-			console.log(entities);
+			_.each(infos, function(info) {
+				api.get_nyt(self.get("name") + " " + info.name, function(err, data) {
+					info["articles"] = data;
+					info["article"] = data[0];
+				});
+			});
+
+			console.log(infos);
 
 			this.set('infos', infos);
 		},
