@@ -4,6 +4,7 @@ from datetime import date
 
 sys.path.append("..")
 import geo.code as geocode
+import geo.reverse as georeverse
 import data as db
 
 import retrieve
@@ -11,41 +12,24 @@ import retrieve
 def convert_date(date):
 	return date.strftime("%Y%m%d")
 
-def get_by_country():
+def get_by_state():
 	data = db.get_articles()
-	countries = {}
+	aggregated = {}
 
-	# print data
+	if (data is None):
+		return aggregated
 
 	for article in data:
-		print article
+		article = clean(article)
+		states = []
 
-	
+		for point in article["points"]:
+			print georeverse.get_state(point)
+			# print point
 
-	# if (data is None):
-	# 	return countries
+		# print article
 
-	# for alert in data:
-	# 	alert = clean_alert(alert)
-	# 	if (alert["country"] in countries):
-	# 		country = countries[alert["country"]]
-	# 	else:
-	# 		country = {
-	# 			"code": alert["country"],
-	# 			"alerts": []
-	# 		}
-
-	# 	country["alerts"].append(alert)
-
-	# 	countries[alert["country"]] = country
-
-	# for code, country in countries.iteritems():
-	# 	ratings = map(lambda alert: alert["rating"], country["alerts"])
-	#  	score = int(float(sum(ratings) / len(ratings)) / 4 * 100)
-
-	#  	country["score"] = score
-
-	return countries
+	return aggregated
 
 def fetch(query="crime murder kill", pages=1, start=date(2006, 01, 10), end=date.today()):
 	data = retrieve.search(query, pages=pages, highlight=False, begin=convert_date(start), end=convert_date(end))
@@ -63,6 +47,21 @@ def get_positions(text):
 	except:
 		return []
 
+def clean(article):
+	points = []
+
+	for position in article["positions"]:
+		if ("latitude" not in position):
+			continue
+		else:
+			points.append({
+				"latitude": position["latitude"],
+				"longitude": position["longitude"]
+			})
+
+	article["points"] = points
+
+	return article
 
 def normalize(article):
 	text = ""

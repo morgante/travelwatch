@@ -6,7 +6,7 @@ from news import risks
 from ml import words
 
 def get_news():
-	cdata = news.get_by_country()
+	cdata = news.get_by_state()
 
 	print cdata
 
