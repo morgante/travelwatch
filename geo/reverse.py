@@ -51,5 +51,5 @@ def get_country(point):
    (new_place, new_point) = g.reverse(change_format(point), exactly_one=True)
    splited = new_place.split(',')  
    return splited[-1]
-  
-print get_state({'latitude': 40.411766, 'longitude': -79.995607}) 
+#bad coordinates below  
+#print get_state({'latitude': 40.411766, 'longitude': -79.995607}) 
