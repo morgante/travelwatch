@@ -35,30 +35,37 @@ define([
 			var self = this;
 			var entities = this.get('entities');
 			var infos = [];
-			var types = ["NaturalDisaster", "Region", "City"];
+			var types = ["NaturalDisaster", "Region", "City", "Crime"];
 
 			_.each(entities, function(entity) {
-				if (_.indexOf(types, entity.type) > -1) {
+				if (_.indexOf(types, entity.type) > -1 || true) {
+					
+
 					if (entity.disambiguated && entity.disambiguated.name) {
 						entity.name = entity.disambiguated.name;
 					} else {
 						entity.name = entity.text;
 					}
 
-					infos.push(entity);
+					api.get_nyt(self.get("name") + " " + entity.name, function(err, data) {
+						console.log(entity);
+
+						entity["articles"] = data;
+						entity["article"] = data[0];
+
+						infos.push(entity);
+
+						self.set('infos', []);
+						self.set('infos', infos);
+					});
+
+					
 				}
 			});
 
-			_.each(infos, function(info) {
-				api.get_nyt(self.get("name") + " " + info.name, function(err, data) {
-					info["articles"] = data;
-					info["article"] = data[0];
-				});
-			});
+			// console.log(infos);
 
-			console.log(infos);
-
-			this.set('infos', infos);
+			// this.set('infos', infos);
 		},
 
 		normalizePoints: function() {

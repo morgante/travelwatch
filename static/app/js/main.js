@@ -14,6 +14,10 @@ define([
 	// get scores data
 	var scores = new Scores();
 
+	String.prototype.capitalize = function() {
+	    return this.charAt(0).toUpperCase() + this.slice(1);
+	}
+
 	// api.get_nyt("hello sir", function(err, data) {
 		// console.log("ny", data);
 	// });

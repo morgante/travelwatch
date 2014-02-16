@@ -22,6 +22,8 @@ define([
 			this.scores = this.collection;
 			this.countries = new Countries;
 
+			// this.countries.fetch();
+
 			// render off the bat
 			this.render();
 
@@ -39,7 +41,7 @@ define([
 		
 		},
 
-		closeCountry: function(code) {
+		closeCountry: function() {
 			var view = this;
 
 			view.map.unzoom();
@@ -59,6 +61,7 @@ define([
 				console.log('I finished zooming')
 			view.countries.getOne(code, function(err, country) {
 				view.country = country;
+				// country.fill();
 
 				view.map.colorPoints(country.get("points"));
 
