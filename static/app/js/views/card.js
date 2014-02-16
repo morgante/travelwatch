@@ -17,6 +17,8 @@ define([
 		initialize: function(options) {
 			_.extend(this, _.pick(options, 'dashboard'));
 
+			this.listenTo(this.model, 'change', this.render);
+
 			this.render();
 		},
 

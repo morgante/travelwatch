@@ -17,7 +17,7 @@ def home():
 
 @app.route('/api/alchemy/<what>/<endpoint>')
 def wrap_alchemy(what, endpoint):
-	url = 'http://access.alchemyapi.com/calls/' + what + '/' + endpoint + '?apikey=61cc00a7028c5f89e4844f7958d51cfef45a92eb&' + request.query_string
+	url = 'http://access.alchemyapi.com/calls/' + what + '/' + endpoint + '?apikey=61cc00a7028c5f89e4844f7958d51cfef45a92eb&outputMode=json&' + request.query_string
 	r = requests.get(url)
 	return r.text
 

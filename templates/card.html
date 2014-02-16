@@ -6,6 +6,11 @@
       </div>
       <div class="modal-body">
         <h3><%= advisory.provider %></h3>
+        <ul>
+        <% _.each(infos, function(info) { %>
+          <li><%= info.name %></li>
+        <% }); %>
+      </ul>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="card">Close</button>

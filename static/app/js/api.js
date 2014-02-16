@@ -10,9 +10,8 @@ define([
 	}
 
 	function get_entities(text, callback) {
-		$.get("http://access.alchemyapi.com/calls/text/TextGetRankedNamedEntities", {
-			"outputMode": "json",
-			"text": "text"
+		$.get("/api/alchemy/text/TextGetRankedNamedEntities", {
+			"text": text
 		}, function(data) {
 			callback(null, data)
 		}, "json");

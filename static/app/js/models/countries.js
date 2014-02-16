@@ -10,18 +10,47 @@ define([
 	var Country = Backbone.Model.extend({
 		idAttribute: "code",
 
+		defaults: {
+			"entities": [],
+			"infos": []
+		},
+
 		initialize: function() {
 			var self = this;
 
 			this.on("change:points", this.normalizePoints, this);
 
+			this.on("change:entities", this.setInfos, this);
+
 			api.get_advisory(this.get('code'), function(err, data) {
 				self.set("advisory", data[0]);
 
 				api.get_entities(self.get("advisory").advisory, function(err, data) {
-					console.log("entity", data);
+					var entries = self.set("entities", data.entities);
 				});
 			});
+		},
+
+		setInfos: function() {
+			var entities = this.get('entities');
+			var infos = [];
+			var types = ["NaturalDisaster", "Region", "City"];
+
+			_.each(entities, function(entity) {
+				if (_.indexOf(types, entity.type) > -1) {
+					if (entity.disambiguated && entity.disambiguated.name) {
+						entity.name = entity.disambiguated.name;
+					} else {
+						entity.name = entity.text;
+					}
+
+					infos.push(entity);
+				}
+			});
+
+			console.log(entities);
+
+			this.set('infos', infos);
 		},
 
 		normalizePoints: function() {
