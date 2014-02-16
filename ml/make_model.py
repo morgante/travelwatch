@@ -2,17 +2,20 @@ import sys
 sys.path.append('..')
 
 import data as db
-import word_frequency as wfr
+import normalize as wfr
 import geo.reverse as gr
 import numpy
 
 import hack_locales
 lst=hack_locales.get_town_list()
+import pprint
 II=0
 def getcity():
     global II,lst
     ret=lst[II]
     II+=1
+    if(II==len(lst)):
+      II = 0
     return ret
 
 def score_from_crimes(crimes): 
@@ -40,21 +43,18 @@ def score_from_crimes(crimes):
 
 
 def get_crimes_by_city():
-    global II
-    II=0
     cursor = db.get_crimes()
 	
-    cNUM = {}
-    
+    l = []
     for entry in cursor:
+        #c = {}
         lat = entry['position']['latitude']
         lon = entry['position']['longitude']
-        city = gr.get_city((lon,lat))
-	if city==None:
-	    city=getcity()
-	cNUM[city] = score_from_crimes(entry["crimes"])
-	
-    return cNUM
+        #city = gr.get_city((lon,lat))
+        
+	c = score_from_crimes(entry["crime"])
+	l.append(c)
+    return l
 
 
 def model_from_all():
@@ -75,10 +75,10 @@ def model_from_all():
 	if type(pos)==list:
 	    pos=pos[0]
         point = (pos["longitude"], pos["latitude"])
-        city=gr.get_city(point)
-	print city
-        if city == None:
-            city=getcity()
+        #city=gr.get_city(point)
+	#Eprint city
+        #if city == None:
+        city=getcity()
    	##############################
 
 	##currently using equal weighting
@@ -91,12 +91,22 @@ def model_from_all():
 	    cities[city]=wfr.add(cities[city],wf)
 	else:
 	    cities[city]=wf
-    cNUM=get_crimes_by_city()
+    cNUM = {}
+    l = get_crimes_by_city()
+    print (len(l))
+    #for city in cities:
+     #   a = lst.pop()
+     #   a['city'] = city
+      #  cNUM[city] = a
+    i=0
     for city in cities:
 	##normalize after all articles have been updated
 	cities[city]=wfr.normalize(cities[city])
         #have to append a cNum to each city
-	cities[city]["c_Num"]=cNUM[city]
-        
+	cities[city]["c_Num"]= l[i]#cNUM[city]
+        i+=1
+        if(i==len(l)):
+          i=0
+    pprint.pprint(cities)    
     return cities 
 	

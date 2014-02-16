@@ -36,7 +36,7 @@ def insert_crimes(crimes):
 		insert_crime(place.position, crime);
 
 def get_crimes():
-  	return find('crimes', {})
+  	return find('crime', {})
 
 def insert_country(country):
 	insert("countries", country)
