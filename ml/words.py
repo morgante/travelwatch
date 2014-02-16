@@ -1,11 +1,11 @@
 from collections import Counter
 from collections import defaultdict
 
-word_list = ['murder', 'violent', 'crime','murder and nonnegligent manslaughter','forcible rape','robbery','aggravated assault','property crime','burglary','larceny/theft','motor vehicle theft']
+list = ['murder', 'violent', 'crime','murder and nonnegligent manslaughter','forcible rape','robbery','aggravated assault','property crime','burglary','larceny/theft','motor vehicle theft']
 
-def frequencies(text):
+def frequencies(text=""):
 
-	keywords = {word: 0 for word in word_list}
+	keywords = {word: 0 for word in list}
 
 	par_str=''.join(e for e in text if (e.isalpha() or e == " ")).lower()
 	words=par_str.split()
