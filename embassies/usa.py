@@ -16,6 +16,8 @@ def get_alerts(limit=None, DEBUG=False):
 
     alert_dicts = []
 
+    print ('limit', limit)    
+
     rows = soup.find("table").find("tbody").find_all("tr")        
     for row in rows:
         cells = row.find_all("td")
@@ -35,7 +37,13 @@ def get_alerts(limit=None, DEBUG=False):
         rating = 4
         if notice_type == 'alert':
             rating = 2
-        alert_dict = {"provider": "USA", "country": geonames.get_code_from_name(country), "rating": rating,  "date":alert_time}
+
+        try:
+            code = geonames.get_code_from_name(country)
+        except:
+            continue
+
+        alert_dict = {"provider": "USA", "country": code, "rating": rating,  "date":alert_time}
 
         adv_url = stem_url + link['href']
 
@@ -51,7 +59,10 @@ def get_alerts(limit=None, DEBUG=False):
         alert_dict['advisory'] = ''.join([p.text for p in paras])
         alert_dicts.append(alert_dict)
 
-        alert_dict["positions"] = geocode.get_geocodes_from_text(alert_dict['advisory'])
+        try:
+            alert_dict["positions"] = geocode.get_geocodes_from_text(alert_dict['advisory'])
+        except:
+            alert_dict["positions"] = []
 
         if DEBUG:
             try:

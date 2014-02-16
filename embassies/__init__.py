@@ -11,7 +11,7 @@ def get_old():
 def get_new():
 	return sync()["new"]
 
-def sync(limit=2, DEBUG=False):
+def sync(limit=None, DEBUG=False):
 	alerts = {
 		"old": [],
 		"new": []

@@ -1,6 +1,9 @@
-def alert(alert):
-    return alert
+def region(alerts=[])
+    data = []
 
+    alert = {
+        
+    }
 
 #given a string, returns a list of word frequencies
 #call as: wf=get_frequency(string)
