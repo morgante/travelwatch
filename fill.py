@@ -22,7 +22,7 @@ def fill_nyt_old(pages=None, start=date(2008, 01, 01), end=date(2008, 12, 30)):
 	print 'Loading articles since '
 	print start
 
-	data = news.fetch(start=start)
+	data = news.fetch(start=start,end=end)
 
 	for article in data:
 		try:
