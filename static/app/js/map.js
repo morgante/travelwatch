@@ -33,7 +33,7 @@ define([
 		var that = this;
 		var error = null;
 
-		this.width = $el.width(),
+		this.width = $(window).width();
 		this.height = 500; // TODO(zjn) not hardcode
 		this.svg = d3.select($el.get(0)).append("svg")
 			.attr("width", this.width)
