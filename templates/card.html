@@ -1,4 +1,15 @@
-<div class="card">
-	<h2><%= name %></h2>
-	<h3><%= advisory.provider %></h3>
-</div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="card" aria-hidden="true">&times;</button>
+        <h4 class="modal-title"><%= name %></h2>
+      </div>
+      <div class="modal-body">
+        <h3><%= advisory.provider %></h3>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="card">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

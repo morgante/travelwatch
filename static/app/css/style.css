@@ -8,8 +8,14 @@ body {
 	margin-bottom: 60px;
 }
 
+#dashboard {
+	position: relative;
+}
+
 .card {
-	background: "#A00";
+	position: absolute;
+	right: 50px;
+	top: 50px;
 }
 
 div#footer {
