@@ -1,9 +1,14 @@
 from geopy.geocoders import GoogleV3, Nominatim
+import requests
+#import foursquare as g
 
+g = Nominatim()
 
+# All these methods take points in string form
+# e.g. point = "5.152149, 46.199616"
+# print get_city(point)
 
 def get_city(point):
-   g = Nominatim()
    (new_place, new_point) = g.reverse(point, exactly_one=True)
    #new_place = "76 Surawong Road, Si Phraya, Bang Rak, Bangkok 10500, Thailand"
    if new_place == None or new_point == None:
@@ -21,7 +26,6 @@ def get_city(point):
 
 
 def get_state(point):
-   g = Nominatim()
    (new_place, new_point) = g.reverse(point, exactly_one=True)
    splited = new_place.split(',')
    # address it's different for the states
@@ -34,12 +38,7 @@ def get_state(point):
 
 
 def get_country(point):
-   g = Nominatim()
    (new_place, new_point) = g.reverse(point, exactly_one=True)
-   splited = new_place.split(',')
-  
+   splited = new_place.split(',')  
    return splited[-1]
    
-
-point = "5.152149, 46.199616"
-print get_city(point)

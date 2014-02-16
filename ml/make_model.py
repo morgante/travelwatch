@@ -1,11 +1,20 @@
 import sys
 sys.path.append('..')
 
-#import data as db
+import data as db
 import word_frequency as wfr
 import geo.reverse as gr
-import train
 import numpy
+
+import hack_locales
+lst=hack_locales.get_town_list()
+II=0
+def getcity():
+    global II,lst
+    ret=lst[II]
+    II+=1
+    return ret
+
 def score_from_crimes(crimes): 
     w1 = 2*crimes['violent crime']/48430
     w2 = 3*crimes['murder and nonnegligent manslaughter']/523
@@ -30,29 +39,29 @@ def score_from_crimes(crimes):
     return normalized
 
 
-def get_crimes_by_city(city):
-
-    #cursor = db.get_crimes()
+def get_crimes_by_city():
+    global II
+    II=0
+    cursor = db.get_crimes()
 	
-    cities = {}
+    cNUM = {}
     
     for entry in cursor:
-        latitude = entry['position']['latitude']
-        longitude = entry['position']['longitude']
-        city = get_cityname_from_coords(latitude,longitude)
-	cities[city] = {
-            "city": city,
-            "crimes": entry["crimes"],
-            "score": score_from_crimes(entry["crimes"])
-	}
-    return cities;
+        lat = entry['position']['latitude']
+        lon = entry['position']['longitude']
+        city = gr.get_city((lon,lat))
+	if city==None:
+	    city=getcity()
+	cNUM[city] = score_from_crimes(entry["crimes"])
+	
+    return cNUM
 
 
 def model_from_all():
     cities ={}
 
     # Get every single article
-    #articles = db.get_articles()
+    articles = db.get_articles()
 
     for article in articles:
 	##unsure of the exact notation for this part
@@ -62,11 +71,14 @@ def model_from_all():
 	kw=article["keywords"]
         if len(article["positions"]) < 1:
             continue
-
-        point = (article["positions"]["latitude"], article["positions"]["longitude"])
+	pos=article["positions"]
+	if type(pos)==list:
+	    pos=pos[0]
+        point = (pos["longitude"], pos["latitude"])
         city=gr.get_city(point)
+	print city
         if city == None:
-            continue
+            city=getcity()
    	##############################
 
 	##currently using equal weighting
@@ -79,11 +91,12 @@ def model_from_all():
 	    cities[city]=wfr.add(cities[city],wf)
 	else:
 	    cities[city]=wf
-    
+    cNUM=get_crimes_by_city()
     for city in cities:
 	##normalize after all articles have been updated
 	cities[city]=wfr.normalize(cities[city])
         #have to append a cNum to each city
-	cities[city]["c_Num"]=get_crimes_by_city(city)
+	cities[city]["c_Num"]=cNUM[city]
+        
     return cities 
-			
+	

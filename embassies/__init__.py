@@ -5,8 +5,11 @@ import data as db
 import canada
 import usa
 
-def get_alerts():
+def get_old():
 	return db.get_alerts()
+
+def get_new():
+	return sync()["new"]
 
 def sync():
 	alerts = {
