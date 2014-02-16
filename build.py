@@ -1,12 +1,9 @@
 import sys
 
-sys.path.append("..")
-
 import data as db
 import news
 from news import risks
-
-import words
+from ml import words
 
 def get_news():
 	cdata = news.get_by_country()
