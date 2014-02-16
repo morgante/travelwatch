@@ -15,6 +15,9 @@ define([
 
 		initialize: function () {
 			this.$map = $('.map', this.$el);
+			this.$card = $('#card', this.$el);
+
+			this.$card.hide();
 
 			this.scores = this.collection;
 			this.countries = new Countries;
@@ -39,6 +42,10 @@ define([
 		openCountry: function(code) {
 			var view = this;
 
+			if (view.country != undefined && view.country.get("code") == code) {
+				view.map.unzoom();
+			}
+
 			view.map.zoom(code, {x: 50, y: 50, length: 400, height: 400}, function() {
 				console.log('I finished zooming')
 			});
@@ -52,6 +59,8 @@ define([
 					el: $('#card', view.$el),
 					model: country
 				});
+
+				view.$card.show();
 				
 			});
 		},
