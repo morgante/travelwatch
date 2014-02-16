@@ -11,10 +11,6 @@ define([
 
 	var $map = $('.map');
 
-	api.get_advisory('UAE', function(data) {
-		console.log('ad', data);
-	});
-
 	// get scores data
 	var scores = new Scores();
 

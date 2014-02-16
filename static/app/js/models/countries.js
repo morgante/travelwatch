@@ -1,8 +1,9 @@
 define([
 	'jquery',
 	'underscore',
-    'backbone'
-], function ($, _, Backbone) {
+    'backbone',
+    'api'
+], function ($, _, Backbone, api) {
 
 	// Country Model
 	// ---------------
@@ -10,7 +11,13 @@ define([
 		idAttribute: "code",
 
 		initialize: function() {
+			var self = this;
+
 			this.on("change:points", this.normalizePoints, this);
+
+			api.get_advisory(this.get('code'), function(err, data) {
+				self.set("advisory", data[0])
+			});
 		},
 
 		normalizePoints: function() {
