@@ -14,10 +14,16 @@ define([
 	// get scores data
 	var scores = new Scores();
 
-	notifier.notify({
-		"title": "This is nonsense",
-		"content": "I am a Samson."
+	api.get_nyt("hello sir", function(err, data) {
+		console.log("ny", data);
 	});
+
+	// notifier.notify({
+	// 	"title": "This is nonsense",
+	// 	"content": "I am a Samson."
+	// });
+
+
 
 	scores.fetch({
 		success: function(collection, response, options) {
