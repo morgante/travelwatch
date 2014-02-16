@@ -1,6 +1,7 @@
 import sys
 import datetime
 from datetime import date
+from collections import Counter
 
 sys.path.append("..")
 import geo.code as geocode
@@ -24,10 +25,20 @@ def get_by_state():
 		states = []
 
 		for point in article["points"]:
-			print georeverse.get_state(point)
-			# print point
+			try:
+				states.append(georeverse.get_state(point))
+			except:
+				print 'problem with state lookup'
 
-		# print article
+		if (len(states) < 1):
+			continue
+
+		state = Counter(states).most_common(1)[0][0]
+
+		if (state in aggregated):
+			aggregated[state].append(article)
+		else:
+			aggregated[state] = [article]
 
 	return aggregated
 
