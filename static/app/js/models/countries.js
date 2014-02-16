@@ -12,7 +12,8 @@ define([
 
 		defaults: {
 			"entities": [],
-			"infos": []
+			"infos": [],
+			"articles": []
 		},
 
 		initialize: function() {
@@ -22,13 +23,17 @@ define([
 
 			this.on("change:entities", this.setInfos, this);
 
-			api.get_advisory(this.get('code'), function(err, data) {
-				self.set("advisory", data[0]);
-
-				api.get_entities(self.get("advisory").advisory, function(err, data) {
-					var entries = self.set("entities", data.entities);
-				});
+			api.get_nyt([self.get("name")], function(err, data) {
+				self.set("articles", data);
 			});
+
+			// api.get_advisory(this.get('code'), function(err, data) {
+			// 	self.set("advisory", data[0]);
+
+			// 	api.get_entities(self.get("advisory").advisory, function(err, data) {
+			// 		var entries = self.set("entities", data.entities);
+			// 	});
+			// });
 		},
 
 		setInfos: function() {
