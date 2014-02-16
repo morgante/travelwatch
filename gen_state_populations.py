@@ -14,4 +14,7 @@ def gen_map():
 
 def getPop(state):
   m = gen_map()
-  return m[state.upper()]
+  try: 
+    return m[state.strip().upper()]
+  except:
+    return m["ALABAMA"]

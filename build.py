@@ -1,5 +1,8 @@
 import sys
 
+import geo.foursquare as fsq
+import geo.reverse as gr
+import gen_state_populations as pop
 import data as db
 import news
 from news import risks
@@ -23,38 +26,49 @@ def get_news():
 
 	return fdata
 
+def get_crimes():
+    cursor = db.get_crimes()
+
+    scores = {}
+    for entry in cursor:
+        lat = entry['position']['latitude']
+        lon = entry['position']['longitude']
+        city = fsq.get_city_from_point(lon, lat) #gr.get_city({"longitude":lon,"latitude":lat})
+        state = fsq.get_state_from_point(lon,lat)
+        crime = 0
+        for i in entry['crime']:
+            crime+= int(entry['crime'][i])
+        score = crime/pop.getPop(state)
+        scores[city] = score
+    return scores
+
 def main():
     rows = []
     outputs = []
-
+    crimes = get_crimes()
     for (code, ndata) in get_news().iteritems():
         row = normalize.row({
             "news": ndata
         })
-
+        pos = ndata['positions']
+        if (type(pos) == list):
+            lon = pos[0]['longitude']
+            lat = pos[0]['latitude']
+        else:
+            lon = pos['longitude']
+            lat = pos['latitude']
+        city = fsq.get_city_from_point(lon, lat) #gr.get_city({"longitude":lon,"latitude":lat})
+        try:
+            crime = crimes[city]
+        except:
+            crime = 0
+            
         rows.append(row)
-        outputs.append(random.randint(1,100))
+        outputs.append(crime)
 
     model = modeler.train(rows, outputs)
 
     print model
-
-# def get_crimes():
-#     global II
-#     II=0
-#     cursor = db.get_crimes()
-	
-#     cNUM = {}
-    
-#     for entry in cursor:
-#         lat = entry['position']['latitude']
-#         lon = entry['position']['longitude']
-#         city = gr.get_city((lon,lat))
-# 	if city==None:
-# 	    city=getcity()
-# 	cNUM[city] = score_from_crimes(entry["crimes"])
-	
-#     return cNUM
 
 # def score_from_crimes(crimes): 
 #     w1 = 2*crimes['violent crime']/48430

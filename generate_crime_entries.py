@@ -1,3 +1,6 @@
+import sys
+sys.path.append('..')
+
 import pprint
 from geo.code import find_geocode
 import data as db

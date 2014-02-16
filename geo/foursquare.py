@@ -76,3 +76,14 @@ def get_state_from_point(lng, lat):
     except:
         return None
 
+def get_city_from_point(lng, lat):
+    payload['query'] = ''
+    payload['ll'] = str(lat) + ',' + str(lng)
+
+    r = requests.get("http://api.foursquare.com/v2/venues/search", params=payload)
+
+    try:
+        loc = r.json()['response']['venues'][0]['location']
+        return loc['city']
+    except:
+        return None
