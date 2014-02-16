@@ -8,7 +8,7 @@ import data as db
 def get_lat_lon(text):
 
 	positions = code.get_geocodes_from_text(text)
-	print "HERE", positions, "\n\n\n\n"
+	#print "HERE", positions, "\n\n\n\n"
 	lat_lon = []
 	
 	try:
@@ -17,17 +17,17 @@ def get_lat_lon(text):
 			 	'longitude': i['longitude']}
 			
 			lat_lon.append(temp)
-			print "==================="
+			#print "==================="
 			print lat_lon
-			print "=================="
+			#print "=================="
 		return lat_lon
 	except:
-		print "\nM\n"
+		#print "\nM\n"
 		return lat_lon	
 
 def push_NYT_to_db():
 
-	data = retrieve.search(pages = 1, highlight=True )
+	data = retrieve.search(query = "crime murder kill",pages = 1, highlight=True )
 	for i in data[0]:
 		
    		if i['lead_paragraph'] == None:

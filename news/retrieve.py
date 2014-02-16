@@ -221,7 +221,7 @@ def search(
         ## Requesting data from news source
         APIRequest = urlopen(QUERY)
         JSONData = json.load(APIRequest)
-	print JSONData
+	#print JSONData
         # QueryFields["facet_field"] = ""
 
         ## Appending results page by page to a list
@@ -263,6 +263,8 @@ def getValFromDict(d,k):
 
 ## JSON Handler (Thanks Bonnie!)
 def handleJSON(raw_json):
+    print ("RAW JSON")
+    print raw_json
     docs = raw_json["response"]["docs"]
     articles = []
     for d in docs:
@@ -277,9 +279,11 @@ def handleJSON(raw_json):
         url = getValFromDict(d, "web_url")
         date = getValFromDict(d, "pub_date")
         lead = getValFromDict(d, "lead_paragraph")
+	keywords = getValFromDict(d, "keywords")
+	positions = getValFromDict(d, "positions")
         obj = {"headline":headline, "snippet":snippet,
                "lead_paragraph":lead, "_id":uniq_id,
-               "url":url, "date":date}
+               "url":url, "date":date, "keywords": keywords, "positions": positions}
         articles.append(obj)
     return articles
 
