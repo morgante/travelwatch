@@ -57,9 +57,7 @@ define([
 
 			view.map.zoom(code, {x: 50, y: 50, length: 400, height: 400}, function() {
 				console.log('I finished zooming')
-			});
-
-			this.countries.getOne(code, function(err, country) {
+			view.countries.getOne(code, function(err, country) {
 				view.country = country;
 
 				view.map.colorPoints(country.get("points"));
@@ -73,6 +71,8 @@ define([
 				view.$card.fadeIn();
 				
 			});
+			});
+
 		},
 
 		render: function () {

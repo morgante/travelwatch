@@ -18,7 +18,7 @@ define([
 	}
 
 	function dangerLevelToColor(dangerLevel) {
-		return d3.interpolateRgb('green', 'red')(dangerLevel / 100);
+		return d3.interpolateHsl('green', 'red')(dangerLevel / 100);
 	}
 
 	/**
@@ -45,12 +45,30 @@ define([
 			.projection(this.projection);
 
 		d3.json("/static/app/world.topo.json", function(error, data) {
-			var subunits = that.svg.insert('g', ':first-child')
+			//var subunits = that.svg.insert('g', ':first-child')
+			var g = that.svg.append("g")
+				.attr("id", "pointsLayer");
+			var background = that.svg.insert('g')
+				.attr('id', 'background')
+				.attr('class', 'datamaps-subunits');
+			var subunits = that.svg.insert('g')
+				.attr('id', 'foreground')
 				.attr('class', 'datamaps-subunits');
 			var geoData = topojson.feature(data, data.objects.world).features
 				.filter(function(feature) {
 					return feature.id !== "ATA"; // get rid of Antarctica
 				});
+			background.selectAll('path.datamaps-subunit')
+				.data(geoData)
+				.enter()
+				.append('path')
+				.attr('d', that.path)
+				.attr('class', function(d) {
+					return 'datamaps-subunit ' + d.id;
+				})
+				.style('fill', '#BBBBBB')
+				.style('stroke-width', 1)
+				.style('stroke', '#FDFDFD');
 			subunits.selectAll('path.datamaps-subunit')
 				.data(geoData)
 				.enter()
@@ -81,7 +99,7 @@ define([
 	Map.prototype.colorCountries = function(data, callback) {
 		var error = null;
 
-		d3.selectAll('.datamaps-subunit').style('fill', function(d) {
+		d3.select("#foreground").selectAll('.datamaps-subunit').style('fill', function(d) {
 			if (data.hasOwnProperty(d.id)) {
 				return dangerLevelToColor(data[d.id]);
 			}
@@ -107,14 +125,17 @@ define([
 		var that = this;
 		var error = null;
 
-		var g = this.svg.append("g")
-			.attr("id", "pointsLayer");
+		var g = this.svg.select("#pointsLayer");
 		var defs = this.svg.append("defs");
 
 		_.each(data, function(d) {
-			var latLong = [d.position.longitude, d.position.latitude];
-			var coords = that.transform(that.projection(latLong));
-			var num = Math.floor(Math.random()*1000);
+			var lng = d.position.longitude;
+			var lat = d.position.latitude;
+			var coords = [that.bounds.x + Math.random() * that.bounds.length,
+			              that.bounds.y + Math.random() * that.bounds.height];
+			//var coords = that.transform(that.projection(latLong));
+
+			var num = Math.floor(Math.random()*10000);
 			var grad = defs
 				.append("radialGradient")
 				.attr("gradientUnits", "objectBoundingBox")
@@ -129,11 +150,16 @@ define([
 				.attr("stop-color", color)
 				.attr("stop-opacity", "0%");
 			g.append("ellipse")
+				.attr("class", "dot")
 				.attr("cx", coords[0])
 				.attr("cy", coords[1])
 				.attr("rx", d.force * that.k / 20)
 				.attr("ry", d.force * that.k / 20)
-				.style("fill", "url(#grad" + num + ")");
+				.style("opacity", "0")
+				.style("fill", "url(#grad" + num + ")")
+				.transition()
+				.duration(500)
+				.style("opacity", "1");
 		});
 
 		if (callback !== undefined) {
@@ -151,9 +177,11 @@ define([
 	Map.prototype.zoom = function(country, bounds, callback) {
 		var that = this;
 		var error = null;
+		this.bounds = bounds;
 
-		d3.selectAll("g#pointsLayer").data([]).exit().remove();
-		var g = this.svg.select('.datamaps-subunits');
+		//d3.selectAll("g#pointsLayer").data([]).exit().remove();
+		d3.selectAll(".dot").data([]).exit().remove();
+		var g = this.svg.selectAll('.datamaps-subunits');
 		var centroid = this.path.centroid(d3.select('.' + country).data()[0]);
 		var countryBox = this.path.bounds(d3.select('.' + country).data()[0]);
 		var x = centroid[0],
@@ -179,14 +207,18 @@ define([
 					callback(error);
 				}
 			});
-		d3.selectAll('.datamaps-subunit')
-			.transition()
-			.duration(1000)
-			.style("opacity", "0.25");
-		d3.selectAll('.' + country)
+		d3.select("#background").selectAll('.datamaps-subunit')
 			.transition()
 			.duration(1000)
 			.style("opacity", "1");
+		d3.select("#foreground").selectAll('.datamaps-subunit')
+			.transition()
+			.duration(1000)
+			.style("opacity", "0");
+		d3.selectAll('.' + country)
+			.transition()
+			.duration(1000)
+			.style("opacity", "0.4");
 
 	};
 
@@ -213,6 +245,7 @@ define([
 					callback(error);
 				}
 			});
+		console.log("AHH");
 		d3.selectAll('.datamaps-subunit')
 			.transition()
 			.duration(1000)
