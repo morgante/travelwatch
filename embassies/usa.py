@@ -6,6 +6,7 @@ from datetime import datetime
 import sys
 sys.path.append("..")
 import geo.names as geonames
+import geo.code as geocode
 
 def get_alerts(limit=None, DEBUG=False):
     stem_url = "http://travel.state.gov"
@@ -49,6 +50,9 @@ def get_alerts(limit=None, DEBUG=False):
         paras = paras[:len(paras) - 3]        
         alert_dict['advisory'] = ''.join([p.text for p in paras])
         alert_dicts.append(alert_dict)
+
+        alert_dict["positions"] = geocode.get_geocodes_from_text(alert_dict['advisory'])
+
         if DEBUG:
             try:
                 print alert_dict
