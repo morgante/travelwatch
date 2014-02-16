@@ -20,7 +20,12 @@ def get_geocode(txt):
 
     payload['query'] = txt
     r = requests.get("http://api.foursquare.com/v2/geo/geocode", params=payload)
-    ans = r.json()['response']['geocode']['interpretations']['items'][0]
+    #print r.json()
+    try:
+       ans = r.json()['response']['geocode']['interpretations']['items'][0]
+    except:
+       return {}
+
     pos = ans['feature']['geometry']['center']
     lat = pos['lat']
     lng = pos['lng']
@@ -58,4 +63,16 @@ def reverse(point, exactly_one=True):
         db.insert(FSQ_DB, name_cached)
     return (name, new_point)
 
+
+def get_state_from_point(lng, lat):
+    payload['query'] = ''
+    payload['ll'] = str(lat) + ',' + str(lng)
+    
+    r = requests.get("http://api.foursquare.com/v2/venues/search", params=payload)
+    
+    try:
+        loc = r.json()['response']['venues'][0]['location']
+        return loc['state']
+    except:
+        return None
 

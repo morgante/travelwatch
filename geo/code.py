@@ -35,7 +35,10 @@ def get_geocodes(src_type, src, api_type='n'):
         geocodes.append(find_geocode(l))
 
     if DEBUG:
-        print geocodes
+        try:
+            print geocodes
+        except:
+            pass
 
     return geocodes
 
