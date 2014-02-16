@@ -122,6 +122,7 @@ define([
 	 * @param  {Function} callback A function(err) to be called on completion of colorization
 	 */
 	Map.prototype.colorPoints = function(data, callback) {
+		console.log('colorpoints!', data);
 		var that = this;
 		var error = null;
 
@@ -229,7 +230,7 @@ define([
 	Map.prototype.unzoom = function(callback) {
 		var error = null;
 
-		d3.selectAll("g#pointsLayer").data([]).exit().remove();
+		d3.selectAll(".dot").data([]).exit().remove();
 		var g = this.svg.selectAll('.datamaps-subunits');
 		var x = this.width / 2;
 		var y = this.height / 2;
