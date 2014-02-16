@@ -112,8 +112,12 @@ define([
 		var defs = this.svg.append("defs");
 
 		_.each(data, function(d) {
-			var latLong = [d.position.longitude, d.position.latitude];
-			var coords = that.transform(that.projection(latLong));
+			var lng = d.position.longitude;
+			var lat = d.position.latitude;
+			var coords = [that.bounds.x + (180+lng) / 360 * that.bounds.length,
+			              that.bounds.y + (90+lat) / 180 * that.bounds.height];
+			//var coords = that.transform(that.projection(latLong));
+
 			var num = Math.floor(Math.random()*1000);
 			var grad = defs
 				.append("radialGradient")
@@ -151,6 +155,7 @@ define([
 	Map.prototype.zoom = function(country, bounds, callback) {
 		var that = this;
 		var error = null;
+		this.bounds = bounds;
 
 		d3.selectAll("g#pointsLayer").data([]).exit().remove();
 		var g = this.svg.select('.datamaps-subunits');
