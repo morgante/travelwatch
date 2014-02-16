@@ -1,5 +1,6 @@
-from flask import Flask
+from flask import Flask, request
 from flask import render_template
+from news import retrieve
 import os
 import json
 import data as db
@@ -66,6 +67,10 @@ def mock_country(code):
 	}
 
 	return json.dumps(data)
+
+@app.route('/mock/search/', methods=['GET'])
+def search_query():
+	return retrieve.search(query=request.args.get('query', ''))[0]
 
 if __name__ == '__main__':
   

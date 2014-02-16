@@ -1,70 +1,106 @@
 # # NO MODULE NAMED HACK_LOCALES....????
 
-# import sys
-# sys.path.append('..')
-
+# <<<<<<< HEAD
 # import data as db
-# import word_frequency as wfr
+# import normalize as wfr
 # import geo.reverse as gr
 # import numpy
 
-# # import hack_locales
+# import hack_locales
 # lst=hack_locales.get_town_list()
+# import pprint
 # II=0
 # def getcity():
 #     global II,lst
 #     ret=lst[II]
 #     II+=1
+#     if(II==len(lst)):
+#       II = 0
 #     return ret
+# =======
+# # import sys
+# # sys.path.append('..')
 
-# def score_from_crimes(crimes): 
-#     w1 = 2*crimes['violent crime']/48430
-#     w2 = 3*crimes['murder and nonnegligent manslaughter']/523
-#     w3 = 2.5*crimes['forcible rape']/1038
-#     w4 = 2*crimes['robbery']/22186
-#     w5 = 1.5*crimes['aggravated assault']/24831
-#     w6 = crimes['property crime']/149989
-#     w7 = crimes['burglary']/26947
-#     w8 = crimes['larceny/theft']/117682
-#     w9 = crimes['motor vehicle theft']/22623
-#     weightedSum = w1 + w2 + w3 + w4 + w5 + w6 + w7 + w8 + w9
-#     if weightedSum == 0:
-#         return 0
-#     # My justification: (so i can make fun of myself for this later)
-#     # Looks hacky, but fleshed this out in excel and it works
-#     # Data looks somewhat exponential=>log the weighted data
-#     # weights based on Importance*#occurances/MAXoccurances
-#     # The -5 and /(-10) put it in a reasonable decimal scale
-#     # The 1- Inverted the percentage to represent risk instead of "safety"
-#     # /0.8 to level out the percentages across the 1.0 range
-#     normalized = (1 - ((numpy.log10(weightedSum)-5)/(-10)))/0.8
-#     return normalized
+# # import data as db
+# # import word_frequency as wfr
+# # import geo.reverse as gr
+# # import numpy
+# >>>>>>> demo
 
+# # # import hack_locales
+# # lst=hack_locales.get_town_list()
+# # II=0
+# # def getcity():
+# #     global II,lst
+# #     ret=lst[II]
+# #     II+=1
+# #     return ret
 
+# # def score_from_crimes(crimes): 
+# #     w1 = 2*crimes['violent crime']/48430
+# #     w2 = 3*crimes['murder and nonnegligent manslaughter']/523
+# #     w3 = 2.5*crimes['forcible rape']/1038
+# #     w4 = 2*crimes['robbery']/22186
+# #     w5 = 1.5*crimes['aggravated assault']/24831
+# #     w6 = crimes['property crime']/149989
+# #     w7 = crimes['burglary']/26947
+# #     w8 = crimes['larceny/theft']/117682
+# #     w9 = crimes['motor vehicle theft']/22623
+# #     weightedSum = w1 + w2 + w3 + w4 + w5 + w6 + w7 + w8 + w9
+# #     if weightedSum == 0:
+# #         return 0
+# #     # My justification: (so i can make fun of myself for this later)
+# #     # Looks hacky, but fleshed this out in excel and it works
+# #     # Data looks somewhat exponential=>log the weighted data
+# #     # weights based on Importance*#occurances/MAXoccurances
+# #     # The -5 and /(-10) put it in a reasonable decimal scale
+# #     # The 1- Inverted the percentage to represent risk instead of "safety"
+# #     # /0.8 to level out the percentages across the 1.0 range
+# #     normalized = (1 - ((numpy.log10(weightedSum)-5)/(-10)))/0.8
+# #     return normalized
+
+# <<<<<<< HEAD
 # def get_crimes_by_city():
-#     global II
-#     II=0
 #     cursor = db.get_crimes()
 	
-#     cNUM = {}
-    
+#     l = []
 #     for entry in cursor:
+#         #c = {}
 #         lat = entry['position']['latitude']
 #         lon = entry['position']['longitude']
-#         city = gr.get_city((lon,lat))
-# 	if city==None:
-# 	    city=getcity()
-# 	cNUM[city] = score_from_crimes(entry["crimes"])
+#         #city = gr.get_city((lon,lat))
+        
+# 	c = score_from_crimes(entry["crime"])
+# 	l.append(c)
+#     return l
+# =======
+
+# # def get_crimes_by_city():
+# #     global II
+# #     II=0
+# #     cursor = db.get_crimes()
 	
-#     return cNUM
+# #     cNUM = {}
+    
+# #     for entry in cursor:
+# #         lat = entry['position']['latitude']
+# #         lon = entry['position']['longitude']
+# #         city = gr.get_city((lon,lat))
+# # 	if city==None:
+# # 	    city=getcity()
+# # 	cNUM[city] = score_from_crimes(entry["crimes"])
+	
+# #     return cNUM
+# >>>>>>> demo
 
 
-# def model_from_all():
-#     cities ={}
+# # def model_from_all():
+# #     cities ={}
 
-#     # Get every single article
-#     articles = db.get_articles()
+# #     # Get every single article
+# #     articles = db.get_articles()
 
+# <<<<<<< HEAD
 #     for article in articles:
 # 	##unsure of the exact notation for this part
 # 	#############################
@@ -77,28 +113,72 @@
 # 	if type(pos)==list:
 # 	    pos=pos[0]
 #         point = (pos["longitude"], pos["latitude"])
-#         city=gr.get_city(point)
-# 	print city
-#         if city == None:
-#             city=getcity()
+#         #city=gr.get_city(point)
+# 	#Eprint city
+#         #if city == None:
+#         city=getcity()
 #    	##############################
+# =======
+# #     for article in articles:
+# # 	##unsure of the exact notation for this part
+# # 	#############################
+# # 	hl=article["headline"]
+# # 	txt=article["text"]
+# # 	kw=article["keywords"]
+# #         if len(article["positions"]) < 1:
+# #             continue
+# # 	pos=article["positions"]
+# # 	if type(pos)==list:
+# # 	    pos=pos[0]
+# #         point = (pos["longitude"], pos["latitude"])
+# #         city=gr.get_city(point)
+# # 	print city
+# #         if city == None:
+# #             city=getcity()
+# #    	##############################
+# >>>>>>> demo
 
-# 	##currently using equal weighting
-# 	wf1=wfr.normalize(wfr.get_frequency(hl))
-# 	wf2=wfr.normalize(wfr.get_frequency(txt))
-# 	wf3=wfr.normalize(wfr.get_frequency(kw))
-# 	wf=wfr.normalize(wfr.add(wfr.add(wf1,wf2),wf3))
+# # 	##currently using equal weighting
+# # 	wf1=wfr.normalize(wfr.get_frequency(hl))
+# # 	wf2=wfr.normalize(wfr.get_frequency(txt))
+# # 	wf3=wfr.normalize(wfr.get_frequency(kw))
+# # 	wf=wfr.normalize(wfr.add(wfr.add(wf1,wf2),wf3))
 
+# <<<<<<< HEAD
 # 	if city in cities.keys():
 # 	    cities[city]=wfr.add(cities[city],wf)
 # 	else:
 # 	    cities[city]=wf
-#     cNUM=get_crimes_by_city()
+#     cNUM = {}
+#     l = get_crimes_by_city()
+#     print (len(l))
+#     #for city in cities:
+#      #   a = lst.pop()
+#      #   a['city'] = city
+#       #  cNUM[city] = a
+#     i=0
 #     for city in cities:
 # 	##normalize after all articles have been updated
 # 	cities[city]=wfr.normalize(cities[city])
 #         #have to append a cNum to each city
-# 	cities[city]["c_Num"]=cNUM[city]
-        
+# 	cities[city]["c_Num"]= l[i]#cNUM[city]
+#         i+=1
+#         if(i==len(l)):
+#           i=0
+#     pprint.pprint(cities)    
 #     return cities 
+# =======
+# # 	if city in cities.keys():
+# # 	    cities[city]=wfr.add(cities[city],wf)
+# # 	else:
+# # 	    cities[city]=wf
+# #     cNUM=get_crimes_by_city()
+# #     for city in cities:
+# # 	##normalize after all articles have been updated
+# # 	cities[city]=wfr.normalize(cities[city])
+# #         #have to append a cNum to each city
+# # 	cities[city]["c_Num"]=cNUM[city]
+        
+# #     return cities 
+# >>>>>>> demo
 	
