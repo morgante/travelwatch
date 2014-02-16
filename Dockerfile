@@ -32,6 +32,10 @@ RUN 		cd /src; pip install countrycode
 # Dev tools
 RUN 		apt-get install -y vim
 
+# More pips
+RUN 		pip install requests
+RUN 		pip install pycountry
+
 # Add source
 ADD 		. /src
 

@@ -1,16 +1,11 @@
 import numpy as np
 from sklearn.externals import joblib
 #import listofWords
-import listWords as listofWords
+# import listWords as listofWords
 
-def train(data,mode=1):
+def train(features,outputs,mode=1):
+
     print 'TRAIN'
-    print data.shape
-    if data.shape[0]==0:
-	return None
-
-    features = data[:,:-1]
-    outputs = data[:,-1]
 	
     if mode==1:
         from sklearn import linear_model
@@ -22,42 +17,43 @@ def train(data,mode=1):
 	model = svm.SVC()
     print name
 
-    train_ft = features[:-5]
-    train_out = outputs[:-5]
-    test_ft = features[-5:]
-    test_out = outputs[-5:]
+    print features
+    print outputs
+
+    train_ft = features[:-1]
+    train_out = outputs[:-1]
+    test_ft = features[-1:]
+    test_out = outputs[-1:]
     
     model.fit(train_ft, train_out)
-    
-
 
     # make prediction on test data
-    filename = 'model/'+name+'.pkl'
+    filename = 'ml/model/'+name+'.pkl'
     joblib.dump(model, filename)
 
     print('Saved model to ' + filename)
     return name
 
-def make_model(cities,mode=1):
-    data = []
-    words = listofWords.listofWords()
+# def make_model(cities,mode=1):
+#     data = []
+#     words = listofWords.listofWords()
     
     
-    #generating articles data array 
-    for city in cities.keys():
-        print city
-        #datum:=[w1,w2,w3,...,cNum] 
-	datum = []
-        for word in words:
-            if (word in cities[city].keys()):
-                datum.append(cities[city][word])
-            else:
-                datum.append(0)
-	datum.append(cities[city]["c_Num"])
-        data.append(datum)
+#     #generating articles data array 
+#     for city in cities.keys():
+#         print city
+#         #datum:=[w1,w2,w3,...,cNum] 
+# 	datum = []
+#         for word in words:
+#             if (word in cities[city].keys()):
+#                 datum.append(cities[city][word])
+#             else:
+#                 datum.append(0)
+# 	datum.append(cities[city]["c_Num"])
+#         data.append(datum)
 
-    data=np.array(data)
-    # training the data and generating the model
-    return train(data, mode)
+#     data=np.array(data)
+#     # training the data and generating the model
+#     return train(data, mode)
 
 

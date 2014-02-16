@@ -109,23 +109,31 @@ define([
 
 		var g = this.svg.append("g")
 			.attr("id", "pointsLayer");
-		var filter = this.svg.append("defs")
-			.append("filter")
-			.attr("id", "blur")
-			.append("feGaussianBlur")
-			.attr("stdDeviation", 2);
+		var defs = this.svg.append("defs");
 
 		_.each(data, function(d) {
 			var latLong = [d.position.longitude, d.position.latitude];
 			var coords = that.transform(that.projection(latLong));
-			
+			var num = Math.floor(Math.random()*1000);
+			var grad = defs
+				.append("radialGradient")
+				.attr("gradientUnits", "objectBoundingBox")
+				.attr("id", "grad" + num);
+			var color = dangerLevelToColor(d.score);
+			grad.append("stop")
+				.attr("offset", "0%")
+				.attr("stop-color", color)
+				.attr("stop-opacity", "100%");
+			grad.append("stop")
+				.attr("offset", "100%")
+				.attr("stop-color", color)
+				.attr("stop-opacity", "0%");
 			g.append("ellipse")
 				.attr("cx", coords[0])
 				.attr("cy", coords[1])
-				.attr("rx", d.force * that.k / 50)
-				.attr("ry", d.force * that.k / 50)
-				.style("fill", dangerLevelToColor(d.score))
-				.attr("filter", 'url(#blur)');
+				.attr("rx", d.force * that.k / 20)
+				.attr("ry", d.force * that.k / 20)
+				.style("fill", "url(#grad" + num + ")");
 		});
 
 		if (callback !== undefined) {
