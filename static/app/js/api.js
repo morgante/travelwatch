@@ -9,6 +9,12 @@ define([
 		}, "json");
 	}
 
+	function get_entities(text, callback) {
+		$.get("/api/alerts/" + code, function(data) {
+			callback(null, data)
+		}, "json");
+	}
+
 	return {
 		get_advisory: get_advisory
 	};
