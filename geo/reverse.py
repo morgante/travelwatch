@@ -5,10 +5,14 @@ import random
 
 g = Nominatim()
 
-# TODO: ALL THESE METHOS SHOULD TAKE POINTS IN {"latidue": x, "longitude": y} FORM
+# DONE: ALL THESE METHOS SHOULD TAKE POINTS IN {"latidue": x, "longitude": y} FORM
 
+
+def change_format(point):
+	return str(point.get('latitude'))+", "+str(point.get('longitude'))
+	
 def get_city(point):
-   (new_place, new_point) = g.reverse(point, exactly_one=True)
+   (new_place, new_point) = g.reverse(change_format(point), exactly_one=True)
    #new_place = "76 Surawong Road, Si Phraya, Bang Rak, Bangkok 10500, Thailand"
    if new_place == None or new_point == None:
        return None
@@ -25,7 +29,7 @@ def get_city(point):
 
 
 def get_state(point):
-   return random.choice(['NY', 'VT', 'CA'])
+
 
  #   (new_place, new_point) = g.reverse(point, exactly_one=True)
  #   splited = new_place.split(',')
@@ -36,10 +40,12 @@ def get_state(point):
  #   else:
 	# # no state
 	# return ""
+   return random.choice(['NY', 'VT', 'CA'])
 
 
 def get_country(point):
-   (new_place, new_point) = g.reverse(point, exactly_one=True)
+   (new_place, new_point) = g.reverse(change_format(point), exactly_one=True)
    splited = new_place.split(',')  
    return splited[-1]
-   
+  
+#print change_format({'latitude': 123, 'longitude':5678}) 
