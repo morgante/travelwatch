@@ -7,12 +7,19 @@ import data as db
 from bson import Binary, Code
 from bson.json_util import dumps as bson_dump
 import embassies
+import requests
 
 app = Flask(__name__)
 
 @app.route('/')
 def home():
     return render_template('app.html')
+
+@app.route('/api/alchemy/<what>/<endpoint>')
+def wrap_alchemy(what, endpoint):
+	url = 'http://access.alchemyapi.com/calls/' + what + '/' + endpoint + '?apikey=61cc00a7028c5f89e4844f7958d51cfef45a92eb&' + request.query_string
+	r = requests.get(url)
+	return r.text
 
 @app.route('/api/alerts/<code>')
 def api_advisory(code):

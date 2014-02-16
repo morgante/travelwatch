@@ -25,7 +25,7 @@ define([
 		},
 
 		render: function() {
-			console.log(this.template(this.model.attributes));
+			// console.log(this.template(this.model.attributes));
 			this.$el.html(this.template(this.model.attributes));
 			return this;
 		}

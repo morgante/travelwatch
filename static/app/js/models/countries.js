@@ -18,9 +18,9 @@ define([
 			api.get_advisory(this.get('code'), function(err, data) {
 				self.set("advisory", data[0]);
 
-				console.log(data);
-
-				console.log(self.get("advisory"));
+				api.get_entities(self.get("advisory").advisory, function(err, data) {
+					console.log("entity", data);
+				});
 			});
 		},
 
