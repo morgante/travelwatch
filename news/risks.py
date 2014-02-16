@@ -32,7 +32,7 @@ for each loc in doc:
 
 def get_risks_for_article(article):
     head_len = len(article['headline'])
-    text_len = len(article['text'])
+    text_len = len(article['snippet'])
 
     #locs = code.get_geocodes_from_text(article['headline']) + code.get_geocodes_from_text(article['text'])
 
@@ -46,7 +46,7 @@ def get_risks_for_article(article):
         tcount = 0
         for phrase in v:
             hcount += str.lower(article['headline'].encode('ascii', 'ignore')).count(phrase)
-            tcount += str.lower(article['text'].encode('ascii','ignore')).count(phrase)
+            tcount += str.lower(article['snippet'].encode('ascii','ignore')).count(phrase)
         print hcount, tcount
         risk_freqs[k] = ((hcount * 2.0) / head_len) + ((tcount * 1.0) / text_len) 
 
@@ -64,7 +64,7 @@ def process_articles_from_db():
         print country_hack.article_to_country_codes(article)
         risk_freqs = get_risks_for_article(article)
 
-        a_locs = code.get_geocodes_from_text(article['headline']) + code.get_geocodes_from_text(article['text'])
+        a_locs = code.get_geocodes_from_text(article['headline']) + code.get_geocodes_from_text(article['snippet'])
         for al in a_locs:
             try:
                 if not al['placename'] in locs:
@@ -79,7 +79,8 @@ def process_articles_from_db():
 
     loc_list = [locs[key] for key in locs]
     loc_list.sort(sorter)
-    print loc_list
+    
+    return loc_list
 
 def sorter(a,b):
     return cmp(a['murder'], b['murder'])

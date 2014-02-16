@@ -8,3 +8,4 @@ nltk
 fake-factory
 countrycode
 requests
+pycountry
