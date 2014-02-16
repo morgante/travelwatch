@@ -1,9 +1,9 @@
 import pprint
 from geo.code import find_geocode
-#import data as db
+import data as db
 
 # Fills in the State for towns/cities lacking that data
-def csv_fix():
+def get_entries():
   csv = open('usa_crime_data_2008.csv').readlines()
   for line_no in xrange(len(csv)):
     split = csv[line_no].split(',')
@@ -16,7 +16,7 @@ def csv_fix():
 
   for line in lines[1:]: # [1:] to ignore column title
   #Commas in town names were replaced with '&' for CSV, revert back
-    #geo = find_geocode("%s,%s"%(values[1].replace('&',','),values[0]))
+    geo = find_geocode("%s,%s"%(values[1].replace('&',','),values[0]))
     
     ## Cached results return differently than noncached:
     if "points" in geo:
@@ -26,8 +26,6 @@ def csv_fix():
       lon = geo['longitude']
       lat = geo['latitude']    
     ## Based on DB Schema
-    lat = 0
-    lon = 0
     try:
       entry = { 
               'position' : { 'longitude': lon,
@@ -52,3 +50,8 @@ def csv_fix():
       print "Entry discarded, see footnotes 3,5 in spreadsheet"
       print e, values[0], values[1]
   return entries
+
+def upload_entries():
+  entries = get_entries()
+  db.insert_crimes(entries)
+
