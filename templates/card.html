@@ -6,11 +6,20 @@
       </div>
       <div class="modal-body">
         <h3><%= advisory.provider %></h3>
-        <ul>
+
+        <ul class="media-list">
         <% _.each(infos, function(info) { %>
-          <li><%= info.name %></li>
-        <% }); %>
-      </ul>
+          <li class="media">
+            <a class="pull-left" href="#">
+              <img class="media-object" src="..." alt="...">
+            </a>
+            <div class="media-body">
+              <h4 class="media-heading"><%= info.name %></h4>
+              ...
+            </div>
+          </li>
+          <% }); %>
+        </ul>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="card">Close</button>
