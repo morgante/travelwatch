@@ -4,14 +4,48 @@ from datetime import date
 
 sys.path.append("..")
 import geo.code as geocode
+import data as db
 
 import retrieve
 
 def convert_date(date):
 	return date.strftime("%Y%m%d")
 
-# Get from DB
-# def get(query={}, sort={})
+def get_by_country():
+	data = db.get_articles()
+	countries = {}
+
+	# print data
+
+	for article in data:
+		print article
+
+	
+
+	# if (data is None):
+	# 	return countries
+
+	# for alert in data:
+	# 	alert = clean_alert(alert)
+	# 	if (alert["country"] in countries):
+	# 		country = countries[alert["country"]]
+	# 	else:
+	# 		country = {
+	# 			"code": alert["country"],
+	# 			"alerts": []
+	# 		}
+
+	# 	country["alerts"].append(alert)
+
+	# 	countries[alert["country"]] = country
+
+	# for code, country in countries.iteritems():
+	# 	ratings = map(lambda alert: alert["rating"], country["alerts"])
+	#  	score = int(float(sum(ratings) / len(ratings)) / 4 * 100)
+
+	#  	country["score"] = score
+
+	return countries
 
 def fetch(query="crime murder kill", pages=1, start=date(2006, 01, 10), end=date.today()):
 	data = retrieve.search(query, pages=pages, highlight=False, begin=convert_date(start), end=convert_date(end))

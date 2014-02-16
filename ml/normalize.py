@@ -5,9 +5,9 @@ def region(alerts=[])
         
     }
 
-#given a string, returns a list of word frequencies
-#call as: wf=get_frequency(string)
-#and normalize as: wf=normalize(wf)
+# given a string, returns a list of word frequencies
+# call as: wf=get_frequency(string)
+# and normalize as: wf=normalize(wf)
 
 def add(w1,w2):
     return dict( (n, w1.get(n, 0)+w2.get(n, 0)) for n in set(w1)|set(w2) )
