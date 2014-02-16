@@ -2,11 +2,12 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="card" aria-hidden="true">&times;</button>
-        <h4 class="modal-title"><%= name %></h2>
+        <h4 class="modal-title">
+          <%= name %>
+          <span class="label label-default pull-right"><%= score %></span>
+      </h2>
       </div>
       <div class="modal-body">
-        <h3><%= score %></h3>
-
         <ul class="media-list">
         <% _.each(articles, function(article) { %>
           <li class="media">
