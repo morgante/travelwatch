@@ -5,6 +5,8 @@ import news
 from news import risks
 from ml import words
 from ml import normalize
+from ml import train as modeler
+import random
 
 def get_news():
 	cdata = news.get_by_state()
@@ -23,13 +25,19 @@ def get_news():
 
 def main():
     rows = []
+    outputs = []
 
     for (code, ndata) in get_news().iteritems():
         row = normalize.row({
             "news": ndata
         })
 
-        print row
+        rows.append(row)
+        outputs.append(random.randint(1,100))
+
+    model = modeler.train(rows, outputs)
+
+    print model
 
 # def get_crimes():
 #     global II
