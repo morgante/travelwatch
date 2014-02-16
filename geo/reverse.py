@@ -8,8 +8,12 @@ g = Nominatim()
 # e.g. point = "5.152149, 46.199616"
 # print get_city(point)
 
+
+def change_format(point):
+	return str(point.get('latitude'))+", "+str(point.get('longitude'))
+	
 def get_city(point):
-   (new_place, new_point) = g.reverse(point, exactly_one=True)
+   (new_place, new_point) = g.reverse(change_format(point), exactly_one=True)
    #new_place = "76 Surawong Road, Si Phraya, Bang Rak, Bangkok 10500, Thailand"
    if new_place == None or new_point == None:
        return None
@@ -26,7 +30,7 @@ def get_city(point):
 
 
 def get_state(point):
-   (new_place, new_point) = g.reverse(point, exactly_one=True)
+   (new_place, new_point) = g.reverse(change_format(point), exactly_one=True)
    splited = new_place.split(',')
    # address it's different for the states
    if splited[-1] == "USA":
@@ -38,7 +42,8 @@ def get_state(point):
 
 
 def get_country(point):
-   (new_place, new_point) = g.reverse(point, exactly_one=True)
+   (new_place, new_point) = g.reverse(change_format(point), exactly_one=True)
    splited = new_place.split(',')  
    return splited[-1]
-   
+  
+#print change_format({'latitude': 123, 'longitude':5678}) 
