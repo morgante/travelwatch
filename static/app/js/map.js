@@ -114,8 +114,8 @@ define([
 		_.each(data, function(d) {
 			var lng = d.position.longitude;
 			var lat = d.position.latitude;
-			var coords = [that.bounds.x + Math.random() * that.bounds.length,
-			              that.bounds.y + Math.random() * that.bounds.height];
+			var coords = [that.bounds.x * 1.25 + Math.random() * that.bounds.length / 2,
+			              that.bounds.y * 1.25 + Math.random() * that.bounds.height / 2];
 			//var coords = that.transform(that.projection(latLong));
 
 			var num = Math.floor(Math.random()*1000);
