@@ -8,7 +8,11 @@ import urllib2
 import string
 import time
 import re
-import names as geonames
+
+import sys
+sys.path.append("..")
+import geo.names as geonames
+
 
 # Number of countries to scrape
 LIMIT = 225
