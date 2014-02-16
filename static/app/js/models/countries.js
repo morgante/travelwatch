@@ -16,7 +16,11 @@ define([
 			this.on("change:points", this.normalizePoints, this);
 
 			api.get_advisory(this.get('code'), function(err, data) {
-				self.set("advisory", data[0])
+				self.set("advisory", data[0]);
+
+				console.log(data);
+
+				console.log(self.get("advisory"));
 			});
 		},
 
