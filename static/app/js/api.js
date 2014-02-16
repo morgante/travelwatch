@@ -18,6 +18,7 @@ define([
 	}
 
 	function get_nyt(query, callback) {
+		console.log(query);
 		ss = _.map(query, function(s) { return "\"" + s + "\""}).join(' ');
 		$.get("http://api.nytimes.com/svc/search/v2/articlesearch.json?fl=_id,web_url,lead_paragraph,abstract,headline,keywords,pub_date,word_count,source,document_type,news_desk&api-key=a23184e7a28923153d114039b3b92b8e:7:68825444", {
 			// "query": query,
