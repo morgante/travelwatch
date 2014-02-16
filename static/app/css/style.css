@@ -10,6 +10,7 @@ body {
 
 .map {
 	position: absolute;
+	top: 50px;
 	min-width: 500px;
 	min-height: 500px;
 }
@@ -17,8 +18,11 @@ body {
 	position: relative;
 }
 
+.logo {
+	//margin-left: -5%;
+}
 .main {
-	min-height: 500px;
+	min-height: 550px;
 }
 
 #card {
