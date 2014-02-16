@@ -38,7 +38,7 @@ define([
 			var types = ["NaturalDisaster", "Region", "City", "Crime"];
 
 			_.each(entities, function(entity) {
-				if (_.indexOf(types, entity.type) > -1 || true) {
+				if (_.indexOf(types, entity.type) > -1) {
 					
 
 					if (entity.disambiguated && entity.disambiguated.name) {
@@ -47,7 +47,7 @@ define([
 						entity.name = entity.text;
 					}
 
-					api.get_nyt(self.get("name") + " " + entity.name, function(err, data) {
+					api.get_nyt([self.get("name"),entity.name], function(err, data) {
 						console.log(entity);
 
 						entity["articles"] = data;
