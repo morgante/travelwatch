@@ -118,6 +118,7 @@ define([
 		_.each(data, function(d) {
 			var latLong = [d.position.longitude, d.position.latitude];
 			var coords = that.transform(that.projection(latLong));
+			
 			g.append("ellipse")
 				.attr("cx", coords[0])
 				.attr("cy", coords[1])
