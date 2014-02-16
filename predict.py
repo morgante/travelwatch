@@ -23,7 +23,7 @@ def by_embassies():
 						"longitude": point["latitude"],
 						"latitude": point["longitude"]
 					},
-					"score": country["score"] + random.randint(-10, 10) # ha ha ha
+					"score": country["score"] + random.randint(-40, 40) # ha ha ha
 				})
 
 		doc = {
@@ -69,9 +69,9 @@ def by_news():
 def main():
 	# db.db["countries"].drop()
 	
-	# by_embassies()
+	by_embassies()
 	
-	by_news()
+	# by_news()
 
 if __name__ == "__main__":
     main()
