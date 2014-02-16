@@ -82,9 +82,11 @@ def mock_country(code):
 
 	return json.dumps(data)
 
-@app.route('/mock/search/', methods=['GET'])
+@app.route('/api/search', methods=['GET'])
 def search_query():
-	return retrieve.search(query=request.args.get('query', ''))[0]
+	data = retrieve.search(query=request.args.get('query', ''), sort=None)[0]
+
+	return json.dumps(data)
 
 if __name__ == '__main__':
   
