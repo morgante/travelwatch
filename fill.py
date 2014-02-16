@@ -2,7 +2,7 @@ import data as db
 import geo.names as geonames
 import embassies
 import sys
-import news.retrieve as nyt
+import news
 
 def fill_embassies(limit=None):
 	print embassies.sync(limit=limit, DEBUG=True)
@@ -10,12 +10,13 @@ def fill_embassies(limit=None):
 	return True
 
 def fill_nyt_old(pages=None):
-	data = nyt.search(query = "crime murder kill",pages=pages, highlight=True)
+	data = news.fetch_old()
 
 	for article in data:
-		print article
-
-	# print data
+		try:
+			db.insert_article(article)
+		except:
+			print 'mongo repeat...'
 
 def main():
 	type = sys.argv[1]
