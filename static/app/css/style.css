@@ -8,6 +8,9 @@ body {
 	margin-bottom: 60px;
 }
 
+.card {
+	background: "#A00";
+}
 
 div#footer {
 	position: absolute;

@@ -3,7 +3,7 @@ import pycountry
 
 def article_to_country_codes(article):
     h = article['headline']
-    t = article['text']
+    t = article['snippet']
     country_names = [c.name for c in pycountry.countries]
     country_codes = [c.numeric for c in pycountry.countries]
 
